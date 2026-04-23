@@ -5,6 +5,7 @@ import Link from "next/link";
 import serverCallFuction from "@/lib/constantFunction";
 import { IndianRupee } from "lucide-react";
 import { Product } from "@/lib/types/Product";
+import { Icon } from "@iconify/react";
 
 const TrendingProSection = () => {
   const [products, setProducts] = useState<Product[]>([]);

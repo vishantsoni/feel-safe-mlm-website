@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 
 // API Configuration
-// const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const host: string =
-  process.env.NEXT_PUBLIC_API_URL || "https://backend-gamma-roan.vercel.app";
+const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+// const host: string =
+//   process.env.NEXT_PUBLIC_API_URL || "https://backend-gamma-roan.vercel.app";
 
 // Helper to check for FormData
 const isFormData = (body: any): body is FormData => {
@@ -132,8 +132,9 @@ interface ErrorResponse {
   message: string;
   data?: null;
 }
+// Isme 'undefined' ko add karein
 export type BodyData =
-  | Record<string, string | number | boolean | null>
+  | Record<string, string | number | boolean | null | undefined>
   | FormData
   | null;
 
@@ -165,8 +166,6 @@ const serverCallFuction = async (
       headers: headers,
       body: body ? (isFormData(body) ? body : JSON.stringify(body)) : null,
     };
-
-    console.log("server call function - ", host, endPoints);
 
     const response = await fetch(`${host}/${endPoints}`, requestOptions);
     const contentType = response.headers.get("content-type");

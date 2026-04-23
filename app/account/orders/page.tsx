@@ -49,7 +49,7 @@ export default function OrdersPage() {
       const res = (await serverCallFuction(
         "GET",
         `api/orders/my?page=${page}&limit=10`,
-      )) as OrdersResponse;
+      )) as unknown as OrdersResponse;
       if (res.success) {
         setOrders(res.data || []);
         setTotalPages(Math.ceil(res.total / 10) || 1);
@@ -259,7 +259,9 @@ export default function OrdersPage() {
                   </span>
                 </li>
                 <li
-                  className={`page-item ${page === totalPages ? "disabled" : ""}`}
+                  className={`page-item ${
+                    page === totalPages ? "disabled" : ""
+                  }`}
                 >
                   <button
                     className="page-link rounded-3 border-0 shadow-sm px-3 py-2"

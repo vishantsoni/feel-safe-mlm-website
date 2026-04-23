@@ -18,7 +18,7 @@ interface WishlistItem {
 
 export default function WishlistPage() {
   const { user } = useAuth();
-  const { addToCart } = useCart();
+  const { addItem: addToCart } = useCart();
   const [wishlist, setWishlist] = useState<WishlistItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [removingId, setRemovingId] = useState("");
@@ -30,7 +30,7 @@ export default function WishlistPage() {
   const fetchWishlist = async () => {
     try {
       setLoading(true);
-      const res = await serverCallFuction('GET', '/api/ecom/wishlist') as any;
+      const res = (await serverCallFuction("GET", "/api/ecom/wishlist")) as any;
       setWishlist(res.data || []);
     } catch (err) {
       console.error("Failed to fetch wishlist");
@@ -42,8 +42,8 @@ export default function WishlistPage() {
   const removeFromWishlist = async (id: string) => {
     setRemovingId(id);
     try {
-      await serverCallFuction('DELETE', `/api/ecom/wishlist/${id}`);
-      setWishlist(prev => prev.filter(item => item.id !== id));
+      await serverCallFuction("DELETE", `/api/ecom/wishlist/${id}`);
+      setWishlist((prev) => prev.filter((item) => item.id !== id));
     } catch (err) {
       console.error("Failed to remove from wishlist");
     } finally {
@@ -51,15 +51,13 @@ export default function WishlistPage() {
     }
   };
 
-  const handleAddToCart = (item: WishlistItem) => {
-    addToCart({
-      id: item.id,
-      product_name: item.product_name,
-      f_image: item.f_image,
-      price: item.price,
-      quantity: 1,
-    });
-    // Optional: Add a toast notification here
+  const handleAddToCart = async (item: WishlistItem) => {
+    // await addToCart(
+    //   item.id,
+    //   currentVariant ? currentVariant.id.toString() : null,
+    //   item.quantity,
+    //   item.currentPrice,
+    // );
   };
 
   if (loading) {
@@ -80,7 +78,9 @@ export default function WishlistPage() {
           </div>
           <div>
             <h2 className="fw-bold m-0">My Wishlist</h2>
-            <p className="text-muted mb-0 small">{wishlist.length} saved products</p>
+            <p className="text-muted mb-0 small">
+              {wishlist.length} saved products
+            </p>
           </div>
         </div>
       </div>
@@ -92,10 +92,17 @@ export default function WishlistPage() {
               <Heart size={48} className="text-muted opacity-25" />
             </div>
             <h4 className="fw-bold">Your wishlist is empty</h4>
-            <p className="text-muted mx-auto mb-4" style={{ maxWidth: '350px' }}>
-              Looks like you haven't saved anything yet. Explore our products and save your favorites!
+            <p
+              className="text-muted mx-auto mb-4"
+              style={{ maxWidth: "350px" }}
+            >
+              Looks like you haven't saved anything yet. Explore our products
+              and save your favorites!
             </p>
-            <Link href="/products" className="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm">
+            <Link
+              href="/products"
+              className="btn btn-primary px-4 py-2 rounded-3 fw-bold shadow-sm"
+            >
               Browse Products
             </Link>
           </div>
@@ -106,7 +113,7 @@ export default function WishlistPage() {
             <div key={item.id} className="col-sm-6 col-lg-4 col-xl-3">
               <div className="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card transition-hover">
                 {/* Image Section */}
-                <div className="position-relative" style={{ height: '220px' }}>
+                <div className="position-relative" style={{ height: "220px" }}>
                   <Image
                     src={item.f_image}
                     alt={item.product_name}
@@ -129,7 +136,10 @@ export default function WishlistPage() {
 
                 {/* Content Section */}
                 <div className="card-body p-3 d-flex flex-column">
-                  <h6 className="fw-bold text-dark mb-2 text-truncate-2" style={{ minHeight: '3rem' }}>
+                  <h6
+                    className="fw-bold text-dark mb-2 text-truncate-2"
+                    style={{ minHeight: "3rem" }}
+                  >
                     {item.product_name}
                   </h6>
                   <div className="h5 fw-bold text-primary mb-3">
@@ -141,7 +151,8 @@ export default function WishlistPage() {
                       onClick={() => handleAddToCart(item)}
                       className="btn btn-primary btn-sm flex-grow-1 rounded-3 d-flex align-items-center justify-content-center gap-2"
                     >
-                      <ShoppingCart size={16} /> <span className="small fw-bold">Add to Cart</span>
+                      <ShoppingCart size={16} />{" "}
+                      <span className="small fw-bold">Add to Cart</span>
                     </button>
                     <Link
                       href={`/products/${item.slug}`}
@@ -164,7 +175,7 @@ export default function WishlistPage() {
         }
         .transition-hover:hover {
           transform: translateY(-5px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
         }
         .text-truncate-2 {
           display: -webkit-box;

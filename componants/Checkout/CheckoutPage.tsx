@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import ProtectedRoute from "@/componants/ProtectedRoute/ProtectedRoute";
 import type { Address } from "@/lib/types/Address";
-import type { CartItem } from "@/lib/types/Cart";
+import type { CartItem, VariantDetails } from "@/lib/types/Cart";
 import {
   getAddresses,
   addAddress,
@@ -22,8 +22,10 @@ interface CheckoutItem {
   variation_id: string | null;
   quantity: number;
   price: number;
+
   product_name?: string;
   variant_sku?: string;
+  variant_details: VariantDetails | null;
 }
 
 // interface ShippingAddress removed - using Address type
@@ -216,32 +218,68 @@ const CheckoutPage = () => {
     setEditingAddress(null);
   };
 
+  // const handleAddressSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setAddressLoading(true);
+  //   try {
+  //     let res;
+  //     if (editingAddress) {
+  //       res = await updateAddress(editingAddress.id, addressFormData as any);
+  //     } else {
+  //       res = await addAddress(addressFormData as any);
+  //     }
+  //     if (res.status) {
+  //       // Refresh addresses
+  //       const freshRes = await getAddresses();
+  //       if (freshRes.status && freshRes.data) {
+  //         setAddresses(freshRes.data);
+  //         // Select new/updated if no selection
+  //         if (!selectedAddressId && freshRes.data.length > 0) {
+  //           setSelectedAddressId(freshRes.data[0].id);
+  //         }
+  //       }
+  //       closeModal();
+  //     } else {
+  //       setError(res.message || "Address save failed");
+  //     }
+  //   } catch (err) {
+  //     setError("Address save failed");
+  //   } finally {
+  //     setAddressLoading(false);
+  //   }
+  // };
+
   const handleAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setAddressLoading(true);
+    setError(""); // Purana error clear karein
+
     try {
-      let res;
+      let res: any;
+      // addressFormData ko casting dena zaroori hai agar API keys mismatch hain
+      const payload = { ...addressFormData };
+
       if (editingAddress) {
-        res = await updateAddress(editingAddress.id, addressFormData as any);
+        res = await updateAddress(editingAddress.id, payload as any);
       } else {
-        res = await addAddress(addressFormData as any);
+        res = await addAddress(payload as any);
       }
-      if (res.status) {
-        // Refresh addresses
+
+      if (res && res.status) {
+        // Refresh addresses list
         const freshRes = await getAddresses();
         if (freshRes.status && freshRes.data) {
           setAddresses(freshRes.data);
-          // Select new/updated if no selection
           if (!selectedAddressId && freshRes.data.length > 0) {
             setSelectedAddressId(freshRes.data[0].id);
           }
         }
         closeModal();
       } else {
-        setError(res.message || "Address save failed");
+        setError(res?.message || "Address save failed");
       }
-    } catch (err) {
-      setError("Address save failed");
+    } catch (err: any) {
+      setError(err?.message || "Address save failed");
     } finally {
       setAddressLoading(false);
     }
@@ -290,12 +328,98 @@ const CheckoutPage = () => {
     }
   };
 
+  // const handlePlaceOrder = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setOrderLoading(true);
+  //   setError("");
+
+  //   const useAddress = selectedAddress || null;
+  //   if (
+  //     !useAddress &&
+  //     (!formData.fullAddress ||
+  //       !formData.city ||
+  //       !formData.pincode ||
+  //       !formData.phone)
+  //   ) {
+  //     setError("Please select an address or fill manual shipping address.");
+  //     setOrderLoading(false);
+  //     return;
+  //   }
+
+  //   if (displayItems.length === 0) {
+  //     setError("No items to checkout. Go to cart.");
+  //     setOrderLoading(false);
+  //     return;
+  //   }
+
+  //   const orderItems = displayItems.map(
+  //     (item: CartItem | CheckoutItem) =>
+  //       ({
+  //         product_id: item.product_id,
+  //         variation_id: item.variation_id || null,
+  //         quantity: Number(item.quantity || (item as any).qty || 1),
+  //         price: Number((item.price as any) || (item as any).unit_price),
+  //         product_name: item.product_name || "Unknown Product",
+  //         ...(item.variant_details && {
+  //           variant_sku: "Variant",
+  //           variant_details: JSON.stringify(item.variant_details),
+  //         }),
+  //       } as any),
+  //   );
+
+  //   const shippingData = useAddress
+  //     ? {
+  //         address_line1: useAddress.address_line1,
+  //         address_line2: useAddress.address_line2,
+  //         city: useAddress.city,
+  //         state: useAddress.state,
+  //         pincode: useAddress.pincode,
+  //         phone: useAddress.phone,
+  //       }
+  //     : {
+  //         address_line1: formData.address_line1,
+  //         address_line2: formData.address_line2,
+
+  //         city: formData.city!,
+  //         state: formData.state,
+  //         pincode: formData.pincode!,
+  //         phone: formData.phone!,
+  //       };
+
+  //   const orderData = {
+  //     items: orderItems,
+  //     shipping_address: shippingData,
+  //     coupon_code: couponCode || undefined,
+  //     payment_method: paymentMethod,
+  //     order_for: "distributor_65",
+  //   };
+
+  //   try {
+  //     const res = (await serverCallFuction(
+  //       "POST",
+  //       "api/orders",
+  //       orderData,
+  //     )) as any;
+  //     const data = res;
+  //     if (data?.success) {
+  //       await refreshCart();
+  //       router.push(`/orders/success/${data.data.order_id}`);
+  //     } else {
+  //       setError(data?.message || "Order failed");
+  //     }
+  //   } catch (err: any) {
+  //     setError(err.message || "Order placement failed");
+  //   } finally {
+  //     setOrderLoading(false);
+  //   }
+  // };
+
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setOrderLoading(true);
     setError("");
 
-    const useAddress = selectedAddress || null;
+    const useAddress = selectedAddress;
     if (
       !useAddress &&
       (!formData.fullAddress ||
@@ -309,25 +433,28 @@ const CheckoutPage = () => {
     }
 
     if (displayItems.length === 0) {
-      setError("No items to checkout. Go to cart.");
+      setError("No items to checkout.");
       setOrderLoading(false);
       return;
     }
 
-    const orderItems = displayItems.map(
-      (item: CartItem | CheckoutItem) =>
-        ({
-          product_id: item.product_id,
-          variation_id: item.variation_id || null,
-          quantity: Number(item.quantity || (item as any).qty || 1),
-          price: Number((item.price as any) || (item as any).unit_price),
-          product_name: item.product_name || "Unknown Product",
-          ...(item.variant_details && {
-            variant_sku: "Variant",
-            variant_details: JSON.stringify(item.variant_details),
-          }),
-        } as any),
-    );
+    // Mapping items safely
+    const orderItems = displayItems.map((item: any) => ({
+      product_id: item.product_id,
+      variation_id: item.variation_id || null,
+      // Handle both quantity (Cart) and qty (Manual)
+      quantity: Number(item.quantity || item.qty || 1),
+      price: Number(item.price || item.unit_price || 0),
+      product_name: item.product_name || "Product",
+      variant_sku:
+        item.variant_sku || (item.variation_id ? "Variant" : "Standard"),
+      ...(item.variant_details && {
+        variant_details:
+          typeof item.variant_details === "string"
+            ? item.variant_details
+            : JSON.stringify(item.variant_details),
+      }),
+    }));
 
     const shippingData = useAddress
       ? {
@@ -337,18 +464,18 @@ const CheckoutPage = () => {
           state: useAddress.state,
           pincode: useAddress.pincode,
           phone: useAddress.phone,
+          full_name: useAddress.full_name, // Recommended
         }
       : {
-          address_line1: formData.address_line1,
+          address_line1: formData.address_line1 || formData.fullAddress,
           address_line2: formData.address_line2,
-
-          city: formData.city!,
+          city: formData.city,
           state: formData.state,
-          pincode: formData.pincode!,
-          phone: formData.phone!,
+          pincode: formData.pincode,
+          phone: formData.phone,
         };
 
-    const orderData = {
+    const orderPayload = {
       items: orderItems,
       shipping_address: shippingData,
       coupon_code: couponCode || undefined,
@@ -360,14 +487,15 @@ const CheckoutPage = () => {
       const res = (await serverCallFuction(
         "POST",
         "api/orders",
-        orderData,
+        orderPayload,
       )) as any;
-      const data = res;
-      if (data?.success) {
+      if (res?.success || res?.status) {
         await refreshCart();
-        router.push(`/orders/success/${data.data.order_id}`);
+        // data.data.order_id check karein aapka backend kya bhej raha hai
+        const orderId = res.data?.order_id || res.order_id;
+        router.push(`/orders/success/${orderId}`);
       } else {
-        setError(data?.message || "Order failed");
+        setError(res?.message || "Order failed");
       }
     } catch (err: any) {
       setError(err.message || "Order placement failed");
