@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 
 // API Configuration
-const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-// const host: string =
-//   process.env.NEXT_PUBLIC_API_URL || "https://backend-gamma-roan.vercel.app";
+// const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const host: string =
+  process.env.NEXT_PUBLIC_API_URL || "https://backend-gamma-roan.vercel.app";
 
 // Helper to check for FormData
 const isFormData = (body: any): body is FormData => {
