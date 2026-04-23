@@ -1,6 +1,6 @@
 import { Mail, MapPin, PhoneCall } from "lucide-react";
 import React from "react";
-
+import { Icon } from "@iconify/react";
 const AboutPage = () => {
   return (
     <div className="container-fluid p-0">
@@ -54,7 +54,7 @@ const AboutPage = () => {
             className="p-4 rounded-4 shadow-sm h-100"
             style={{ backgroundColor: "#BDE1F3" }}
           >
-            <iconify-icon
+            <Icon
               icon="solar:heart-bold"
               style={{ fontSize: "48px", color: "#E6519B" }}
             />
@@ -70,7 +70,7 @@ const AboutPage = () => {
             className="p-4 rounded-4 shadow-sm h-100"
             style={{ backgroundColor: "#C4DF9B" }}
           >
-            <iconify-icon
+            <Icon
               icon="solar:leaf-bold"
               style={{ fontSize: "48px", color: "#8DC63F" }}
             />
@@ -86,7 +86,7 @@ const AboutPage = () => {
             className="p-4 rounded-4 shadow-sm h-100"
             style={{ backgroundColor: "#BDE1F3" }}
           >
-            <iconify-icon
+            <Icon
               icon="solar:shield-check-bold"
               style={{ fontSize: "48px", color: "#00A9E0" }}
             />
@@ -142,7 +142,7 @@ const AboutPage = () => {
                   className="rounded-circle p-3 me-3"
                   style={{ backgroundColor: "#BDE1F3" }}
                 >
-                  {/* <iconify-icon icon="solar:phone-bold" style={{ color: "#00A9E0" }} /> */}
+                  {/* <Icon icon="solar:phone-bold" style={{ color: "#00A9E0" }} /> */}
                   <PhoneCall />
                 </div>
                 <div>
@@ -156,7 +156,7 @@ const AboutPage = () => {
                   className="rounded-circle p-3 me-3"
                   style={{ backgroundColor: "#C4DF9B" }}
                 >
-                  {/* <iconify-icon icon="solar:letter-bold" style={{ color: "#8DC63F" }} /> */}
+                  {/* <Icon icon="solar:letter-bold" style={{ color: "#8DC63F" }} /> */}
                   <Mail />
                 </div>
                 <div>
@@ -170,7 +170,7 @@ const AboutPage = () => {
                   className="rounded-circle p-3 me-3"
                   style={{ backgroundColor: "#fce4ec" }}
                 >
-                  {/* <iconify-icon icon="solar:map-point-bold" style={{ color: "#E6519B" }} /> */}
+                  {/* <Icon icon="solar:map-point-bold" style={{ color: "#E6519B" }} /> */}
                   <MapPin />
                 </div>
                 <div>

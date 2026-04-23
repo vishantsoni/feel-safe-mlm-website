@@ -66,7 +66,7 @@ const ContactPage = () => {
                     height: "60px",
                   }}
                 >
-                  {/* <iconify-icon icon="solar:letter-bold" style={{ color: "#E6519B", fontSize: "28px" }} /> */}
+                  {/* <Icon icon="solar:letter-bold" style={{ color: "#E6519B", fontSize: "28px" }} /> */}
                   <Mail />
                 </div>
                 <div>
@@ -86,7 +86,7 @@ const ContactPage = () => {
                     height: "60px",
                   }}
                 >
-                  {/* <iconify-icon icon="solar:map-point-bold" style={{ color: "#00A9E0", fontSize: "28px" }} /> */}
+                  {/* <Icon icon="solar:map-point-bold" style={{ color: "#00A9E0", fontSize: "28px" }} /> */}
                   <MapPin />
                 </div>
                 <div>
