@@ -1,0 +1,9 @@
+@media (min-width: 320px) {
+  .banner-ad .banner-content .categories {
+    font-size: 25px;
+  }
+
+  .display-4 {
+    font-size: calc(1.075rem + 2.7vw);
+  }
+}
