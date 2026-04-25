@@ -6,4 +6,8 @@
   .display-4 {
     font-size: calc(1.075rem + 2.7vw);
   }
+
+  .copyright {
+    font-size: 12px;
+  }
 }

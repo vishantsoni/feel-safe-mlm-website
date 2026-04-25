@@ -11,12 +11,13 @@ const DiscountSection = () => {
               // backgroundImage:
               //   "url('./assets/images/bg-leaves-img-pattern.png')",
               backgroundRepeat: "no-repeat",
-              backgroundImage: "linear-gradient(45deg, #8DC63F, 1%, #8ee3ff,  60%, #e4a5c5)",
+              backgroundImage:
+                "linear-gradient(45deg, #8DC63F, 1%, #8ee3ff,  60%, #e4a5c5)",
             }}
           >
-            <div className="container my-5">
+            <div className="container my-md-5">
               <div className="row">
-                <div className="col-md-6 p-5">
+                <div className="col-md-6 p-md-5">
                   <div className="section-header">
                     <h2 className="section-title display-4">
                       Share the <span className="text-primary">Care.</span>{" "}
@@ -29,7 +30,7 @@ const DiscountSection = () => {
                     your community and build a recurring income stream.
                   </p>
                 </div>
-                <div className="col-md-6 p-5">
+                <div className="col-md-6 p-md-5">
                   <form>
                     <div className="mb-3">
                       <label htmlFor="name" className="form-label">

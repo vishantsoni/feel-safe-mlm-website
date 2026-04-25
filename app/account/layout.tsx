@@ -44,7 +44,7 @@ export default function AccountLayout({
     { href: "/account/profile", label: "Profile", icon: User },
     { href: "/account/addresses", label: "Saved Addresses", icon: MapPin },
     { href: "/account/orders", label: "My Orders", icon: Package },
-    { href: "/account/wishlist", label: "Wishlist", icon: Heart },
+    // { href: "/account/wishlist", label: "Wishlist", icon: Heart },
   ];
 
   return (

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import serverCallFuction from "@/lib/constantFunction";
+import serverCallFuction, { formattedAmount } from "@/lib/constantFunction";
 import { IndianRupee } from "lucide-react";
 import { Product } from "@/lib/types/Product";
 import { Icon } from "@iconify/react";
@@ -125,6 +125,14 @@ const TrendingProSection = () => {
                     <div className="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                       {/* Product Item Start */}
                       {products.map((item, index) => {
+                        let total_price = item.base_price;
+                        let tax_amount = 0;
+                        if (item.tax_data) {
+                          tax_amount =
+                            (total_price * item.tax_data.percentage) / 100;
+                          total_price += tax_amount;
+                        }
+
                         return (
                           <div className="col" key={index}>
                             <div className="product-item">
@@ -156,7 +164,7 @@ const TrendingProSection = () => {
                               <span className="qty">{item.qty}</span>
                               <span className="price">
                                 <IndianRupee className="p-1" />
-                                {item.base_price}
+                                {formattedAmount(total_price)}
                               </span>
                               <div className="d-flex align-items-center justify-content-between">
                                 <div className="input-group product-qty">

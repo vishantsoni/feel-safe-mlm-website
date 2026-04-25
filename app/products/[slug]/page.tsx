@@ -56,6 +56,7 @@ export default async function ProductPage({ params }: Props) {
       slug: "uncategorized",
     },
     qty: apiProduct.product.qty || 1,
+    tax_data: apiProduct.tax_data,
   };
 
   const attributes = apiProduct.product_attributes || [];

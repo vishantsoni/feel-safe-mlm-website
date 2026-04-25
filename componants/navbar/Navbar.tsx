@@ -210,11 +210,26 @@ const Navbar = () => {
                   </a>
                   <ul className="dropdown-menu dropdown-menu-end">
                     {isAuthenticated ? (
-                      <li>
-                        <button onClick={logout} className="dropdown-item">
-                          Logout
-                        </button>
-                      </li>
+                      <>
+                        <li>
+                          <Link href={"/account"} className="dropdown-item">
+                            My Account
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href={"/account/orders"}
+                            className="dropdown-item"
+                          >
+                            Orders
+                          </Link>
+                        </li>
+                        <li>
+                          <button onClick={logout} className="dropdown-item">
+                            Logout
+                          </button>
+                        </li>
+                      </>
                     ) : (
                       <li>
                         <Link href="/login" className="dropdown-item">

@@ -16,10 +16,12 @@ interface Props {
 const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
   const [selectedImage, setSelectedImage] = useState(product.f_image);
   const [quantity, setQuantity] = useState(1);
-  const [selectedAttributes, setSelectedAttributes] = useState<Record<number, number>>({});
-  
-  const [message, setMessage] = useState('');
-  const [messageType, setMessageType] = useState<'success' | 'error' | ''>('');
+  const [selectedAttributes, setSelectedAttributes] = useState<
+    Record<number, number>
+  >({});
+
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState<"success" | "error" | "">("");
 
   const { addItem, loading } = useCart();
   const router = useRouter();
@@ -27,32 +29,34 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => {
-        setMessage('');
-        setMessageType('');
+        setMessage("");
+        setMessageType("");
       }, 3000);
       return () => clearTimeout(timer);
     }
   }, [message]);
 
-
   // Default select 0th index attribute values on mount
-useEffect(() => {
-  if (attributes && attributes.length > 0) {
-    const defaultSelection: Record<number, number> = {};
-    attributes.forEach((attr) => {
-      if (attr.values && attr.values.length > 0) {
-        // Har attribute ki pehli value (0 index) select kar rahe hain
-        defaultSelection[attr.id] = attr.values[0].id;
-      }
-    });
-    setSelectedAttributes(defaultSelection);
-  }
-}, [attributes]);
+  useEffect(() => {
+    if (attributes && attributes.length > 0) {
+      const defaultSelection: Record<number, number> = {};
+      attributes.forEach((attr) => {
+        if (attr.values && attr.values.length > 0) {
+          // Har attribute ki pehli value (0 index) select kar rahe hain
+          defaultSelection[attr.id] = attr.values[0].id;
+        }
+      });
+      setSelectedAttributes(defaultSelection);
+    }
+  }, [attributes]);
 
-
-
-  const originalPrice = product.base_price;
+  let originalPrice = product.base_price || 0;
   const basePrice = product.discounted_price || product.base_price;
+  const taxPrice = product.tax_data
+    ? (originalPrice * product.tax_data.percentage) / 100
+    : 0;
+
+  originalPrice += taxPrice;
 
   const currentVariant = useMemo(() => {
     if (variants.length === 0) return null;
@@ -62,7 +66,8 @@ useEffect(() => {
           variant.attr_combinations.every((comb) => {
             return selectedAttributes[comb.attr_id] === comb.attr_value_id;
           }) &&
-          Object.keys(selectedAttributes).length === variant.attr_combinations.length
+          Object.keys(selectedAttributes).length ===
+            variant.attr_combinations.length
         );
       }) || null
     );
@@ -70,12 +75,18 @@ useEffect(() => {
 
   const currentPrice = useMemo(
     () => (currentVariant ? currentVariant.price : basePrice),
-    [currentVariant, basePrice]
+    [currentVariant, basePrice],
+  );
+
+  const taxablePrice = useMemo(
+    () =>
+      currentVariant ? currentVariant.price + taxPrice : basePrice + taxPrice,
+    [currentVariant, basePrice],
   );
 
   const isOutOfStock = useMemo(
     () => (currentVariant ? currentVariant.stock <= 0 : false),
-    [currentVariant]
+    [currentVariant],
   );
 
   const relatedProducts = [
@@ -95,7 +106,7 @@ useEffect(() => {
 
   const handleAddToCart = async () => {
     if (isOutOfStock) {
-      setMessageType('error');
+      setMessageType("error");
       setMessage("This variant is out of stock!");
       return;
     }
@@ -105,14 +116,14 @@ useEffect(() => {
         product.id,
         currentVariant ? currentVariant.id.toString() : null,
         quantity,
-        currentPrice,
+        taxablePrice,
       );
-      setMessageType('success');
+      setMessageType("success");
       setMessage(`Added ${quantity} item(s) to cart!`);
     } catch (error) {
-      console.error('Add to cart failed:', error);
-      setMessageType('error');
-      setMessage('Failed to add to cart. Please try again.');
+      console.error("Add to cart failed:", error);
+      setMessageType("error");
+      setMessage("Failed to add to cart. Please try again.");
     }
   };
 
@@ -137,7 +148,10 @@ useEffect(() => {
         <div className="row">
           <div className="col-lg-5">
             {/* Image Gallery */}
-            <div className="position-relative w-100 mb-3" style={{ aspectRatio: "1/1" }}>
+            <div
+              className="position-relative w-100 mb-3"
+              style={{ aspectRatio: "1/1" }}
+            >
               <Image
                 src={selectedImage}
                 alt={product.name}
@@ -148,7 +162,11 @@ useEffect(() => {
               />
               {currentPrice < originalPrice && (
                 <div className="position-absolute top-0 end-0 badge bg-success fs-6 m-2">
-                  -{Math.round(((originalPrice - currentPrice) / originalPrice) * 100)}%
+                  -
+                  {Math.round(
+                    ((originalPrice - currentPrice) / originalPrice) * 100,
+                  )}
+                  %
                 </div>
               )}
             </div>
@@ -163,7 +181,9 @@ useEffect(() => {
                       width={100}
                       height={100}
                       className={`img-fluid rounded cursor-pointer border ${
-                        selectedImage === img ? "border-success border-3" : "border-secondary"
+                        selectedImage === img
+                          ? "border-success border-3"
+                          : "border-secondary"
                       }`}
                       onClick={() => setSelectedImage(img)}
                     />
@@ -180,10 +200,10 @@ useEffect(() => {
             </span>
             <p className="lead mb-2">{product.description}</p>
 
-            <div className="mb-2">
+            <div className="">
               <span className="fs-1 fw-bold text-success">
                 <IndianRupee className="inline-block" size={24} />
-                {currentPrice.toFixed(2)}
+                {taxablePrice.toFixed(2)}
               </span>
               <span className="text-muted text-decoration-line-through ms-3 fs-4">
                 <IndianRupee className="inline-block" size={18} />
@@ -194,7 +214,10 @@ useEffect(() => {
             {/* Attributes selection */}
             <div className="mb-3">
               {attributes.map((attr) => (
-                <div key={attr.id} className="d-flex gap-2 my-2 align-items-center">
+                <div
+                  key={attr.id}
+                  className="d-flex gap-2 my-2 align-items-center"
+                >
                   <strong>{attr.name}:</strong>
                   <div className="d-flex gap-2">
                     {attr.values.map((v) => {
@@ -203,7 +226,9 @@ useEffect(() => {
                         <span
                           key={v.id}
                           className={`badge cursor-pointer p-2 ${
-                            isSelected ? "bg-primary text-white" : "bg-light text-dark border"
+                            isSelected
+                              ? "bg-primary text-white"
+                              : "bg-light text-dark border"
                           }`}
                           onClick={() => {
                             setSelectedAttributes((prev) => {
@@ -263,7 +288,7 @@ useEffect(() => {
                       onClick={handleAddToCart}
                       disabled={loading}
                     >
-                      {loading ? 'Adding...' : 'Add to Cart'}
+                      {loading ? "Adding..." : "Add to Cart"}
                     </button>
                     <button
                       className="btn btn-primary btn-lg flex-grow-1"
@@ -275,7 +300,11 @@ useEffect(() => {
                   </div>
                 )}
                 {message && (
-                  <div className={`alert alert-${messageType === 'success' ? 'success' : 'danger'} mt-3`}>
+                  <div
+                    className={`alert alert-${
+                      messageType === "success" ? "success" : "danger"
+                    } mt-3`}
+                  >
                     {message}
                   </div>
                 )}
@@ -286,12 +315,16 @@ useEffect(() => {
             <div className="mb-4">
               <h5>Product Specifications:</h5>
               <ul className="list-group list-group-flush">
-                {product.specs && Object.entries(product.specs).map(([key, value]) => (
-                  <li key={key} className="list-group-item d-flex justify-content-between">
-                    <span>{key}</span>
-                    <strong>{String(value)}</strong>
-                  </li>
-                ))}
+                {product.specs &&
+                  Object.entries(product.specs).map(([key, value]) => (
+                    <li
+                      key={key}
+                      className="list-group-item d-flex justify-content-between"
+                    >
+                      <span>{key}</span>
+                      <strong>{String(value)}</strong>
+                    </li>
+                  ))}
               </ul>
             </div>
           </div>
@@ -302,10 +335,22 @@ useEffect(() => {
           <div className="col-12">
             <ul className="nav nav-tabs" id="productTabs">
               <li className="nav-item">
-                <button className="nav-link active" data-bs-toggle="tab" data-bs-target="#description">Description</button>
+                <button
+                  className="nav-link active"
+                  data-bs-toggle="tab"
+                  data-bs-target="#description"
+                >
+                  Description
+                </button>
               </li>
               <li className="nav-item">
-                <button className="nav-link" data-bs-toggle="tab" data-bs-target="#specs">Specifications</button>
+                <button
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#specs"
+                >
+                  Specifications
+                </button>
               </li>
             </ul>
             <div className="tab-content border border-top-0 p-4">

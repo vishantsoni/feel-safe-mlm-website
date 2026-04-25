@@ -16,6 +16,7 @@ import {
   deleteAddress,
   setDefaultAddress,
 } from "@/lib/addressApi";
+import Script from "next/script";
 
 interface CheckoutItem {
   product_id: number;
@@ -57,7 +58,7 @@ const CheckoutPage = () => {
     phone: "",
   });
   const [couponCode, setCouponCode] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<"wallet">("wallet");
+  const [paymentMethod, setPaymentMethod] = useState<string>("wallet");
   const [orderLoading, setOrderLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -83,6 +84,7 @@ const CheckoutPage = () => {
   });
   const [addressLoading, setAddressLoading] = useState(false);
   const [addressesLoading, setAddressesLoading] = useState(true);
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false);
 
   const isCartMode = !!(cart && cart.items.length > 0);
   const displayItems = isCartMode
@@ -90,8 +92,20 @@ const CheckoutPage = () => {
     : singleItem
     ? [singleItem]
     : [];
+
+  const subTotal = isCartMode
+    ? Number(cart!.subtotal)
+    : singleItem
+    ? singleItem.price * singleItem.quantity
+    : 0;
   const totalAmount = isCartMode
     ? Number(cart!.total)
+    : singleItem
+    ? singleItem.price * singleItem.quantity
+    : 0;
+
+  const tax_amount = isCartMode
+    ? Number(cart!.total_tax)
     : singleItem
     ? singleItem.price * singleItem.quantity
     : 0;
@@ -217,37 +231,6 @@ const CheckoutPage = () => {
     setShowEditModal(false);
     setEditingAddress(null);
   };
-
-  // const handleAddressSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setAddressLoading(true);
-  //   try {
-  //     let res;
-  //     if (editingAddress) {
-  //       res = await updateAddress(editingAddress.id, addressFormData as any);
-  //     } else {
-  //       res = await addAddress(addressFormData as any);
-  //     }
-  //     if (res.status) {
-  //       // Refresh addresses
-  //       const freshRes = await getAddresses();
-  //       if (freshRes.status && freshRes.data) {
-  //         setAddresses(freshRes.data);
-  //         // Select new/updated if no selection
-  //         if (!selectedAddressId && freshRes.data.length > 0) {
-  //           setSelectedAddressId(freshRes.data[0].id);
-  //         }
-  //       }
-  //       closeModal();
-  //     } else {
-  //       setError(res.message || "Address save failed");
-  //     }
-  //   } catch (err) {
-  //     setError("Address save failed");
-  //   } finally {
-  //     setAddressLoading(false);
-  //   }
-  // };
 
   const handleAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -489,18 +472,124 @@ const CheckoutPage = () => {
         "api/orders",
         orderPayload,
       )) as any;
-      if (res?.success || res?.status) {
-        await refreshCart();
-        // data.data.order_id check karein aapka backend kya bhej raha hai
-        const orderId = res.data?.order_id || res.order_id;
-        router.push(`/orders/success/${orderId}`);
+      console.log("res - ", res);
+
+      if (res.success) {
+        // iniitpayment flow
+        // if (paymentMethod === "razorpay") {
+        handlepayment(res);
+        // }
+
+        // await refreshCart();
+        // const orderId = res.data?.order_id || res.order_id;
+        // router.push(`/orders/success/${orderId}`);
       } else {
+        console.log("order placed res =- ", res);
+
         setError(res?.message || "Order failed");
       }
     } catch (err: any) {
+      console.log("order plance time error - ", err);
+
       setError(err.message || "Order placement failed");
     } finally {
       setOrderLoading(false);
+    }
+  };
+
+  const handlepayment = async (orderRes) => {
+    if (!window.Razorpay || !razorpayLoaded) {
+      alert("Razorpay loading... Please wait");
+      return;
+    }
+
+    console.log("handle payment func - ", orderRes);
+
+    try {
+      const orderId = orderRes.data?.order_id || orderRes.order_id;
+
+      const order = await createRazorpayOrder(totalAmount, {
+        amount: 100,
+        currency: "",
+        receipt: `receipt_${orderId}_${Date.now()}`,
+      });
+      const options = {
+        key:
+          process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_Sfdk41BOifNjN9",
+        amount: order.amount,
+        currency: order.currency,
+        name: "Feel Safe Shop",
+        description: `Order Total ₹${totalAmount.toLocaleString()}`,
+        order_id: order.id,
+        prefill: {
+          name: selectedAddress.full_name,
+          email: formData.email || "",
+          contact: formData.phone,
+        },
+        theme: { color: "#3399cc" },
+        handler: async (response: any) => {
+          try {
+            await verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
+            // await placePurchaseOrder(response.razorpay_order_id, "razorpay");
+            router.push(`/orders/success/${orderId}`);
+          } catch (err) {
+            alert(`Payment failed: ${(err as Error).message}`);
+            router.push("/");
+          }
+        },
+      };
+
+      const paymentObject = new (window.Razorpay as any)(options);
+      paymentObject.open();
+    } catch (error) {
+      alert(`Error: ${(error as Error).message}`);
+    }
+  };
+
+  const createRazorpayOrder = async (amt: number, cartItems) => {
+    try {
+      if (!selectedAddress) {
+        alert("Please select Shipping Address");
+        return;
+      }
+      const res = await serverCallFuction("POST", "api/payment/create-order", {
+        amount: Math.round(amt),
+        currency: "INR",
+        // cart_items: cartItems.map((item) => ({
+        //   id: item.id,
+        //   product_id: item.product_id,
+        //   quantity: item.quantity,
+        //   price: item.price,
+        // })),
+        receipt: cartItems.receipt,
+      });
+      console.log("create order ra - ", res);
+
+      if (!res.status) throw new Error(res.message || "Order creation failed");
+      return res.order;
+    } catch (error) {
+      console.log("error or razorpay create order", error);
+
+      throw new Error("Failed to create order");
+    }
+  };
+
+  const verifyPayment = async (paymentData: RazorpayPaymentResponse) => {
+    try {
+      const res = await serverCallFuction(
+        "POST",
+        "api/payment/verify",
+        paymentData,
+      );
+      if (!res.success)
+        throw new Error(res.message || "Payment verification failed");
+      return res.data;
+    } catch (error) {
+      throw new Error("Payment verification failed");
     }
   };
 
@@ -519,6 +608,10 @@ const CheckoutPage = () => {
 
   return (
     <>
+      <Script
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        onReady={() => setRazorpayLoaded(true)}
+      />
       <ProtectedRoute>
         <section className="py-5">
           <div className="container-fluid">
@@ -554,69 +647,93 @@ const CheckoutPage = () => {
                             </tr>
                           </thead>
                           <tbody>
-                            {displayItems.map((item, idx) => (
-                              <tr key={idx}>
-                                <td>
-                                  <div className="d-flex align-items-center">
-                                    <Image
-                                      src={
-                                        ("f_image" in item
-                                          ? item.f_image
-                                          : "/assets/product/sanitory_pad.png") ||
-                                        "/assets/product/sanitory_pad.png"
-                                      }
-                                      alt={item.product_name || "Product"}
-                                      width={60}
-                                      height={60}
-                                      className="rounded me-3"
-                                    />
-                                    <div>
-                                      <div className="fw-bold">
-                                        {item.product_name}
+                            {displayItems.map((item, idx) => {
+                              let total_price = parseFloat(item.price);
+                              let taxable_amount = 0;
+
+                              if (item.tax_data != null) {
+                                taxable_amount =
+                                  (total_price *
+                                    parseFloat(item.tax_data.percentage)) /
+                                  100;
+
+                                total_price += taxable_amount;
+                              }
+
+                              return (
+                                <tr key={idx}>
+                                  <td>
+                                    <div className="d-flex align-items-center">
+                                      <Image
+                                        src={
+                                          ("f_image" in item
+                                            ? item.f_image
+                                            : "/assets/product/sanitory_pad.png") ||
+                                          "/assets/product/sanitory_pad.png"
+                                        }
+                                        alt={item.product_name || "Product"}
+                                        width={60}
+                                        height={60}
+                                        className="rounded me-3"
+                                      />
+                                      <div>
+                                        <div className="fw-bold">
+                                          {item.product_name}
+                                        </div>
+                                        {item.variant_details
+                                          ? item.variant_details.attributes.map(
+                                              (attr, idx) => (
+                                                <small
+                                                  key={idx}
+                                                  className="badge bg-primary text-white d-block"
+                                                >
+                                                  {attr.attribute_name}:{" "}
+                                                  {attr.value}
+                                                </small>
+                                              ),
+                                            )
+                                          : "N/A"}
                                       </div>
-                                      {item.variant_details
-                                        ? item.variant_details.attributes.map(
-                                            (attr, idx) => (
-                                              <small
-                                                key={idx}
-                                                className="badge bg-primary text-white d-block"
-                                              >
-                                                {attr.attribute_name}:{" "}
-                                                {attr.value}
-                                              </small>
-                                            ),
-                                          )
-                                        : "N/A"}
                                     </div>
-                                  </div>
-                                </td>
-                                <td>
-                                  <IndianRupee size={15} />
-                                  {Number(
-                                    "price" in item
-                                      ? item.price
-                                      : item.unit_price,
-                                  ).toFixed(2)}
-                                </td>
-                                <td>
-                                  {("quantity" in item
-                                    ? item.quantity
-                                    : item.qty) || 1}
-                                </td>
-                                <td>
-                                  <IndianRupee size={15} />
-                                  {"price" in item && "quantity" in item
-                                    ? Number(
-                                        item.price * item.quantity,
-                                      ).toFixed(2)
-                                    : Number(
-                                        item.price ||
-                                          item.unit_price *
-                                            (item.quantity || item.qty || 1),
-                                      ).toFixed(2)}
-                                </td>
-                              </tr>
-                            ))}
+                                  </td>
+                                  <td>
+                                    <ul style={{ listStyle: "none" }}>
+                                      <li>
+                                        <IndianRupee size={15} />
+                                        {item.price}
+                                      </li>
+                                      <li className="">
+                                        GST :
+                                        <IndianRupee size={15} />
+                                        {taxable_amount}
+                                      </li>
+                                      <li>
+                                        T. :
+                                        <IndianRupee size={15} />
+                                        {total_price}
+                                      </li>
+                                    </ul>
+                                  </td>
+                                  <td>
+                                    {("quantity" in item
+                                      ? item.quantity
+                                      : item.qty) || 1}
+                                  </td>
+                                  <td>
+                                    <IndianRupee size={15} />
+                                    {"price" in item && "quantity" in item
+                                      ? Number(
+                                          total_price * item.quantity,
+                                        ).toFixed(2)
+                                      : Number(
+                                          total_price ||
+                                            item.unit_price *
+                                              (item.quantity || item.qty || 1),
+                                        ).toFixed(2)}
+                                  </td>
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </table>
                       </div>
@@ -855,7 +972,15 @@ const CheckoutPage = () => {
                           <span>Subtotal ({displayItems.length} items):</span>
                           <span>
                             <IndianRupee />
-                            {totalAmount.toFixed(2)}
+                            {subTotal.toFixed(2)}
+                          </span>
+                        </div>
+                        <hr />
+                        <div className="d-flex justify-content-between mb-1">
+                          <span className="fw-bold h6 mb-0">Tax:</span>
+                          <span className="fw-bold h6 mb-0">
+                            <IndianRupee size={15} />
+                            {tax_amount.toFixed(2)}
                           </span>
                         </div>
                         <hr />
@@ -895,6 +1020,7 @@ const CheckoutPage = () => {
                             setPaymentMethod(e.target.value as "wallet")
                           }
                         >
+                          <option value="razorpay">Online (Razorpay)</option>
                           <option value="wallet">Wallet</option>
                         </select>
                       </div>

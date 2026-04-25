@@ -7,7 +7,7 @@ const CareersPage = () => {
     <div className="container-fluid p-0 bg-white">
       {/* Hero Section */}
       <section
-        className="py-5 text-center"
+        className="py-5 text-center mt-4"
         style={{ backgroundColor: "#C4DF9B" }}
       >
         <div className="container py-5">
@@ -19,7 +19,7 @@ const CareersPage = () => {
           </h6>
           <h1 className="display-3 fw-bold mb-4" style={{ color: "#1C1C1C" }}>
             Build Your Future with{" "}
-            <span style={{ color: "#00A9E0" }}>Feel Safe</span>
+            <span style={{ color: "#00A9E0" }}>Feel Safe Private Limited</span>
           </h1>
           <p
             className="lead text-muted mx-auto mb-4"
@@ -54,10 +54,12 @@ const CareersPage = () => {
               className="img-fluid rounded-4 shadow"
             />
           </div>
-          <div className="col-lg-6 ps-lg-5">
+          <div className="col-lg-6 ps-lg-5 mt-4 mt-md-0">
             <h2 className="fw-bold mb-4">
               Why Work at{" "}
-              <span style={{ color: "#E6519B" }}>Feel Safe Co.?</span>
+              <span style={{ color: "#E6519B" }}>
+                Feel Safe Private Limited ?
+              </span>
             </h2>
             <div className="mb-4">
               <h5 className="fw-bold text-brand-blue">Empowerment First</h5>
@@ -73,7 +75,7 @@ const CareersPage = () => {
                 advanced MLM software in India.
               </p>
             </div>
-            <div className="mb-4">
+            <div className="">
               <h5 className="fw-bold text-brand-pink">Unlimited Growth</h5>
               <p className="text-muted">
                 Our compensation plan is designed to reward hard work,
@@ -99,8 +101,8 @@ const CareersPage = () => {
                 </div>
                 <h3 className="fw-bold">Independent Distributor</h3>
                 <p className="text-muted">
-                  Start your own business from home. Sell Feel Safe pads and
-                  diapers and build your own team.
+                  Start your own business from home. Sell Feel Safe Private
+                  Limited pads and diapers and build your own team.
                 </p>
                 <ul className="list-unstyled mb-4">
                   <li>

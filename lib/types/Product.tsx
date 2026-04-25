@@ -11,6 +11,10 @@ interface Product {
   specs: Record<string, string>;
   category: Category;
   qty: number;
+  tax_data: {
+    name: string;
+    percentage: number;
+  } | null;
 }
 interface Category {
   id: number;

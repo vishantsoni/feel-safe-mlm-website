@@ -2,17 +2,20 @@ import React from "react";
 import KeywordSection from "./KeywordSection";
 import Link from "next/link";
 
-
 const Footer = () => {
   return (
     <>
       <KeywordSection />
-      <footer className="py-5" >
+      <footer className="py-5">
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="footer-menu">
-                <img src="/assets/images/logo-footer.png" alt="logo" className="w-50"/>
+                <img
+                  src="/assets/images/logo-footer.png"
+                  alt="logo"
+                  className="w-50"
+                />
                 <div className="social-links mt-5">
                   <ul className="d-flex list-unstyled gap-2">
                     <li>
@@ -100,11 +103,11 @@ const Footer = () => {
                 <h5 className="widget-title">Useful Links</h5>
                 <ul className="menu-list list-unstyled">
                   <li className="menu-item">
-                    <Link href="about-us" className="nav-link">
+                    <Link href={"/about-us"} className="nav-link">
                       About us
                     </Link>
                   </li>
-                  
+
                   <li className="menu-item">
                     <Link href="/" className="nav-link">
                       Become a Distributor
@@ -115,7 +118,6 @@ const Footer = () => {
                       Careers
                     </Link>
                   </li>
-                  
                 </ul>
               </div>
             </div>
@@ -147,7 +149,7 @@ const Footer = () => {
                     <Link href="shipping-policy" className="nav-link">
                       Shipping Policy
                     </Link>
-                  </li>                  
+                  </li>
                   <li className="menu-item">
                     <Link href="return-refund-policy" className="nav-link">
                       Returns & Refunds
@@ -158,11 +160,10 @@ const Footer = () => {
                       Cookie Guidelines
                     </Link>
                   </li>
-                  
                 </ul>
               </div>
             </div>
-            
+
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="footer-menu">
                 <h5 className="widget-title">Subscribe Us</h5>
@@ -193,7 +194,9 @@ const Footer = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-6 copyright mx-auto text-center">
-              <p className="py-2 m-0">© 2026 GTS - Ganesh Tech Solution. All rights reserved.</p>
+              <p className="py-2 m-0">
+                © 2026 GTS - Ganesh Tech Solution. All rights reserved.
+              </p>
             </div>
             {/* <div className="col-md-6 credit-link text-start text-md-end">
               <p>

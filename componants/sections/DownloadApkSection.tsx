@@ -3,7 +3,7 @@ import React from "react";
 const DownloadApkSection = () => {
   return (
     <>
-      <section className="py-5 my-5">
+      <section className="py-md-5 py-3 my-md-5 my-3">
         <div className="container-fluid">
           <div
             className="bg-warning py-5 rounded-5"
