@@ -205,7 +205,7 @@ const AboutPage = () => {
                 </div>
               </div>
 
-              <div className="d-flex align-items-center mb-3">
+              {/* <div className="d-flex align-items-center mb-3">
                 <div
                   className="rounded-circle p-3 me-3"
                   style={{ backgroundColor: "#00A9E0" }}
@@ -217,9 +217,9 @@ const AboutPage = () => {
                   <p className="mb-0 text-muted">estore@feelsafeco.in</p>
                   <small className="text-muted">(No Reply - For order related queries only)</small>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="d-flex align-items-center mb-3">
+              {/* <div className="d-flex align-items-center mb-3">
                 <div
                   className="rounded-circle p-3 me-3"
                   style={{ backgroundColor: "#E6519B" }}
@@ -231,7 +231,7 @@ const AboutPage = () => {
                   <p className="mb-0 text-muted">info@feelsafeco.in</p>
                   <small className="text-muted">(No Reply - For registration welcome, events & offers)</small>
                 </div>
-              </div>
+              </div> */}
 
               <div className="d-flex align-items-center">
                 <div
@@ -244,7 +244,7 @@ const AboutPage = () => {
                 <div>
                   <h6 className="mb-0 fw-bold">Visit Us</h6>
                   <p className="mb-0 text-muted">
-                    123 Business Hub, Delhi, Delhi, India
+                    Village Kharkhari Nahar Near MCD School Najafgarh South West New Delhi Delhi 110043
                   </p>
                 </div>
               </div>
@@ -292,11 +292,11 @@ const AboutPage = () => {
       <section className="bg-white py-5 border-top">
         <div className="container">
           <div className="row g-5">
-            <div className="col-12 text-center mb-4">
+            <div className="col-12 text-center mb-2">
               <h2 className="fw-bold" style={{ color: "#E6519B" }}>
                 Grievance Cell (Legal)
               </h2>
-              <p className="text-muted mx-auto mt-3" style={{ maxWidth: "800px" }}>
+              {/* <p className="text-muted mx-auto mt-3" style={{ maxWidth: "800px" }}>
                 <strong>Procedure:</strong> First contact our 24x7 Support Team. If they cannot resolve your issue within the expected timeframe, then file a complaint here. Our dedicated Grievance Cell will assign a unique Case ID and ensure resolution within 30 days. A reminder will be sent after 25 days if unresolved.
               </p>
               <ul className="text-start text-muted mx-auto mt-3" style={{ maxWidth: "600px" }}>
@@ -306,7 +306,7 @@ const AboutPage = () => {
                 <li><strong>Step 4:</strong> Get response within 48 hours</li>
                 <li><strong>Step 5:</strong> Issue resolved within 30 days</li>
                 <li><strong>Reminder:</strong> Alert after 25 days if still pending</li>
-              </ul>
+              </ul> */}
             </div>
             <div className="col-md-4 mx-auto">
               <div className="card border-0 shadow-sm p-4 rounded-4" style={{ backgroundColor: "#fce4ec" }}>
