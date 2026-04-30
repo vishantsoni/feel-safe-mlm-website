@@ -36,3 +36,6 @@ body {
   width: 15px;
   height: 15px;
 }
+.card-text {
+  font-size: 12px;
+}

@@ -89,6 +89,11 @@ const Navbar = () => {
                 Contact Us
               </Link>
             </li>
+            <li>
+              <Link href="/documents" className="nav-link">
+                Documents
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
@@ -299,6 +304,11 @@ const Navbar = () => {
                     About Us
                   </Link>
                 </li>
+                {/* <li>
+                  <Link href="/documents" className="nav-link text-dark">
+                    Documents
+                  </Link>
+                </li> */}
               </ul>
             </div>
           </div>

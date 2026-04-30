@@ -22,14 +22,19 @@ const AboutPage = () => {
             quality pads and diapers that prioritize your comfort and
             confidence.
           </p>
+          <h6
+            className="text-uppercase fw-bold"
+            style={{ color: "#E6519B", letterSpacing: "2px", fontWeight: 'bold' }}
+          >
+            Vision 2030 (1 Lakh Sakhi Mission)
+          </h6>
           <p className="text-muted mb-4">
-            Our mission is to empower individuals to live their lives to the
-            fullest, free from worries about leaks or discomfort. With a
-            commitment to innovation, sustainability, and customer satisfaction,
-            we strive to be your trusted partner in personal care. Join us on
-            our journey to redefine comfort and care for everyone.
+            Our goal is to build a robust network of (One Lakh) financially independent and socially leading women across India by the year 2030. These 1 lakh empowered women will serve as the face of our 'Feel' brand, delivering the vital message of menstrual hygiene to every household and leading a change from the grassroots level.
           </p>
           <button
+            // onClick={() => {
+            //   navigation.navigate("/")
+            // }}
             className="btn mt-3 px-4 py-2 text-white shadow-sm"
             style={{ backgroundColor: "#00A9E0" }}
           >
@@ -99,6 +104,41 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* Trust in Quality Section */}
+      <section className="py-5" style={{ backgroundColor: "#fff" }}>
+        <div className="container">
+          <div className="row align-items-center g-5">
+            <div className="col-md-6">
+              <div className="text-center">
+                <Icon
+                  icon="solar:shield-check-bold"
+                  style={{ fontSize: "120px", color: "#00A9E0" }}
+                />
+              </div>
+            </div>
+            <div className="col-md-6">
+              <h6
+                className="text-uppercase fw-bold"
+                style={{ color: "#8DC63F", letterSpacing: "2px" }}
+              >
+                Trust in Quality (BIS & Quality Assurance)
+              </h6>
+              <h2 className="fw-bold mb-4" style={{ color: "#1C1C1C" }}>
+                Uncompromising Quality: BIS & Global Standards
+              </h2>
+              <p className="text-muted mb-4">
+                We strictly adhere to the rigorous quality benchmarks set by the
+                Bureau of Indian Standards (BIS). Every product under the Feel
+                Safe umbrella is meticulously crafted, keeping women's safety
+                and health as our top priority. Our ISO and GMP certifications
+                are a testament to our unwavering commitment to manufacturing
+                excellence and hygiene standards.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* MLM / Opportunity Section */}
       <section className="py-5" style={{ backgroundColor: "#f8f9fa" }}>
         <div className="container text-center">
@@ -147,7 +187,7 @@ const AboutPage = () => {
                 </div>
                 <div>
                   <h6 className="mb-0 fw-bold">Call Us</h6>
-                  <p className="mb-0 text-muted">+91 99999 99999</p>
+                  <p className="mb-0 text-muted">+91 9013499385</p>
                 </div>
               </div>
 
@@ -162,6 +202,34 @@ const AboutPage = () => {
                 <div>
                   <h6 className="mb-0 fw-bold">Email Us</h6>
                   <p className="mb-0 text-muted">support@feelsafe.co</p>
+                </div>
+              </div>
+
+              <div className="d-flex align-items-center mb-3">
+                <div
+                  className="rounded-circle p-3 me-3"
+                  style={{ backgroundColor: "#00A9E0" }}
+                >
+                  <Mail />
+                </div>
+                <div>
+                  <h6 className="mb-0 fw-bold">E-Store (Order Queries)</h6>
+                  <p className="mb-0 text-muted">estore@feelsafeco.in</p>
+                  <small className="text-muted">(No Reply - For order related queries only)</small>
+                </div>
+              </div>
+
+              <div className="d-flex align-items-center mb-3">
+                <div
+                  className="rounded-circle p-3 me-3"
+                  style={{ backgroundColor: "#E6519B" }}
+                >
+                  <Mail />
+                </div>
+                <div>
+                  <h6 className="mb-0 fw-bold">Info (Events & Offers)</h6>
+                  <p className="mb-0 text-muted">info@feelsafeco.in</p>
+                  <small className="text-muted">(No Reply - For registration welcome, events & offers)</small>
                 </div>
               </div>
 
@@ -214,6 +282,47 @@ const AboutPage = () => {
                     Send Message
                   </button>
                 </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Grievance Cell (Legal) Section */}
+      <section className="bg-white py-5 border-top">
+        <div className="container">
+          <div className="row g-5">
+            <div className="col-12 text-center mb-4">
+              <h2 className="fw-bold" style={{ color: "#E6519B" }}>
+                Grievance Cell (Legal)
+              </h2>
+              <p className="text-muted mx-auto mt-3" style={{ maxWidth: "800px" }}>
+                <strong>Procedure:</strong> First contact our 24x7 Support Team. If they cannot resolve your issue within the expected timeframe, then file a complaint here. Our dedicated Grievance Cell will assign a unique Case ID and ensure resolution within 30 days. A reminder will be sent after 25 days if unresolved.
+              </p>
+              <ul className="text-start text-muted mx-auto mt-3" style={{ maxWidth: "600px" }}>
+                <li><strong>Step 1:</strong> Contact 24x7 Support Team first</li>
+                <li><strong>Step 2:</strong> If unresolved, submit grievance here</li>
+                <li><strong>Step 3:</strong> Receive unique Case ID</li>
+                <li><strong>Step 4:</strong> Get response within 48 hours</li>
+                <li><strong>Step 5:</strong> Issue resolved within 30 days</li>
+                <li><strong>Reminder:</strong> Alert after 25 days if still pending</li>
+              </ul>
+            </div>
+            <div className="col-md-4 mx-auto">
+              <div className="card border-0 shadow-sm p-4 rounded-4" style={{ backgroundColor: "#fce4ec" }}>
+                <h5 className="fw-bold mb-3">Grievance Contact</h5>
+                <div className="mb-3">
+                  <p className="mb-1 fw-bold">Name:</p>
+                  <p className="mb-0 text-muted">Mukesh Kumar</p>
+                </div>
+                <div className="mb-3">
+                  <p className="mb-1 fw-bold">Email:</p>
+                  <p className="mb-0 text-muted">grievance@feelsafeco.in</p>
+                </div>
+                <div className="mb-0">
+                  <p className="mb-1 fw-bold">Mobile:</p>
+                  <p className="mb-0 text-muted">+91 8796262996</p>
+                </div>
               </div>
             </div>
           </div>
