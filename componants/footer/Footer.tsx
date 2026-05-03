@@ -146,11 +146,7 @@ const Footer = () => {
                       Returns & Refunds
                     </Link>
                   </li>
-                  <li className="menu-item">
-                    <Link href="#" className="nav-link">
-                      Cookie Guidelines
-                    </Link>
-                  </li>
+
                 </ul>
               </div>
             </div>

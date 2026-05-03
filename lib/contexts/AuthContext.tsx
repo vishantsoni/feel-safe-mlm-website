@@ -15,6 +15,7 @@ import serverCallFuction from "../constantFunction";
 
 interface AuthContextType {
   user: User | null;
+  setting: [] | null;
   isAuthenticated: boolean;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
@@ -27,6 +28,7 @@ interface AuthContextType {
   }) => Promise<void>;
   logout: () => void;
   fetchUser: () => Promise<void>;
+  getSettingByKey: (key: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -36,6 +38,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const [setting, setSetting] = useState(null);
+  const fetchSetting = async () => {
+    try {
+      const res = await serverCallFuction("GET", "api/settings");
+      console.log("data - ", res);
+
+
+      if (res.success) {
+        setSetting(res?.data);
+      } else {
+        // setUser(null);
+        // setIsAuthenticated(false);
+        // Cookies.remove("token");
+      }
+    } catch (err) {
+      console.log("error - ", err);
+      setSetting(null);
+    } finally {
+    }
+  };
+
+
+  const getSettingByKey = (key: string) => {
+    if (!setting || !Array.isArray(setting)) return null;
+
+    const e_setting = setting.find((item) => item.setting_key === key);
+
+    // Return just the value for easier use, or the whole object if preferred
+    return e_setting ? e_setting.setting_value : null;
+  };
 
   const fetchUser = async () => {
     try {
@@ -61,6 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const token = Cookies.get("token");
+    fetchSetting();
     if (token) {
       fetchUser();
     } else {
@@ -119,12 +153,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        setting,
         isAuthenticated,
         loading,
         login,
         register,
         logout,
         fetchUser,
+        getSettingByKey,
       }}
     >
       {children}

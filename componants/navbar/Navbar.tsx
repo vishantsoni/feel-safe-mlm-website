@@ -6,8 +6,12 @@ import Link from "next/link";
 import React from "react";
 
 const Navbar = () => {
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, setting, getSettingByKey } = useAuth();
   const { cart, removeItem } = useCart();
+
+  const contact_setting = getSettingByKey("contact_us")
+
+  console.log("setting -", setting, contact_setting);
 
   return (
     <>
@@ -200,7 +204,7 @@ const Navbar = () => {
             <div className="col-lg-4 d-flex justify-content-end gap-4 align-items-center">
               <div className="support-box text-end d-none d-xl-block">
                 <span className="fs-6 text-muted">For Support?</span>
-                <h5 className="mb-0">+91 9999999999</h5>
+                <h5 className="mb-0">+91 {contact_setting?.phone}</h5>
               </div>
               <ul className="d-flex list-unstyled m-0 gap-3">
                 <li className="dropdown">
@@ -270,6 +274,14 @@ const Navbar = () => {
           <div className="row py-2 border-bottom">
             <div className="col-12">
               <ul className="nav  gap-4">
+                <li>
+                  <Link
+                    href="/"
+                    className="nav-link text-dark"
+                  >
+                    Home
+                  </Link>
+                </li>
                 <li>
                   <Link
                     href="/products/sanitory-pad"
