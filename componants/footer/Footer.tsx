@@ -1,8 +1,15 @@
+"use client"
 import React from "react";
 import KeywordSection from "./KeywordSection";
 import Link from "next/link";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
+
+  const { getSettingByKey } = useAuth();
+  const contact_data = getSettingByKey("contact_us");
+
   return (
     <>
       <KeywordSection />
@@ -137,6 +144,12 @@ const Footer = () => {
                     </Link>
                   </li>
                   <li className="menu-item">
+                    <Link href="legal-disclaimer" className="nav-link">
+                      Legal Disclaimer
+                    </Link>
+                  </li>
+
+                  <li className="menu-item">
                     <Link href="shipping-policy" className="nav-link">
                       Shipping Policy
                     </Link>
@@ -147,33 +160,65 @@ const Footer = () => {
                     </Link>
                   </li>
 
+                  <li className="menu-item">
+                    <Link href="return-buyback-policy" className="nav-link">
+                      Return & Buyback Policy
+                    </Link>
+                  </li>
+
+
+
                 </ul>
               </div>
             </div>
 
+
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="footer-menu">
-                <h5 className="widget-title">Subscribe Us</h5>
-                <p>
-                  Subscribe to our newsletter to get updates about our grand
-                  offers.
+                <h5 className="widget-title mb-4 fw-bold">Contact Us</h5>
+                <p className="small text-muted mb-4">
+                  Get in touch with us for inquiries, support, or feedback.
                 </p>
-                <form className="d-flex mt-3 gap-0" role="newsletter">
-                  <input
-                    className="form-control rounded-start rounded-0 bg-light"
-                    type="email"
-                    placeholder="Email Address"
-                    aria-label="Email Address"
-                  />
-                  <button
-                    className="btn btn-dark rounded-end rounded-0"
-                    type="submit"
-                  >
-                    Subscribe
-                  </button>
-                </form>
+                <ul className="menu-list list-unstyled">
+
+                  {/* Phone */}
+                  <li className="menu-item mb-3 d-flex align-items-center">
+                    <div className="d-flex align-items-center justify-content-center flex-shrink-0 me-3"
+                      style={{ width: "24px", height: "24px" }}>
+                      <Phone size={20} style={{ color: "#E6519B" }} />
+                    </div>
+                    <a href={`tel:${contact_data?.phone}`} className="nav-link p-0 small">
+                      +91 {contact_data?.phone || "9013499385"}
+                    </a>
+                  </li>
+
+                  {/* Email */}
+                  <li className="menu-item mb-3 d-flex align-items-center">
+                    <div className="d-flex align-items-center justify-content-center flex-shrink-0 me-3"
+                      style={{ width: "24px", height: "24px" }}>
+                      <Mail size={20} style={{ color: "#E6519B" }} />
+                    </div>
+                    <a href={`mailto:${contact_data?.email_1}`} className="nav-link p-0 small text-break">
+                      {contact_data?.email_1 || "support@feelsafeco.in"}
+                    </a>
+                  </li>
+
+                  {/* Address */}
+                  <li className="menu-item mb-3 d-flex align-items-start">
+                    <div className="d-flex align-items-center justify-content-center flex-shrink-0 me-3"
+                      style={{ width: "24px", height: "24px" }}>
+                      <MapPin size={20} style={{ color: "#8DC63F" }} />
+                    </div>
+                    <span className="nav-link p-0 small lh-sm">
+                      {contact_data?.address || "KharKhari Nahar, Near MCD School, Najafgarh, South West, New Delhi, Delhi – 110043, INDIA"}
+                    </span>
+                  </li>
+
+
+                </ul>
               </div>
             </div>
+
           </div>
         </div>
       </footer>
@@ -182,7 +227,7 @@ const Footer = () => {
           <div className="row">
             <div className="col-md-6 copyright mx-auto text-center">
               <p className="py-2 m-0">
-                © 2026 GTS - Ganesh Tech Solution. All rights reserved.
+                © {new Date().getFullYear()} GTS - Ganesh Tech Solution. All rights reserved.
               </p>
             </div>
             {/* <div className="col-md-6 credit-link text-start text-md-end">

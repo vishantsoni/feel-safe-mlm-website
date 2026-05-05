@@ -12,6 +12,7 @@ import Cookies from "js-cookie";
 import api from "@/lib/api";
 import type { User } from "@/lib/types/User";
 import serverCallFuction from "../constantFunction";
+import { ContactData } from "../types/Setting";
 
 interface AuthContextType {
   user: User | null;
@@ -28,7 +29,7 @@ interface AuthContextType {
   }) => Promise<void>;
   logout: () => void;
   fetchUser: () => Promise<void>;
-  getSettingByKey: (key: string) => Promise<void>;
+  getSettingByKey: (key: string) => ContactData | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -43,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchSetting = async () => {
     try {
       const res = await serverCallFuction("GET", "api/settings");
-      console.log("data - ", res);
+      console.log("data called- ", res);
 
 
       if (res.success) {
@@ -61,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
 
-  const getSettingByKey = (key: string) => {
+  const getSettingByKey = (key: string): ContactData | null => {
     if (!setting || !Array.isArray(setting)) return null;
 
     const e_setting = setting.find((item) => item.setting_key === key);

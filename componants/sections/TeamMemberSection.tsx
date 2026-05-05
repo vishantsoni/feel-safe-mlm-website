@@ -1,46 +1,63 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getTeamMembers } from '@/lib/teamApi';
+import type { TeamMember } from '@/lib/types/Team';
 
 const TeamMemberSection = () => {
-  const teamMembers = [
-    {
-      name: 'Dr. Rajesh Kumar',
-      title: 'Chairman & Founder',
-      image: '/assets/images/reviewer-1.jpg',
-      bio: 'Visionary leader with 20+ years in direct selling. Built multiple successful MLM networks across India.'
-    },
-    {
-      name: 'Priya Sharma',
-      title: 'CEO',
-      image: '/assets/images/reviewer-2.jpg',
-      bio: 'Dynamic executive driving 100%+ YoY growth. Expert in compliance and distributor empowerment.'
-    },
-    {
-      name: 'Amit Patel',
-      title: 'Chief Marketing Officer',
-      image: '/assets/images/reviewer-3.jpg',
-      bio: 'Digital marketing guru scaling networks through innovative strategies and partnerships.'
-    },
-    {
-      name: 'Neha Gupta',
-      title: 'Director - Operations',
-      image: '/assets/images/reviewer-1.jpg',
-      bio: 'Manages seamless logistics for 10-level matrix. Ensures timely payouts and product delivery.'
-    },
-    {
-      name: 'Vikram Singh',
-      title: 'Head of Distributor Success',
-      image: '/assets/images/reviewer-2.jpg',
-      bio: 'Trains new members to build teams and maximize commissions. 10x growth specialist.'
-    },
-    {
-      name: 'Sunita Rao',
-      title: 'Finance Director',
-      image: '/assets/images/reviewer-3.jpg',
-      bio: 'Oversees transparent TDS-compliant payouts. Financial architect for sustainable growth.'
-    }
-  ];
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchTeamMembers = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const members = await getTeamMembers();
+        setTeamMembers(members);
+      } catch (err) {
+        console.error('Error fetching team members:', err);
+        setError('Failed to load team members');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTeamMembers();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-5 bg-light">
+        <div className="container-fluid">
+          <div className="row justify-content-center align-items-center" style={{ height: '400px' }}>
+            <div className="col-md-12 text-center">
+              <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
+                <span className="visually-hidden">Loading team members...</span>
+              </div>
+              <p className="mt-3 text-muted">Loading our leadership team...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error || teamMembers.length === 0) {
+    return (
+      <section className="py-5 bg-light">
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-md-12 text-center mb-5">
+              <h2 className="display-5 fw-bold text-dark mb-3">Our Leadership Team</h2>
+              <p className="lead text-muted">No team members available at the moment.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <>
@@ -52,14 +69,14 @@ const TeamMemberSection = () => {
               <p className="lead text-muted">Meet the experts powering your MLM success across 10 levels</p>
             </div>
             <div className="team-slider-wrapper">
-              <div className="d-flex flex-nowrap gap-3 team-slider overflow-auto pb-3" style={{scrollSnapType: 'x mandatory'}}>
-                {teamMembers.map((member, index) => (
-                  <div className="flex-shrink-0 team-card text-center p-4 border rounded-3 shadow-sm hover-shadow-lg" style={{minWidth: '100%', maxWidth: '100%', scrollSnapAlign: 'start'}} key={index}>
+              <div className="d-flex flex-nowrap gap-3 team-slider overflow-auto pb-3" style={{ scrollSnapType: 'x mandatory' }}>
+                {teamMembers.map((member) => (
+                  <div className="flex-shrink-0 team-card text-center p-4 border rounded-3 shadow-sm hover-shadow-lg" style={{ minWidth: '100%', maxWidth: '100%', scrollSnapAlign: 'start' }} key={member.id}>
                     <div className="member-image mb-4 mx-auto">
-                      <img 
-                        src={member.image} 
-                        className="rounded-circle img-fluid shadow" 
-                        style={{width: '140px', height: '140px', objectFit: 'cover'}}
+                      <img
+                        src={member.image}
+                        className="rounded-circle img-fluid shadow"
+                        style={{ width: '140px', height: '140px', objectFit: 'cover' }}
                         alt={member.name}
                       />
                     </div>

@@ -1,9 +1,14 @@
-# Blog Post Page Integration TODO
+# TODO: Connect Contact Us Form to Ticket System
 
-## Steps to Complete:
+## Plan Steps:
 
-- [x] Step 1: Update lib/types/Blog.ts with new fields (category_id, comments, relatedProducts)
-- [x] Step 2: Fix lib/blogApi.ts getBlogBySlug to handle single post response structure
-- [x] Step 3: Update app/blog/[slug]/page.tsx to display relatedProducts and comments sections
-- [x] Step 4: Test the blog post page
-- [ ] Step 5: Mark complete
+- [ ] Step 1: Create comprehensive edit plan (COMPLETED)
+- [ ] Step 2: Get user approval (COMPLETED)
+- [x] Step 3: Update `componants/ContactCompo.tsx` with form functionality (raiseTicket integration, state management, controlled inputs, loading/error/success states)
+- [x] Step 3.1: Add phone/email validation (India phone pattern, standard email regex)
+
+- [ ] Step 4: Test the implementation
+
+- [ ] Step 5: Complete task and cleanup TODO
+
+**Current Status:** Ready to implement Step 3

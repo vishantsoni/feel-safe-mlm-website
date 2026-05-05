@@ -67,10 +67,11 @@ export default function RootLayout({
             <ToastProvider>
               <Navbar />
               {children}
+              <Footer />
             </ToastProvider>
           </CartProvider>
         </AuthProvider>
-        <Footer />
+
 
         <Script src="/assets/js/jquery-1.11.0.min.js" />
         <Script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></Script>

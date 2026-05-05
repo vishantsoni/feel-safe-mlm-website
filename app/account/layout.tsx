@@ -12,6 +12,7 @@ import {
   MapPin,
   LayoutDashboard,
   LogOut,
+  HelpCircle,
 } from "lucide-react";
 
 export default function AccountLayout({
@@ -44,6 +45,7 @@ export default function AccountLayout({
     { href: "/account/profile", label: "Profile", icon: User },
     { href: "/account/addresses", label: "Saved Addresses", icon: MapPin },
     { href: "/account/orders", label: "My Orders", icon: Package },
+    { href: "/account/support", label: "Support Tickets", icon: HelpCircle },
     // { href: "/account/wishlist", label: "Wishlist", icon: Heart },
   ];
 
@@ -86,17 +88,16 @@ export default function AccountLayout({
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${
-                          isActive
-                            ? "active shadow-sm text-white"
-                            : "text-secondary hover-bg-light"
-                        }`}
+                        className={`nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 transition-all ${isActive
+                          ? "active shadow-sm text-white"
+                          : "text-secondary hover-bg-light"
+                          }`}
                         style={
                           isActive
                             ? {
-                                background:
-                                  "linear-gradient(90deg, #fc74fc, #E6519B)",
-                              }
+                              background:
+                                "linear-gradient(90deg, #fc74fc, #E6519B)",
+                            }
                             : {}
                         }
                       >

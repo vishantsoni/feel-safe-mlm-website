@@ -1,128 +1,151 @@
 "use client";
+
 import React from "react";
+import {
+  ShieldCheck, Lock, Eye, CreditCard, Truck, Share2,
+  UserCircle, Cookie, Bell, Database, ExternalLink,
+  AlertOctagon, Gavel, Printer, Mail, PhoneCall, MapPin
+} from "lucide-react";
+import { useAuth } from "@/lib/contexts/AuthContext";
+import { ContactData } from "@/lib/types/Setting";
+
 
 const PrivacyPolicy = () => {
-  const lastUpdated = "April 02, 2026";
+  const { getSettingByKey } = useAuth();
+  const contact_setting = getSettingByKey("contact_us") as ContactData
+  const lastUpdated = "May 04, 2026";
+
+  const policySections = [
+    { title: "1. Introduction", icon: <Info size={20} />, content: "We respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and safeguard your data." },
+    { title: "2. Information We Collect", icon: <Database size={20} />, content: "We may collect: Full name, age, address, mobile number, email ID, KYC documents (Aadhaar, PAN), bank account details for commission payments, and login/usage data." },
+    { title: "3. Purpose of Data Collection", icon: <UserCircle size={20} />, content: "Used for: Account registration, processing orders, delivery, commission calculation, and sending updates/offers." },
+    { title: "4. Data Protection & Security", icon: <ShieldCheck size={20} />, content: "We ensure data encryption, secure servers, and protection against unauthorized access. We do not sell or share data for advertising." },
+    { title: "5. Payment Security", icon: <CreditCard size={20} />, content: "All banking details are kept confidential. Transactions are processed via secure gateways and commissions go directly to registered bank accounts." },
+    { title: "6. Product & Order Info", icon: <Truck size={20} />, content: "Customer data is used to process orders, ensure proper packaging, and share tracking details." },
+    { title: "7. Delivery Policy", icon: <Truck size={20} />, content: "Delivery addresses are used only for fulfillment. Third-party logistics receive only the limited required data." },
+    { title: "8. Data Sharing Policy", icon: <Share2 size={20} />, content: "Data shared only with: Payment gateways, logistics partners, and legal authorities if required by law." },
+    { title: "9. No Data Selling", icon: <Lock size={20} />, content: "We strictly do not sell, rent, or trade user data to any third party." },
+    { title: "10. User Rights", icon: <Gavel size={20} />, content: "You have the right to access data, update information, request account deletion, and withdraw consent." },
+    { title: "11. Cookies Policy", icon: <Cookie size={20} />, content: "We use cookies to improve user experience. Users can disable cookies via browser settings." },
+    { title: "12. Communication", icon: <Bell size={20} />, content: "We may contact users via SMS, Email, or Phone calls for updates, offers, or service-related news." },
+    { title: "13. Data Retention", icon: <Database size={20} />, content: "We retain your data only as long as necessary for business operations and legal compliance." },
+    { title: "14. Third-Party Links", icon: <ExternalLink size={20} />, content: "Our website may contain external links. We are not responsible for their privacy practices." },
+    { title: "15. Children Policy", icon: <ShieldCheck size={20} />, content: "Our services are intended for individuals above 18 years of age." },
+    { title: "16. Account Security", icon: <Lock size={20} />, content: "Users are responsible for maintaining login credentials and account confidentiality." },
+    { title: "17. Fraud Prevention", icon: <AlertOctagon size={20} />, content: "We monitor activities to prevent fraud and detect suspicious transactions." },
+    { title: "18. Policy Updates", icon: <Database size={20} />, content: "We may update this policy from time to time. Changes will be posted on the website." },
+    { title: "19. Legal Compliance", icon: <Gavel size={20} />, content: "We comply with the IT Act, 2000 and Consumer Protection (Direct Selling) Rules, 2021." },
+    { title: "20. Jurisdiction", icon: <MapPin size={20} />, content: "All disputes related to privacy will be subject to Delhi jurisdiction only." },
+    { title: "21. Consent", icon: <ShieldCheck size={20} />, content: "By using our website/app, you agree to this Privacy Policy." }
+  ];
 
   return (
-    <div className="container my-5 py-5">
+    <div className="container my-5 py-4">
       <div className="row justify-content-center">
-        <div className="col-lg-12">
-          <div className="card border-0 shadow-sm p-4 p-md-5 rounded-4">
-            <h1 className="fw-bold mb-2" style={{ color: "#1C1C1C" }}>
-              Privacy Policy
-            </h1>
-            <p className="text-muted mb-5">Last Updated: {lastUpdated}</p>
+        <div className="col-lg-11">
+          <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-white">
 
-            <section className="mb-5">
-              <h3 className="fw-bold" style={{ color: "#00A9E0" }}>
-                1. Introduction
-              </h3>
-              <p className="text-secondary">
-                Welcome to <strong>Feel Safe Private Limited</strong> We value
-                your privacy and are committed to protecting your personal data.
-                This Privacy Policy explains how we collect, use, and safeguard
-                your information when you visit our website or participate in
-                our distributor network.
-              </p>
-            </section>
-
-            <section className="mb-5">
-              <h3 className="fw-bold" style={{ color: "#8DC63F" }}>
-                2. Information We Collect
-              </h3>
-              <p className="text-secondary">
-                We collect information that you provide directly to us,
-                including:
-              </p>
-              <ul className="text-secondary">
-                <li>
-                  <strong>Personal Identity:</strong> Name, email address, and
-                  phone number.
-                </li>
-                <li>
-                  <strong>Account Data:</strong> Login credentials and profile
-                  settings.
-                </li>
-                <li>
-                  <strong>Transaction Info:</strong> Purchase history and
-                  shipping addresses.
-                </li>
-                <li>
-                  <strong>MLM Data:</strong> Referral IDs, downline structure,
-                  and commission history (for Distributors).
-                </li>
-              </ul>
-            </section>
-
-            <section className="mb-5">
-              <h3 className="fw-bold" style={{ color: "#E6519B" }}>
-                3. How We Use Your Data
-              </h3>
-              <p className="text-secondary">We use your information to:</p>
-              <ul className="text-secondary">
-                <li>
-                  Process your orders for pads, diapers, and other personal care
-                  products.
-                </li>
-                <li>
-                  Manage the distributor hierarchy and calculate accurate
-                  commissions.
-                </li>
-                <li>
-                  Send important updates regarding your account or our products.
-                </li>
-                <li>Improve our website performance and user experience.</li>
-              </ul>
-            </section>
-
-            <section className="mb-5">
-              <h3 className="fw-bold" style={{ color: "#00A9E0" }}>
-                4. Data Sharing & MLM Hierarchy
-              </h3>
-              <p className="text-secondary">
-                In our MLM model, your <strong>Username</strong> and{" "}
-                <strong>Registration Date</strong> may be visible to your direct
-                upline (the person who referred you) to help manage the team
-                structure. We
-                <strong> never</strong> share your private contact details or
-                payment information with other distributors.
-              </p>
-            </section>
-
-            <section className="mb-5 border-top pt-4">
-              <h3 className="fw-bold" style={{ color: "#1C1C1C" }}>
-                5. Contact Our Privacy Team
-              </h3>
-              <p className="text-secondary">
-                If you have any questions about this policy or wish to request
-                the deletion of your data, please contact us at:
-              </p>
-              <div className="bg-light p-3 rounded-3">
-                <p className="mb-1">
-                  <strong>Email:</strong> privacy@feelsafe.co
-                </p>
-                <p className="mb-0">
-                  <strong>Address:</strong> Delhi, Delhi, India - 456789
-                </p>
-              </div>
-            </section>
-
-            <div className="text-center mt-4">
-              <button
-                onClick={() => {
-                  window.print();
-                }}
-                className="btn btn-outline-secondary btn-sm"
-              >
-                Print Policy
-              </button>
+            {/* Header Section */}
+            <div className="text-center mb-5">
+              <h1 className="fw-bold display-5" style={{ color: "#1C1C1C" }}>
+                Privacy <span style={{ color: "#00A9E0" }}>Policy</span>
+              </h1>
+              <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
+                Feel Safe Private Limited
+              </h5>
+              <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
+              <p className="fw-bold mb-1" style={{ color: "#E6519B" }}>Hamara Prayas, Aapki Suraksha</p>
+              <p className="small text-muted mb-4">Last Updated: {lastUpdated}</p>
+              <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
             </div>
+
+            {/* Main Policy Grid */}
+            <div className="row g-4 mb-5">
+              {policySections.map((section, index) => (
+                <div key={index} className="col-md-6">
+                  <div className="p-4 rounded-4 h-100 transition-hover border-0 shadow-sm bg-light">
+                    <h6 className="fw-bold mb-3 d-flex align-items-center" style={{ color: "#1C1C1C" }}>
+                      <span className="me-2" style={{ color: index % 2 === 0 ? "#00A9E0" : "#E6519B" }}>
+                        {section.icon}
+                      </span>
+                      {section.title}
+                    </h6>
+                    <p className="text-muted small mb-0 lh-base">{section.content}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Grievance & Registered Office */}
+            <div className="mt-5 pt-5 border-top">
+              <div className="row g-5">
+                {/* Grievance Officer */}
+                <div className="col-md-6">
+                  <div className="p-4 rounded-4" style={{ backgroundColor: "#fdf2f8", borderLeft: "5px solid #E6519B" }}>
+                    <h5 className="fw-bold mb-3" style={{ color: "#E6519B" }}>Grievance Officer</h5>
+                    <div className="mb-2">
+                      <p className="small mb-0 fw-bold">Name</p>
+                      <p className="text-muted small mb-0">Mukesh Kumar</p>
+                    </div>
+                    <div className="mb-2">
+                      <p className="small mb-0 fw-bold">Email</p>
+                      <p className="text-muted small mb-0">Grievance@feelsafeco.in</p>
+                    </div>
+                    <div>
+                      <p className="small mb-0 fw-bold">Mobile</p>
+                      <p className="text-muted small mb-0">+91 8796292696</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Registered Office */}
+                <div className="col-md-6">
+                  <h5 className="fw-bold mb-4">Contact Details</h5>
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                      style={{ backgroundColor: "#e0f2fe", width: "45px", height: "45px" }}>
+                      <PhoneCall size={18} color="#00A9E0" />
+                    </div>
+                    <p className="small text-muted mb-0">{contact_setting?.phone || "N/A"}</p>
+                  </div>
+                  <div className="d-flex align-items-center mb-3">
+                    <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                      style={{ backgroundColor: "#f0fdf4", width: "45px", height: "45px" }}>
+                      <MapPin size={18} color="#8DC63F" />
+                    </div>
+                    <p className="small text-muted mb-0">
+                      {contact_setting?.address || "N/A"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .transition-hover {
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .transition-hover:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+          background-color: #ffffff !important;
+        }
+      `}</style>
     </div>
   );
 };
+
+// Simple Info icon since it was used in policySections
+const Info = ({ size }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" />
+  </svg>
+);
 
 export default PrivacyPolicy;

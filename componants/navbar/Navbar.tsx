@@ -7,11 +7,11 @@ import React from "react";
 
 const Navbar = () => {
   const { isAuthenticated, user, logout, setting, getSettingByKey } = useAuth();
+  const contact_setting = getSettingByKey("contact_us")
   const { cart, removeItem } = useCart();
 
-  const contact_setting = getSettingByKey("contact_us")
 
-  console.log("setting -", setting, contact_setting);
+
 
   return (
     <>
