@@ -26,7 +26,7 @@ const Footer = () => {
                 <div className="social-links mt-5">
                   <ul className="d-flex list-unstyled gap-2">
                     <li>
-                      <Link target="_blank" href="https://www.facebook.com/people/feel-safe/61577908861334/?rdid=oAhgR3y8GKqzNINV&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F14Vo9dSX4Ep%2F" className="btn btn-outline-light">
+                      <Link target="_blank" href="https://www.facebook.com/share/1DphQoFWK7/" className="btn btn-outline-light">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"
@@ -57,7 +57,7 @@ const Footer = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link target="_blank" href="https://www.instagram.com/feelsafe25?igsh=MXV2YXBsamhpZWRpag%3D%3D" className="btn btn-outline-light">
+                      <Link target="_blank" href="https://www.instagram.com/feelsafe25" className="btn btn-outline-light">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width="16"

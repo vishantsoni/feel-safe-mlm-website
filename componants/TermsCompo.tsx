@@ -87,10 +87,10 @@ const TermsAndConditions = () => {
 
                         {/* Dynamic Contact Footer */}
                         <div className="mt-5 pt-5 border-top">
-                            <h5 className="fw-bold mb-4 text-center">Legal & Contact Information</h5>
+                            <h5 className="fw-bold mb-5 text-center">Legal & Contact Information</h5>
                             <div className="row g-4">
-                                <div className="col-md-4">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start">
+                                <div className="col-md-4 col-12">
+                                    <div className="d-flex align-items-center justify-content-md-center ">
                                         {/* Fixed Width/Height Container for perfect circle */}
                                         <div
                                             className="rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -110,8 +110,8 @@ const TermsAndConditions = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start">
+                                <div className="col-md-4 col-12">
+                                    <div className="d-flex align-items-center justify-content-md-center">
                                         <div
                                             className="rounded-circle d-flex align-items-center justify-content-center me-3"
                                             style={{
@@ -130,8 +130,8 @@ const TermsAndConditions = () => {
                                     </div>
                                 </div>
 
-                                <div className="col-md-4">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start">
+                                <div className="col-md-4 col-12">
+                                    <div className="d-flex align-items-center justify-content-md-center ">
                                         <div
                                             className="rounded-circle d-flex align-items-center justify-content-center me-3"
                                             style={{

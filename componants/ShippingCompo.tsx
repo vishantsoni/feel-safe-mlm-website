@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/lib/contexts/AuthContext";
 import {
     Truck,
     Clock,
@@ -18,6 +19,8 @@ import {
 import React from "react";
 
 const ShippingCompo = () => {
+    const { getSettingByKey } = useAuth();
+    const contact_setting = getSettingByKey("contact_us") || {};
     return (
         <div className="container my-5 py-4">
             <div className="row justify-content-center">
@@ -212,6 +215,16 @@ const ShippingCompo = () => {
                                             <h6 className="fw-bold small" style={{ color: "#E6519B" }}>13. Delivery Delays</h6>
                                             <p className="x-small text-muted">Due to weather, transport, or high volumes. Company is not liable but will make efforts to deliver.</p>
                                         </div>
+                                        <div className="col-md-6  ps-md-4">
+                                            <h5 className="fw-bold mb-3 d-flex align-items-center" style={{ color: "#8DC63F" }}>
+                                                <Store className="me-2" size={20} /> 14. Local Store Pickup
+                                            </h5>
+                                            <p className="small text-muted mb-2">For Distributors (Sakhis) at "Feel Safe Local Center":</p>
+                                            <ul className="x-small text-muted mb-0">
+                                                <li>No shipping charges apply.</li>
+                                                <li>Valid ID and order confirmation required.</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </section>
                             </div>
@@ -232,7 +245,7 @@ const ShippingCompo = () => {
                                         </div>
                                         <div className="col-md-6">
                                             <h6 className="fw-bold mb-3 d-flex align-items-center">
-                                                <Ban className="me-2 text-danger" size={18} /> 16. Cancellation & 18. International
+                                                <Ban className="me-2 text-error" size={18} /> 16. Cancellation & 18. International
                                             </h6>
                                             <ul className="x-small text-muted ps-3">
                                                 <li>Cancel <strong>before dispatch only</strong>. No cancellation after dispatch.</li>
@@ -247,7 +260,7 @@ const ShippingCompo = () => {
                                             <p className="x-small text-muted mb-0">Ownership and risk transfer upon successful delivery. Inspect packages at receipt.</p>
                                         </div>
                                         <div className="col-md-6">
-                                            <h6 className="fw-bold mb-2 small text-danger">21. Important Disclaimer</h6>
+                                            <h6 className="fw-bold mb-2 small text-error">21. Important Disclaimer</h6>
                                             <p className="x-small text-muted mb-0">Delivery timelines are indicative, not guaranteed. Company not liable for delays beyond control.</p>
                                         </div>
                                     </div>
@@ -258,29 +271,29 @@ const ShippingCompo = () => {
                         {/* Support & Footer */}
                         <div className="mt-5 pt-5 border-top">
                             <div className="row g-4 justify-content-center">
-                                <div className="col-md-auto text-center">
+                                <div className="col-md-auto text-md-center">
                                     <h5 className="fw-bold mb-4">19. Contact for Shipping Support</h5>
-                                    <div className="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center">
+                                    <div className="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-md-center">
                                         <div className="d-flex align-items-center">
                                             <div className="rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm bg-white"
                                                 style={{ width: "40px", height: "40px", border: "1px solid #00A9E0" }}>
                                                 <PhoneCall size={18} color="#00A9E0" />
                                             </div>
-                                            <p className="fw-bold text-dark mb-0">+91 9013499385</p>
+                                            <p className="fw-bold text-dark mb-0">+91 {contact_setting?.phone}</p>
                                         </div>
                                         <div className="d-flex align-items-center">
                                             <div className="rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm bg-white"
                                                 style={{ width: "40px", height: "40px", border: "1px solid #E6519B" }}>
                                                 <Mail size={18} color="#E6519B" />
                                             </div>
-                                            <p className="fw-bold text-dark mb-0">support@feelsafeco.in</p>
+                                            <p className="fw-bold text-dark mb-0">{contact_setting?.email_1}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="mt-5 text-center">
-                                <div className="p-3 bg-light rounded-3 d-inline-block px-5 border">
+                            <div className="mt-5">
+                                <div className="p-3 bg-light rounded-3 d-inline-block px-md-5 border">
                                     <p className="small fw-bold mb-0 text-dark">20. Policy Updates</p>
                                     <p className="x-small text-muted mb-0">Feel Safe Private Limited reserves the right to modify this policy at any time without prior notice.</p>
                                 </div>

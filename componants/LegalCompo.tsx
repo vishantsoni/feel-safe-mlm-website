@@ -87,7 +87,7 @@ const LegalDisclaimer = () => {
                                 <div key={index} className="col-12">
                                     <div className="p-4 rounded-4 bg-light border-0 d-flex align-items-start transition-hover shadow-sm">
                                         <div
-                                            className="rounded-circle d-flex align-items-center justify-content-center me-4 shadow-sm flex-shrink-0"
+                                            className="rounded-circle d-flex align-items-center justify-content-center me-md-4 me-3 shadow-sm flex-shrink-0"
                                             style={{ backgroundColor: "#fff", width: "60px", height: "60px" }}
                                         >
                                             {section.icon}
@@ -103,33 +103,33 @@ const LegalDisclaimer = () => {
 
                         {/* Footer Contact Info */}
                         <div className="mt-5 pt-5 border-top">
-                            <div className="row g-4 text-center text-md-start align-items-center">
+                            <div className="row g-4 text-md-start align-items-center">
                                 <div className="col-md-4">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start mb-3 mb-md-0">
+                                    <div className="d-flex align-items-center justify-content-md-center justify-content-md-start mb-3 mb-md-0">
                                         <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
                                             style={{ backgroundColor: "#e0f2fe", width: "50px", height: "50px" }}>
                                             <PhoneCall size={20} color="#00A9E0" />
                                         </div>
                                         <div>
                                             <p className="small fw-bold mb-0">Phone</p>
-                                            <p className="small text-muted mb-0">{contact_setting.phone || "+91 9013499385"}</p>
+                                            <p className="small text-muted mb-0">{contact_setting?.phone || "N/A"}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-md-4">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start mb-3 mb-md-0">
+                                    <div className="d-flex align-items-center justify-content-md-center justify-content-md-start mb-3 mb-md-0">
                                         <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
                                             style={{ backgroundColor: "#fdf2f8", width: "50px", height: "50px" }}>
                                             <Mail size={20} color="#E6519B" />
                                         </div>
                                         <div>
                                             <p className="small fw-bold mb-0">Email</p>
-                                            <p className="small text-muted mb-0">{contact_setting.email_1 || "support@feelsafeco.in"}</p>
+                                            <p className="small text-muted mb-0">{contact_setting?.email_1 || "N/A"}</p>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="col-md-4">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start">
+                                    <div className="d-flex align-items-center justify-content-md-center justify-content-md-start">
                                         <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
                                             style={{ backgroundColor: "#f0fdf4", width: "50px", height: "50px" }}>
                                             <MapPin size={20} color="#8DC63F" />

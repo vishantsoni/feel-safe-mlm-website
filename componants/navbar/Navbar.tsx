@@ -63,37 +63,37 @@ const Navbar = () => {
         </div>
         <div className="offcanvas-body">
           <ul className="navbar-nav gap-2">
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/products/sanitory-pad" className="nav-link">
                 Sanitary Pads
               </Link>
             </li>
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/products/adult-diaper" className="nav-link">
                 Adult Diapers
               </Link>
             </li>
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/products/baby-diaper" className="nav-link">
                 Baby Diapers
               </Link>
             </li>
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/blog" className="nav-link">
                 Blog
               </Link>
             </li>
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/about-us" className="nav-link">
                 About Us
               </Link>
             </li>
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/contact-us" className="nav-link">
                 Contact Us
               </Link>
             </li>
-            <li>
+            <li data-bs-dismiss="offcanvas">
               <Link href="/documents" className="nav-link">
                 Documents
               </Link>

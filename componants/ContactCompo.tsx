@@ -4,6 +4,7 @@ import { Mail, MapPin, PhoneCall, Clock, ShieldAlert, CheckCircle2, Send, Loader
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { raiseTicket } from '@/lib/supportApi';
 import type { CreateTicketData } from '@/lib/types/Ticket';
+import Link from 'next/link';
 
 const ContactCompo = () => {
     const { getSettingByKey, user } = useAuth()
@@ -111,9 +112,13 @@ const ContactCompo = () => {
                     <h1 className="display-4 fw-bold" style={{ color: "#1C1C1C" }}>
                         Contact <span style={{ color: "#00A9E0" }}>Us</span>
                     </h1>
-                    <h5 className="text-uppercase fw-bold mb-3" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
+
+                    <h3 className="text-uppercase fw-bold mb-3" style={{ color: "#E6519B", letterSpacing: "1px" }}>
+                        Feel Safe Private Limited
+                    </h3>
+                    <h6 className="text-uppercase fw-bold mb-3" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
                         Hamara Prayas, Aapki Suraksha
-                    </h5>
+                    </h6>
                     <p className="lead text-muted mx-auto mb-0" style={{ maxWidth: "700px" }}>
                         We’re here to help you! If you have any questions about our products,
                         services, or Feel Safe Sakhi Yojna, feel free to reach out.
@@ -129,14 +134,16 @@ const ContactCompo = () => {
                             <h3 className="fw-bold mb-4">Get in Touch</h3>
 
                             {/* Helpline */}
-                            <div className="d-flex align-items-center mb-4">
+                            <div className="d-flex align-items-center mb-4" >
                                 <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 shadow-sm"
                                     style={{ backgroundColor: "#e0f2fe", width: "50px", height: "50px" }}>
                                     <PhoneCall size={20} color="#00A9E0" />
                                 </div>
                                 <div>
                                     <p className="small fw-bold mb-0">Helpline</p>
-                                    <p className="text-muted mb-0">+91 {contact_data?.phone || "9013499385"}</p>
+                                    <Link href={`tel:${contact_data?.phone}`}>
+                                        <p className="text-muted mb-0">+91 {contact_data?.phone || "N/A"}</p>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -148,7 +155,9 @@ const ContactCompo = () => {
                                 </div>
                                 <div>
                                     <p className="small fw-bold mb-0">Email</p>
-                                    <p className="text-muted mb-0">{contact_data?.email_1 || "support@feelsafeco.in"}</p>
+                                    <Link href={`mailto:${contact_data?.email_1}`}>
+                                        <p className="text-muted mb-0">{contact_data?.email_1 || "N/A"}</p>
+                                    </Link>
                                 </div>
                             </div>
 
@@ -334,7 +343,7 @@ const ContactCompo = () => {
             <section className="container-fluid p-0">
                 <iframe
                     title="Office Location"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d56041.92131924614!2d76.944208!3d28.611674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d099999999999%3A0x999999999999999!2sNajafgarh%2C%20New%20Delhi!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.4994864012!2d76.95625707613596!3d28.58478878624607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390d11e61984d5f9%3A0x4ae2e472ac31c46b!2sFeel%20Safe%20Co.!5e0!3m2!1sen!2sin!4v1777981572791!5m2!1sen!2sin"
                     width="100%"
                     height="400"
                     style={{ border: 0, filter: "grayscale(0.2)" }}
