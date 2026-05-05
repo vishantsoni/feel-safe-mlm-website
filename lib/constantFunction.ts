@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 // API Configuration
 // const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 const host: string =
-  process.env.NEXT_PUBLIC_API_URL || "https://fsbackend.gtsol.in";
+  process.env.NEXT_PUBLIC_API_URL || "https://backend.feelsafeco.in";
 
 // Helper to check for FormData
 const isFormData = (body: any): body is FormData => {
