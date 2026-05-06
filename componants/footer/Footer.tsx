@@ -102,7 +102,7 @@ const Footer = () => {
                   </li>
 
                   <li className="menu-item">
-                    <Link href="/" className="nav-link">
+                    <Link href="https://panel.feelsafeco.in/signup" target="_blank" className="nav-link">
                       Become a Distributor
                     </Link>
                   </li>

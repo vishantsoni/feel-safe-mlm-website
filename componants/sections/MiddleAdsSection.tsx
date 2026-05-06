@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const MiddleAdsSection = () => {
@@ -20,9 +21,9 @@ const MiddleAdsSection = () => {
                 </div>
                 <h3 className="banner-title">Build Your 10-Level Empire</h3>
                 <p>Start with just 2 partners. Our 1X2 forced matrix allows you to earn deep into 10 levels. Small steps, massive rewards.</p>
-                <a href="#" className="btn btn-dark text-uppercase">
+                <Link href="/become-distributor" className="btn btn-dark text-uppercase">
                   Start Earning
-                </a>
+                </Link>
               </div>
             </div>
           </div>
