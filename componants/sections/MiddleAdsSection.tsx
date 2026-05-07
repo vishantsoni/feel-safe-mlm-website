@@ -42,9 +42,9 @@ const MiddleAdsSection = () => {
                 </div>
                 <h3 className="banner-title">Feel Safe, Live Free</h3>
                 <p>Share premium hygiene products everyone needs. Turn every diaper and pad purchase in your network into monthly commissions.</p>
-                <a href="#" className="btn btn-dark text-uppercase">
+                <Link href="https://panel.feelsafeco.in/signup" target="_blank" className="btn btn-dark text-uppercase">
                   Join Now
-                </a>
+                </Link>
               </div>
             </div>
           </div>

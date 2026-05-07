@@ -329,7 +329,9 @@ const ContactCompo = () => {
                     <h3 className="fw-bold mb-3">Become a Sakhi (Join Us)</h3>
                     <p className="mb-4">Interested in earning and becoming financially independent? Join our Feel Safe Sakhi Yojna today!</p>
                     <div className="d-flex justify-content-center gap-3">
-                        <button className="btn btn-light fw-bold px-4 py-2 text-success">Register Now</button>
+                        <button className="btn btn-light fw-bold px-4 py-2 text-success" onClick={() => {
+                            navigation.navigate('/become-distributor')
+                        }}>Register Now</button>
                         {/* <div className="d-flex gap-2 align-items-center d-none d-md-flex ms-3">
                             <Facebook size={20} className="cursor-pointer" />
                             <Instagram size={20} className="cursor-pointer" />

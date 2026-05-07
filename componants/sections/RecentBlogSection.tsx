@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { getBlogs } from '@/lib/blogApi';
 import { BlogPost } from '@/lib/types/Blog';
+import { Calendar } from "lucide-react";
 
 const RecentBlogSection = () => {
   const [blogs, setBlogs] = useState<BlogPost[]>([]);
@@ -109,15 +110,17 @@ const RecentBlogSection = () => {
                     <div className="card-body d-flex flex-column p-3">
                       <div className="post-meta d-flex text-uppercase gap-3 my-2 align-items-center flex-shrink-0">
                         <div className="meta-date">
-                          <svg width="16" height="16">
+                          <Calendar size={16} />
+                          {/* <svg width="16" height="16">
                             <use xlinkHref="#calendar"></use>
-                          </svg>
+                          </svg> */}
                           {formatDate(blog.created_at)}
                         </div>
                         <div className="meta-categories">
-                          <svg width="16" height="16">
+
+                          {/* <svg width="16" height="16">
                             <use xlinkHref="#category"></use>
-                          </svg>
+                          </svg> */}
                           {blog.category_name}
                         </div>
                       </div>
@@ -127,7 +130,7 @@ const RecentBlogSection = () => {
                             {blog.title}
                           </Link>
                         </h3>
-                        <p className="text-muted small mt-auto mb-0">
+                        <p className="text-muted small mt-0 mb-0">
                           {blog.content.length > 120 ? blog.content.slice(0, 120) + '...' : blog.content}
                         </p>
                       </div>

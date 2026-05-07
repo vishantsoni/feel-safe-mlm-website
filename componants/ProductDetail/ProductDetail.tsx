@@ -6,6 +6,7 @@ import Link from "next/link";
 import { IndianRupee, Star } from "lucide-react";
 import { Product, ProductAttributes, ProVariant } from "@/lib/types/Product";
 import { useCart } from "@/lib/contexts/CartContext";
+import TrendingProSection from "../sections/TrendingProSection";
 
 interface Props {
   product: Product;
@@ -50,13 +51,14 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
     }
   }, [attributes]);
 
-  let originalPrice = product.base_price || 0;
-  const basePrice = product.discounted_price || product.base_price;
+  const originalPrice = product.base_price || 0;
+  const basePrice = product.base_price;
+  const discountedPrice = product.discounted_price;
   const taxPrice = product.tax_data
     ? (originalPrice * product.tax_data.percentage) / 100
     : 0;
 
-  originalPrice += taxPrice;
+  // originalPrice += taxPrice;
 
   const currentVariant = useMemo(() => {
     if (variants.length === 0) return null;
@@ -67,7 +69,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
             return selectedAttributes[comb.attr_id] === comb.attr_value_id;
           }) &&
           Object.keys(selectedAttributes).length ===
-            variant.attr_combinations.length
+          variant.attr_combinations.length
         );
       }) || null
     );
@@ -80,7 +82,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
 
   const taxablePrice = useMemo(
     () =>
-      currentVariant ? currentVariant.price + taxPrice : basePrice + taxPrice,
+      currentVariant ? currentVariant.price : basePrice,
     [currentVariant, basePrice],
   );
 
@@ -89,20 +91,6 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
     [currentVariant],
   );
 
-  const relatedProducts = [
-    {
-      name: "Sanitary Pad Regular",
-      slug: "sanitory-pad",
-      price: 12.0,
-      image: "/assets/product/sanitory_pad.png",
-    },
-    {
-      name: "Adult Diaper Large",
-      slug: "adult-diaper",
-      price: 25.0,
-      image: "/assets/product/adult_diaper.png",
-    },
-  ].filter((p) => p.slug !== product.slug);
 
   const handleAddToCart = async () => {
     if (isOutOfStock) {
@@ -180,11 +168,10 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                       alt={`${product.name} thumbnail ${idx + 1}`}
                       width={100}
                       height={100}
-                      className={`img-fluid rounded cursor-pointer border ${
-                        selectedImage === img
-                          ? "border-success border-3"
-                          : "border-secondary"
-                      }`}
+                      className={`img-fluid rounded cursor-pointer border ${selectedImage === img
+                        ? "border-success border-3"
+                        : "border-secondary"
+                        }`}
                       onClick={() => setSelectedImage(img)}
                     />
                   </div>
@@ -198,17 +185,19 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
             <span className="fw-bold mb-2 badge bg-primary">
               {product.category?.name}
             </span>
-            <p className="lead mb-2">{product.description}</p>
+            {/* <p className="lead mb-2">{product.description}</p> */}
 
             <div className="">
               <span className="fs-1 fw-bold text-success">
                 <IndianRupee className="inline-block" size={24} />
                 {taxablePrice.toFixed(2)}
               </span>
-              <span className="text-muted text-decoration-line-through ms-3 fs-4">
-                <IndianRupee className="inline-block" size={18} />
-                {originalPrice.toFixed(2)}
-              </span>
+              {discountedPrice > 0 &&
+                <span className="text-muted text-decoration-line-through ms-3 fs-4">
+                  <IndianRupee className="inline-block" size={18} />
+                  {discountedPrice.toFixed(2)}
+                </span>
+              }
             </div>
 
             {/* Attributes selection */}
@@ -225,11 +214,10 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                       return (
                         <span
                           key={v.id}
-                          className={`badge cursor-pointer p-2 ${
-                            isSelected
-                              ? "bg-primary text-white"
-                              : "bg-light text-dark border"
-                          }`}
+                          className={`badge cursor-pointer p-2 ${isSelected
+                            ? "bg-primary text-white"
+                            : "bg-light text-dark border"
+                            }`}
                           onClick={() => {
                             setSelectedAttributes((prev) => {
                               const newSelected = { ...prev };
@@ -301,9 +289,8 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                 )}
                 {message && (
                   <div
-                    className={`alert alert-${
-                      messageType === "success" ? "success" : "danger"
-                    } mt-3`}
+                    className={`alert alert-${messageType === "success" ? "success" : "danger"
+                      } mt-3`}
                   >
                     {message}
                   </div>
@@ -312,7 +299,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
             </div>
 
             {/* Quick Specs */}
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <h5>Product Specifications:</h5>
               <ul className="list-group list-group-flush">
                 {product.specs &&
@@ -326,7 +313,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                     </li>
                   ))}
               </ul>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -343,7 +330,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                   Description
                 </button>
               </li>
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <button
                   className="nav-link"
                   data-bs-toggle="tab"
@@ -351,7 +338,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                 >
                   Specifications
                 </button>
-              </li>
+              </li> */}
             </ul>
             <div className="tab-content border border-top-0 p-4">
               <div className="tab-pane fade show active" id="description">
@@ -364,6 +351,8 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
           </div>
         </div>
       </div>
+
+      <TrendingProSection title="Recent Products" />
     </section>
   );
 };

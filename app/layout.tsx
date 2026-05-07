@@ -19,10 +19,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title:
-    "Best Sanitary Napkin Manufacturer in India - Feel Safe Private Limited ",
+  metadataBase: new URL("https://feelsafeco.in/"),
+  title: {
+    default: "Feel Safe | Premium Hygiene & Personal Care Products",
+    template: "%s | Hamara Prayas, Aapki Suraksha | Feel Safe Private Limited",
+  },
   description:
-    "Feel Safe Private Limited is India's leading Sanitary Napkin Manufacturer. Get BIS 5405:2019 certified, 100% rash-free, and high-absorbency cotton pads. We are trusted wholesale & bulk suppliers for NGOs, Sakhi Yojana, and distributors PAN India. Order FEEL Brand today",
+    "India's trusted manufacturer of Feel™ brand Sanitary Napkins, Baby Diapers, and Adult Care. BIS 5405:2019 certified, rash-free, and high-absorbency hygiene solutions. Wholesale & bulk suppliers for NGOs, distributors, and Sakhi Yojana PAN India.",
+  keywords: [
+    "Feel Safe Private Limited",
+    "Sanitary Napkin Manufacturer India",
+    "Feel Baby Diapers",
+    "Adult Diapers India",
+    "Wholesale Sanitary Pads",
+    "BIS Certified Pads",
+    "NGO Hygiene Supplier",
+    "Rash-free Sanitary Napkins",
+  ],
+  icons: {
+    icon: "https://feelsafeco.in/favicon.ico?favicon.0roezpub-jmq0.ico",
+    shortcut: "https://feelsafeco.in/favicon.ico?favicon.0roezpub-jmq0.ico",
+    apple: "https://feelsafeco.in/favicon.ico?favicon.0roezpub-jmq0.ico",
+  },
+  openGraph: {
+    title: "Feel Safe Private Limited | Quality Personal Care Products",
+    description: "Shop premium Sanitary Pads, Baby Diapers, and Adult Care products by Feel Safe. Quality you can trust, comfort you can feel.",
+    url: "https://feelsafeco.in/",
+    siteName: "Feel Safe",
+    locale: "en_IN",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

@@ -60,10 +60,14 @@ const AboutCompo = () => {
                                 committed to transforming women’s hygiene and health standards across India.
                             </p>
                             <div className="d-flex gap-3 flex-column flex-md-row">
-                                <button className="btn btn-lg shadow-sm px-4 text-white" style={{ backgroundColor: "#00A9E0" }}>
+                                <button className="btn btn-lg shadow-sm px-4 text-white" style={{ backgroundColor: "#00A9E0" }} onClick={() => {
+                                    navigation.navigate("/become-distributor")
+                                }} >
                                     Join Sakhi Mission
                                 </button>
-                                <button className="btn btn-lg btn-outline-dark px-4">Our Products</button>
+                                <button className="btn btn-lg btn-outline-dark px-4" onClick={() => {
+                                    navigation.navigate('/products')
+                                }}>Our Products</button>
                             </div>
                         </div>
                     </div>
