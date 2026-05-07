@@ -114,7 +114,7 @@ const ContactCompo = () => {
                     </h1>
 
                     <h3 className="text-uppercase fw-bold mb-3" style={{ color: "#E6519B", letterSpacing: "1px" }}>
-                        Feel Safe Private Limited
+                        Feel Safe Pvt. Ltd.
                     </h3>
                     <h6 className="text-uppercase fw-bold mb-3" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
                         Hamara Prayas, Aapki Suraksha

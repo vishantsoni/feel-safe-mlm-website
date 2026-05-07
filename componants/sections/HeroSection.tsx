@@ -23,7 +23,7 @@ const HeroSection = () => {
                           <div className="content-wrapper col-md-7">
                             <div className="categories my-3">100% Safe</div>
                             <h3 className="display-4">
-                              Feel Unstoppable, Every Day.
+                              Feel Safe Unstoppable, Every Day.
                             </h3>
                             <p>
                               Experience ultimate leak protection and
@@ -147,7 +147,7 @@ const HeroSection = () => {
                   <div className="row banner-content p-5">
                     <div className="content-wrapper col-md-7">
                       <div className="categories sale mb-3 pb-3">15% off</div>
-                      <h3 className="item-title">Sanitory Pads</h3>
+                      <h3 className="item-title">Sanitary Pads</h3>
                       <a
                         href="#"
                         className="d-flex align-items-center nav-link"

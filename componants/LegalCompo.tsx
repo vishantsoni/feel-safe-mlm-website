@@ -73,7 +73,7 @@ const LegalDisclaimer = () => {
                                 Legal <span style={{ color: "#E6519B" }}>Disclaimer</span>
                             </h1>
                             <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
-                                Feel Safe Private Limited
+                                Feel Safe Ptv. Ltd.
                             </h5>
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="fw-bold mb-1" style={{ color: "#00A9E0" }}>Hamara Prayas, Aapki Suraksha</p>

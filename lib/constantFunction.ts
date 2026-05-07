@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 
 // API Configuration
 // const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
-const host: string =
+export const host: string =
   process.env.NEXT_PUBLIC_API_URL || "https://backend.feelsafeco.in";
 
 // Helper to check for FormData
@@ -183,7 +183,8 @@ const serverCallFuction = async (
       return {
         status: false,
         e_code: response.status,
-        message: dataresp?.message || "Something went wrong!",
+        message:
+          dataresp?.message || dataresp?.error || "Something went wrong!",
       };
     }
   } catch (e: any) {

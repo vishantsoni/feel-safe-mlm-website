@@ -7,6 +7,10 @@
     font-size: calc(1.075rem + 2.7vw);
   }
 
+  .display-5 {
+    font-size: calc(1.075rem + 2vw);
+  }
+
   .copyright {
     font-size: 12px;
   }

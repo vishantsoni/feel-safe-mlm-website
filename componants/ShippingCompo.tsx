@@ -37,7 +37,7 @@ const ShippingCompo = () => {
                                 Shipping & <span style={{ color: "#8DC63F" }}>Delivery</span> Policy
                             </h1>
                             <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#E6519B", letterSpacing: "1px" }}>
-                                Feel Safe Private Limited
+                                Feel Safe Pvt. Ltd.
                             </h5>
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="text-muted small">Website: www.feelsafeco.in</p>

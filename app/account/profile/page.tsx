@@ -15,10 +15,10 @@ export default function ProfilePage() {
     name: "",
     email: "",
     phone: "",
-    distributor_code: 0,
+    distributor_code: "",
   });
 
-  
+
 
   // Sync user data + fetch if needed
   useEffect(() => {
@@ -31,7 +31,7 @@ export default function ProfilePage() {
         name: user.name || "",
         email: user.email || "",
         phone: user.phone || "",
-        distributor_code: Number(user.distributor_code) || 0,
+        distributor_code: user.distributor_code || "",
       });
     }
   }, [user, authLoading, fetchUser]);
@@ -207,10 +207,11 @@ export default function ProfilePage() {
                       className="form-control form-control-lg rounded-3 border-light-subtle"
                       style={{ backgroundColor: "#f9fafb" }}
                       value={formData.distributor_code}
+                      disabled={formData.distributor_code !== ""}
                       onChange={(e) =>
                         setFormData({
                           ...formData,
-                          distributor_code: Number(e.target.value) || 0,
+                          distributor_code: e.target.value || "",
                         })
                       }
                     />
@@ -249,7 +250,8 @@ export default function ProfilePage() {
                     Current Password
                   </label>
                   <input
-                    type="password"
+                    type="text"
+                    placeholder="Enter current password"
                     className="form-control rounded-3 border-light-subtle"
                     value={currentPassword}
                     onChange={(e) => setCurrentPassword(e.target.value)}
@@ -261,7 +263,8 @@ export default function ProfilePage() {
                     New Password
                   </label>
                   <input
-                    type="password"
+                    type="text"
+                    placeholder="Enter new password"
                     className="form-control rounded-3 border-light-subtle"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -274,7 +277,8 @@ export default function ProfilePage() {
                     Confirm New Password
                   </label>
                   <input
-                    type="password"
+                    type="text"
+                    placeholder="Enter confirm password"
                     className="form-control rounded-3 border-light-subtle"
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}

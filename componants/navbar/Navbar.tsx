@@ -64,6 +64,11 @@ const Navbar = () => {
         <div className="offcanvas-body">
           <ul className="navbar-nav gap-2">
             <li data-bs-dismiss="offcanvas">
+              <Link href="/" className="nav-link">
+                Home
+              </Link>
+            </li>
+            {/* <li data-bs-dismiss="offcanvas">
               <Link href="/products/sanitory-pad" className="nav-link">
                 Sanitary Pads
               </Link>
@@ -76,6 +81,11 @@ const Navbar = () => {
             <li data-bs-dismiss="offcanvas">
               <Link href="/products/baby-diaper" className="nav-link">
                 Baby Diapers
+              </Link>
+            </li> */}
+            <li data-bs-dismiss="offcanvas">
+              <Link href="/products" className="nav-link">
+                All Products
               </Link>
             </li>
             <li data-bs-dismiss="offcanvas">
@@ -93,11 +103,7 @@ const Navbar = () => {
                 Contact Us
               </Link>
             </li>
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/documents" className="nav-link">
-                Documents
-              </Link>
-            </li>
+
           </ul>
         </div>
       </div>
@@ -202,10 +208,12 @@ const Navbar = () => {
               </div>
             </div>
             <div className="col-lg-4 d-flex justify-content-end gap-4 align-items-center">
-              <div className="support-box text-end d-none d-xl-block">
-                <span className="fs-6 text-muted">For Support?</span>
-                <h5 className="mb-0">+91 {contact_setting?.phone}</h5>
-              </div>
+              {!isAuthenticated ?
+                <div className="support-box text-end d-none d-xl-block">
+                  <span className="fs-6 text-muted">For Support?</span>
+                  <h5 className="mb-0">+91 {contact_setting?.phone}</h5>
+                </div> : <div className="support-box text-dark d-none d-xl-block">Welcome! {user?.name}</div>
+              }
               <ul className="d-flex list-unstyled m-0 gap-3">
                 <li className="dropdown">
                   <a
@@ -248,13 +256,13 @@ const Navbar = () => {
                     )}
                   </ul>
                 </li>
-                <li>
+                {/* <li>
                   <a href="#" className="rounded-circle bg-light p-2 d-block">
                     <svg width="24" height="24">
                       <use xlinkHref="#heart"></use>
                     </svg>
                   </a>
-                </li>
+                </li> */}
                 <li>
                   <button
                     className="border-0 bg-transparent d-flex flex-column gap-1 lh-1"
@@ -282,7 +290,9 @@ const Navbar = () => {
                     Home
                   </Link>
                 </li>
-                <li>
+
+
+                {/* <li>
                   <Link
                     href="/products/sanitory-pad"
                     className="nav-link text-dark"
@@ -305,6 +315,14 @@ const Navbar = () => {
                   >
                     Baby Diapers
                   </Link>
+                </li> */}
+                <li>
+                  <Link
+                    href="/products"
+                    className="nav-link text-dark"
+                  >
+                    All Products
+                  </Link>
                 </li>
                 <li>
                   <Link href="/blog" className="nav-link text-dark">
@@ -314,6 +332,11 @@ const Navbar = () => {
                 <li>
                   <Link href="/about-us" className="nav-link text-dark">
                     About Us
+                  </Link>
+                </li>
+                <li data-bs-dismiss="offcanvas">
+                  <Link href="/contact-us" className="nav-link">
+                    Contact Us
                   </Link>
                 </li>
                 {/* <li>

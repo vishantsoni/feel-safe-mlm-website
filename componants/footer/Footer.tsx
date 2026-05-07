@@ -129,39 +129,39 @@ const Footer = () => {
                     </Link>
                   </li>
                   <li className="menu-item">
-                    <Link href="contact-us" className="nav-link">
+                    <Link href="/contact-us" className="nav-link">
                       Contact
                     </Link>
                   </li>
                   <li className="menu-item">
-                    <Link href="privacy-policy" className="nav-link">
+                    <Link href="/privacy-policy" className="nav-link">
                       Privacy Policy
                     </Link>
                   </li>
                   <li className="menu-item">
-                    <Link href="terms-conditions" className="nav-link">
+                    <Link href="/terms-conditions" className="nav-link">
                       Terms & Conditions
                     </Link>
                   </li>
                   <li className="menu-item">
-                    <Link href="legal-disclaimer" className="nav-link">
+                    <Link href="/legal-disclaimer" className="nav-link">
                       Legal Disclaimer
                     </Link>
                   </li>
 
                   <li className="menu-item">
-                    <Link href="shipping-policy" className="nav-link">
+                    <Link href="/shipping-policy" className="nav-link">
                       Shipping Policy
                     </Link>
                   </li>
                   <li className="menu-item">
-                    <Link href="return-refund-policy" className="nav-link">
+                    <Link href="/return-refund-policy" className="nav-link">
                       Returns & Refunds
                     </Link>
                   </li>
 
                   <li className="menu-item">
-                    <Link href="return-buyback-policy" className="nav-link">
+                    <Link href="/return-buyback-policy" className="nav-link">
                       Return & Buyback Policy
                     </Link>
                   </li>
@@ -209,9 +209,9 @@ const Footer = () => {
                       style={{ width: "24px", height: "24px" }}>
                       <MapPin size={20} style={{ color: "#8DC63F" }} />
                     </div>
-                    <span className="nav-link p-0 small lh-sm">
+                    <a href="https://maps.app.goo.gl/nvPBzD8zxeGCdP2n7" target="_blank" className="nav-link p-0 small lh-sm">
                       {contact_data?.address || "KharKhari Nahar, Near MCD School, Najafgarh, South West, New Delhi, Delhi – 110043, INDIA"}
-                    </span>
+                    </a>
                   </li>
 
 

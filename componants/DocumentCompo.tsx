@@ -1,13 +1,14 @@
 "use client"
 import React from "react";
 import { FileText, Award, Shield, Globe, Landmark, Fingerprint } from "lucide-react";
+import { host } from "@/lib/constantFunction";
 
 const documents = [
     {
         id: "gst",
         title: "GST Certificate",
         description: "Goods and Services Tax Registration Certificate",
-        imageUrl: `${process.env.APP_URL}/uploads/docs/gst.jpeg`,
+        imageUrl: `${host}/uploads/docs/gst.jpeg`,
         icon: FileText,
         color: "#8DC63F",
         bg: "#C4DF9B",
@@ -16,7 +17,7 @@ const documents = [
         id: "udyam",
         title: "UDYAM Certificate",
         description: "MSME Registration Certificate (UDYAM)",
-        imageUrl: `${process.env.APP_URL}/uploads/docs/msme.jpeg`,
+        imageUrl: `${host}/uploads/docs/msme.jpeg`,
         icon: Shield,
         color: "#00A9E0",
         bg: "#BDE1F3",
@@ -25,7 +26,7 @@ const documents = [
         id: "iec",
         title: "MCA Certificate",
         description: "Incorporation Certificate",
-        imageUrl: `${process.env.APP_URL}/uploads/docs/mca.jpeg`,
+        imageUrl: `${host}/uploads/docs/mca.jpeg`,
         icon: Landmark,
         color: "#E6519B",
         bg: "#fce4ec",
@@ -34,7 +35,7 @@ const documents = [
         id: "pan",
         title: "PAN Certificate",
         description: "Permanent Account Number Card of Company",
-        imageUrl: `${process.env.APP_URL}/uploads/docs/pan.jpeg`,
+        imageUrl: `${host}/uploads/docs/pan.jpeg`,
         icon: Fingerprint,
         color: "#00A9E0",
         bg: "#BDE1F3",
@@ -43,7 +44,7 @@ const documents = [
         id: "income",
         title: "Income Tax",
         description: "Income Tax Certification",
-        imageUrl: `${process.env.APP_URL}/uploads/docs/income_tax.jpeg`,
+        imageUrl: `${host}/uploads/docs/income_tax.jpeg`,
         icon: Globe,
         color: "#8DC63F",
         bg: "#C4DF9B",
@@ -67,7 +68,7 @@ const DocumentCompo = () => {
                         Company <span style={{ color: "#00A9E0" }}>Legal Documents</span>
                     </h1>
                     <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#E6519B", letterSpacing: "1px" }}>
-                        Feel Safe Private Limited
+                        Feel Safe Pvt. Ltd.
                     </h5>
                     <p className="text-muted small">CIN: U13996DL2026PTC465812</p>
                     <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />

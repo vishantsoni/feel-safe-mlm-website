@@ -60,7 +60,7 @@ const TermsAndConditions = () => {
                                 Terms & <span style={{ color: "#E6519B" }}>Conditions</span>
                             </h1>
                             <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
-                                Feel Safe Private Limited
+                                Feel Safe Pvt. Ltd.
                             </h5>
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="fw-bold" style={{ color: "#00A9E0" }}>Women Empowerment & Hygiene Awareness Campaign</p>

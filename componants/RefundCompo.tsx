@@ -32,7 +32,7 @@ const RefundCompo = () => {
                                 Refund <span style={{ color: "#E6519B" }}>Policy</span>
                             </h1>
                             <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
-                                Feel Safe Private Limited
+                                Feel Safe Pvt. Ltd.
                             </h5>
                             <p className="text-muted small">Hamara Prayas, Aapki Suraksha</p>
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />

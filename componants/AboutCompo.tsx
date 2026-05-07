@@ -50,7 +50,7 @@ const AboutCompo = () => {
                                 CIN: U13996DL2026PTC465812
                             </span>
                             <h1 className="display-3 fw-bold mb-3" style={{ color: "#1C1C1C" }}>
-                                Feel Safe <span style={{ color: "#00A9E0" }}>Private Limited</span>
+                                Feel Safe <span style={{ color: "#00A9E0" }}>Pvt. Ltd.</span>
                             </h1>
                             <h3 className="h4 text-uppercase fw-bold mb-4" style={{ color: "#E6519B", letterSpacing: "1px" }}>
                                 Hamara Prayas, Aapki Suraksha

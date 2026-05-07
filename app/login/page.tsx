@@ -26,7 +26,7 @@ export default function LoginPage() {
       })) as LoginResponse;
       if (res.status && res.token) {
         Cookies.set("token", res.token as string, { expires: 1 });
-        window.location.href = "http://localhost:3000";
+        window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}`;
       } else {
         setError(res.message || "Login Failed");
       }
@@ -50,7 +50,7 @@ export default function LoginPage() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
-              <div className="card shadow-lg border-0">
+              <div className="card shadow-lg border-0" style={{ backgroundColor: "#ffbede" }}>
                 <div className="card-body p-5">
                   <div className="text-center mb-5">
                     <Image
@@ -62,11 +62,11 @@ export default function LoginPage() {
                       priority
                     />
                     <h1 className="fw-bold mb-1" style={{ color: "#1C1C1C" }}>
-                      Login to Feel Safe MLM
+                      Login to Feel Safe
                     </h1>
-                    <p className="text-muted">
-                      Sign in to your distributor account
-                    </p>
+                    {/* <p className="text-muted">
+                      Sign in to your account
+                    </p> */}
                   </div>
 
                   {error && (
@@ -166,7 +166,7 @@ export default function LoginPage() {
                     </p>
                     <Link
                       href="/register"
-                      className="btn btn-outline-primary px-4 py-2 fw-semibold"
+                      className="btn btn-primary px-4 py-2 fw-semibold"
                     >
                       Sign Up Now
                     </Link>

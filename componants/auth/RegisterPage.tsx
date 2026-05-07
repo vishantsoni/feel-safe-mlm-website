@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import serverCallFuction from "@/lib/constantFunction";
 import { APIResponse } from "@/lib/types/User";
+import TermsAndConditions from "../TermsCompo";
+import PrivacyPolicy from "@/app/privacy-policy/page";
 
 interface FormData {
   phone: string;
@@ -39,6 +41,7 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isTermsChecked, setIsTermsChecked] = useState(false);
+  const [modalContent, setModalContent] = useState<string | null>(null);
 
   const validateStep = () => {
     switch (step) {
@@ -49,9 +52,12 @@ export default function RegisterPage() {
       case 2:
         return formData.name.trim().length > 0;
       case 3:
+
+        const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/;
+
         return (
           formData.email.includes("@") &&
-          formData.password.length >= 6 &&
+          strongPasswordRegex.test(formData.password) && // New Validation
           formData.password === formData.confirmPassword
         );
       default:
@@ -59,13 +65,56 @@ export default function RegisterPage() {
     }
   };
 
-  const nextStep = () => {
-    if (validateStep()) {
-      setStep(step + 1);
-      setError("");
-    } else {
-      setError("Please fill valid details for this step");
+
+  const fetchDistributor = async (referral: string) => {
+    setLoading(true); // Start loading during API check
+    setError("");
+    try {
+      const res = await serverCallFuction("GET", `api/users/profile-by-referral?referral_code=${referral}`);
+      if (res.status) {
+        setLoading(false);
+        return true; // Valid code
+      } else {
+        setError(res.error || "Invalid Distributor Code");
+        setLoading(false);
+        return false; // Invalid code
+      }
+    } catch (error) {
+      setError("Error verifying distributor code");
+      setLoading(false);
+      return false;
     }
+  };
+
+  const nextStep = async () => {
+
+    if (!validateStep()) {
+      setError("Please fill valid details for this step");
+      return;
+    }
+
+    // Logic for Step 2: Distributor Code Check
+    if (step === 2) {
+      const code = formData.distributor_code;
+
+      // If the field is NOT empty, we must validate it
+      if (code !== null && code !== undefined && String(code).trim() !== "") {
+        const isValid = await fetchDistributor(String(code));
+        if (!isValid) return; // Stop here if the code is invalid
+      }
+    }
+
+    // If we pass all checks, move to next step
+    setStep(step + 1);
+    setError("");
+
+
+    // if (validateStep()) {
+    //   setStep(step + 1);
+    //   setError("");
+    // } else {
+    //   setError("Please fill valid details for this step");
+    // }
   };
 
   const prevStep = () => {
@@ -75,6 +124,20 @@ export default function RegisterPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+
+    // Final Security Check
+    const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/;
+    if (!strongPasswordRegex.test(formData.password)) {
+      setError("Password must have at least 6 characters, 1 number, and 1 special character.");
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -98,7 +161,7 @@ export default function RegisterPage() {
           router.push("/login");
         }, 3000);
       } else {
-        setError(res.message || "Registration Failed");
+        setError(res?.message);
       }
     } catch (err: unknown) {
       const errorMessage =
@@ -121,7 +184,7 @@ export default function RegisterPage() {
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
               <div className="card shadow-lg border-0">
-                <div className="card-body p-5">
+                <div className="card-body p-5" style={{ backgroundColor: "#ffbede" }}>
                   <div className="text-center mb-5">
                     <Image
                       src="/assets/images/logo.png"
@@ -192,11 +255,19 @@ export default function RegisterPage() {
                           type="tel"
                           className="form-control form-control-lg bg-light border-0 py-3"
                           id="phone"
-                          value={formData.phone}
-                          onChange={(e) =>
-                            setFormData({ ...formData, phone: e.target.value })
-                          }
+                          value={formData.phone || ""}
+                          onChange={(e) => {
+                            // 1. Remove all non-numeric characters immediately
+                            const val = e.target.value.replace(/\D/g, "");
+
+                            // 2. Validate: Must start with 6-9 AND not exceed 10 digits
+                            // (val === "" allows the user to backspace/clear the input)
+                            if (val === "" || (/^[6-9]/.test(val) && val.length <= 10)) {
+                              setFormData({ ...formData, phone: val });
+                            }
+                          }}
                           placeholder="Enter 10-digit phone (e.g. 9876543210)"
+                          // maxLength is a good backup, but the logic above handles it too
                           maxLength={10}
                         />
                       </div>
@@ -228,20 +299,42 @@ export default function RegisterPage() {
                           >
                             Distributor Code (Optional)
                           </label>
+
                           <input
-                            type="number"
+                            type="text"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="distributor_code"
                             value={formData.distributor_code || ""}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                              const val = e.target.value;
+                              setFormData({
+                                ...formData,
+                                // Keep as string for validation, or parseInt if your state requires number
+                                distributor_code: val,
+                              });
+                            }}
+                            placeholder="Enter distributor code if you have one"
+                          />
+                          {loading && step === 2 && (
+                            <small className="text-primary">Verifying code...</small>
+                          )}
+                          {/* <input
+                            type="text"
+                            className="form-control form-control-lg bg-light border-0 py-3"
+                            id="distributor_code"
+                            value={formData.distributor_code || ""}
+                            onChange={(e) => {
+
+
+
                               setFormData({
                                 ...formData,
                                 distributor_code:
                                   parseInt(e.target.value) || null,
                               })
-                            }
+                            }}
                             placeholder="Enter distributor code if you have one"
-                          />
+                          /> */}
                         </div>
                       </>
                     )}
@@ -275,7 +368,7 @@ export default function RegisterPage() {
                           >
                             Password
                           </label>
-                          <input
+                          {/* <input
                             type="password"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="password"
@@ -287,7 +380,31 @@ export default function RegisterPage() {
                               })
                             }
                             placeholder="At least 6 characters"
+                          /> */}
+
+                          <input
+                            type="text"
+                            className="form-control form-control-lg bg-light border-0 py-3"
+                            id="password"
+                            value={formData.password}
+                            onChange={(e) =>
+                              setFormData({ ...formData, password: e.target.value })
+                            }
+                            placeholder="Password"
                           />
+                          <div className="form-text mt-2">
+                            <small className={formData.password.length >= 6 ? "text-success" : "text-muted"}>
+                              ✓ Min 6 characters
+                            </small>
+                            <br />
+                            <small className={/[0-9]/.test(formData.password) ? "text-success" : "text-muted"}>
+                              ✓ At least 1 number
+                            </small>
+                            <br />
+                            <small className={/[!@#$%^&*]/.test(formData.password) ? "text-success" : "text-muted"}>
+                              ✓ At least 1 special character (@, #, $, etc.)
+                            </small>
+                          </div>
                         </div>
                         <div className="mb-4">
                           <label
@@ -297,7 +414,7 @@ export default function RegisterPage() {
                             Confirm Password
                           </label>
                           <input
-                            type="password"
+                            type="text"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="confirmPassword"
                             value={formData.confirmPassword}
@@ -325,19 +442,22 @@ export default function RegisterPage() {
                         />
                         <label className="form-check-label" htmlFor="terms">
                           I agree to the{" "}
-                          <Link
-                            href="/terms-conditions"
-                            className="text-decoration-none"
+                          <span
+                            className="text-primary cursor-pointer text-decoration-underline"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setModalContent("Terms & Conditions")}
                           >
                             Terms
-                          </Link>{" "}
+                          </span>{" "}
+
                           and{" "}
-                          <Link
-                            href="/privacy-policy"
-                            className="text-decoration-none"
+                          <span
+                            className="text-primary cursor-pointer text-decoration-underline"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => setModalContent("Privacy Policy")}
                           >
                             Privacy Policy
-                          </Link>
+                          </span>{" "}
                         </label>
                       </div>
                     )}
@@ -387,7 +507,7 @@ export default function RegisterPage() {
                     <p className="text-muted mb-0">Already have an account?</p>
                     <Link
                       href="/login"
-                      className="btn btn-outline-primary px-4 py-2 fw-semibold"
+                      className="btn btn-primary px-4 py-2 fw-semibold"
                     >
                       Login Here
                     </Link>
@@ -395,6 +515,41 @@ export default function RegisterPage() {
                 </div>
               </div>
             </div>
+
+            {/* Simple Popup Modal */}
+            {modalContent && (
+              <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex={-1}>
+                <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+                  <div className="modal-content border-0 shadow">
+                    <div className="modal-header bg-light">
+                      <h5 className="modal-title fw-bold">{modalContent}</h5>
+                      <button
+                        type="button"
+                        className="btn-close"
+                        onClick={() => setModalContent(null)}
+                      ></button>
+                    </div>
+                    <div className="modal-body p-4">
+
+                      {modalContent === "Terms & Conditions" ?
+                        <TermsAndConditions /> : <PrivacyPolicy />}
+
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={() => setModalContent(null)}
+                      >
+                        I Understand
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+
           </div>
         </div>
       </div>
