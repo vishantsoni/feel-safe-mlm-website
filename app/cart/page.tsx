@@ -17,7 +17,10 @@ const CartPage = () => {
   const handleQuantityChange = async (itemId: string, newQty: number) => {
     if (newQty < 1) return;
     setLocalLoading(true);
-    await updateQuantity(itemId, newQty);
+    const res = await updateQuantity(itemId, newQty);
+    if (!res.status) {
+      alert(res.message || "Failed to update quantity. Please try again.");
+    }
     setLocalLoading(false);
   };
 
@@ -28,6 +31,20 @@ const CartPage = () => {
       setLocalLoading(false);
     }
   };
+
+
+  // 1. Get an array of all distributor_ids (numbers or null)
+  const distributorIds = cart?.items.map(item => item.distributor_id);
+
+  // 2. Check if every ID is the same as the first one
+  const isConsistentFormat = distributorIds?.every(id => id === distributorIds[0]);
+
+  // 3. Optional: Determine the error message
+  const formatError = !isConsistentFormat
+    ? "Mixed shipments detected. Please ensure all items are from the same distributor or all from Admin."
+    : null;
+
+
 
   if (loading || localLoading) {
     return (
@@ -97,15 +114,15 @@ const CartPage = () => {
                 <tbody>
                   {cart.items.map((item) => {
                     const subtotalItem = Number(item.price) * item.quantity;
-                    const imgSrc = item.f_image?.startsWith('http') || item.f_image?.startsWith('/') 
-                      ? item.f_image 
+                    const imgSrc = item.f_image?.startsWith('http') || item.f_image?.startsWith('/')
+                      ? item.f_image
                       : `/assets/product/${item.f_image}`;
                     return (
                       <tr key={item.id}>
                         <td>
                           <div className="d-flex align-items-center">
-                            <Image 
-                              src={imgSrc} 
+                            <Image
+                              src={imgSrc}
                               alt={item.product_name}
                               width={80}
                               height={80}
@@ -119,13 +136,13 @@ const CartPage = () => {
                                 <h6 className="mb-1">{item.product_name}</h6>
                               </Link>
                               {item.variant_details && item.variant_details.attributes.map((attr, idx) => (
-                                <small 
+                                <small
                                   key={idx}
                                   className="badge bg-primary text-white d-block"
                                 >
-                                  {attr.attribute_name}: {attr.value}
-                                  </small>
-                              
+                                  {attr.attribute_name}: {attr.attribute_val}
+                                </small>
+
                               ))}
                               {/* <small className="text-muted">ID: {item.id.slice(-8)}</small> */}
                             </div>
@@ -139,9 +156,9 @@ const CartPage = () => {
                         </td>
                         <td>
                           <div className="d-flex align-items-center">
-                            <button 
-                              className="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center" 
-                              style={{width: '32px', height: '32px'}}
+                            <button
+                              className="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                              style={{ width: '32px', height: '32px' }}
                               onClick={() => {
                                 if (item.quantity === 1) {
                                   handleRemove(item.id);
@@ -162,9 +179,9 @@ const CartPage = () => {
                               {/* <Minus size={16} /> */}
                             </button>
                             <span className="mx-3 fw-bold fs-6 px-3 py-1 bg-light rounded">{item.quantity}</span>
-                            <button 
-                              className="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center" 
-                              style={{width: '32px', height: '32px'}}
+                            <button
+                              className="btn btn-outline-secondary btn-sm rounded-circle d-flex align-items-center justify-content-center"
+                              style={{ width: '32px', height: '32px' }}
                               onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                               disabled={localLoading}
                             >
@@ -179,7 +196,7 @@ const CartPage = () => {
                           </span>
                         </td>
                         <td>
-                          <button 
+                          <button
                             className="btn btn-outline-danger btn-sm"
                             onClick={() => handleRemove(item.id)}
                             disabled={localLoading}
@@ -197,7 +214,7 @@ const CartPage = () => {
         </div>
 
         <div className="col-lg-4">
-          <div className="card border-0 shadow-sm sticky-top" style={{top: '20px'}}>
+          <div className="card border-0 shadow-sm sticky-top" style={{ top: '20px' }}>
             <div className="card-body p-4">
               <h5 className="fw-bold mb-3">Order Summary</h5>
               <div className="d-flex justify-content-between mb-3">
@@ -215,9 +232,21 @@ const CartPage = () => {
                   {Number(cart.total).toFixed(2)}
                 </span>
               </div>
-              <Link href="/checkout" className="btn btn-primary w-100 mb-3 btn-lg">
-                Proceed to Checkout
-              </Link>
+
+              {!isConsistentFormat && (
+                <div className="alert alert-warning py-2 mb-3" style={{ fontSize: '13px' }}>
+                  <strong>Format Mismatch:</strong> {formatError}
+                </div>
+              )}
+              {isConsistentFormat ? (
+                <Link href="/checkout" className="btn btn-primary w-100 mb-3 btn-lg">
+                  Proceed to Checkout
+                </Link>
+              ) : (
+                <button className="btn btn-secondary w-100 mb-3 btn-lg" disabled title={formatError}>
+                  Invalid Cart Format
+                </button>
+              )}
               <Link href="/" className="btn btn-outline-secondary w-100">
                 <ArrowLeft className="me-2" size={18} />
                 Continue Shopping

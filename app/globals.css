@@ -48,6 +48,10 @@ a {
   line-height: 1.8;
   font-size: 1.1rem;
 }
+
+.form-check .form-check-input {
+  border: 1px solid #e6519b;
+}
 /* :global(.post-content img) {
   max-width: 100%;
   height: auto;

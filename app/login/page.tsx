@@ -24,6 +24,8 @@ export default function LoginPage() {
         email,
         password,
       })) as LoginResponse;
+
+
       if (res.status && res.token) {
         Cookies.set("token", res.token as string, { expires: 1 });
         window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}`;

@@ -3,6 +3,7 @@ interface Product {
   name: string;
   slug: string;
   description: string;
+  short_desc: string;
   base_price: number;
   discounted_price: number;
   rating: number;

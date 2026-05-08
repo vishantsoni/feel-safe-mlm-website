@@ -763,3 +763,6 @@ footer {
     height: 740px;
   }
 }
+.logo-font {
+  font-size: calc(1rem + 0.7vw);
+}

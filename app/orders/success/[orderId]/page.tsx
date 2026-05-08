@@ -107,10 +107,9 @@ async function OrderSuccessPage({ params }: Props) {
                     <strong className="d-block mb-2 text-muted text-uppercase small">
                       Shipping Address
                     </strong>
-                    <p className="mb-1 fw-bold">
-                      {order.shipping_address?.full_address}
-                    </p>
-                    <p className="mb-1">
+                    <p className="mb-0 fw-bold">
+                      {order.shipping_address?.address_line1}, {order.shipping_address?.address_line2},
+
                       {order.shipping_address?.city},{" "}
                       {order.shipping_address?.state} -{" "}
                       {order.shipping_address?.pincode}

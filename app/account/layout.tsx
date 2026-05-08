@@ -52,7 +52,7 @@ export default function AccountLayout({
   return (
     <ProtectedRoute>
       <div className="bg-light py-5 min-vh-100">
-        <div className="container">
+        <div className="container-fluid">
           <div className="row g-4">
             {/* Sidebar */}
             <div className="col-lg-3">

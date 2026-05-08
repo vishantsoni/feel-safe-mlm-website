@@ -58,6 +58,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     variantId: string | null,
     quantity: number,
     price: number,
+    distributor_id: number | null,
   ) => {
     if (!cart) return;
     try {
@@ -67,10 +68,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
         variation_id: variantId,
         quantity,
         price,
+        distributor_id
       } as BodyData);
       if (res.status) {
         await refreshCart();
       }
+
+      return res;
     } catch (error) {
       console.error("Failed to add item:", error);
     } finally {
@@ -101,6 +105,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (res.status) {
         await refreshCart();
       }
+
+      return res;
     } catch (error) {
       console.error("Failed to update quantity:", error);
     } finally {

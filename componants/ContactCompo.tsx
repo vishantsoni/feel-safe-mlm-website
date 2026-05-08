@@ -5,6 +5,7 @@ import { useAuth } from '@/lib/contexts/AuthContext';
 import { raiseTicket } from '@/lib/supportApi';
 import type { CreateTicketData } from '@/lib/types/Ticket';
 import Link from 'next/link';
+import LogoCompo from './logo/LogoCompo';
 
 const ContactCompo = () => {
     const { getSettingByKey, user } = useAuth()
@@ -113,12 +114,13 @@ const ContactCompo = () => {
                         Contact <span style={{ color: "#00A9E0" }}>Us</span>
                     </h1>
 
-                    <h3 className="text-uppercase fw-bold mb-3" style={{ color: "#E6519B", letterSpacing: "1px" }}>
+                    {/* <h3 className="text-uppercase fw-bold mb-3" style={{ color: "#E6519B", letterSpacing: "1px" }}>
                         Feel Safe Pvt. Ltd.
                     </h3>
                     <h6 className="text-uppercase fw-bold mb-3" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
                         Hamara Prayas, Aapki Suraksha
-                    </h6>
+                    </h6> */}
+                    <LogoCompo />
                     <p className="lead text-muted mx-auto mb-0" style={{ maxWidth: "700px" }}>
                         We’re here to help you! If you have any questions about our products,
                         services, or Feel Safe Sakhi Yojna, feel free to reach out.

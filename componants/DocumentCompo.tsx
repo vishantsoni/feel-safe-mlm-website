@@ -2,6 +2,7 @@
 import React from "react";
 import { FileText, Award, Shield, Globe, Landmark, Fingerprint } from "lucide-react";
 import { host } from "@/lib/constantFunction";
+import LogoCompo from "./logo/LogoCompo";
 
 const documents = [
     {
@@ -64,12 +65,13 @@ const DocumentCompo = () => {
                         style={{ width: "80px", height: "80px" }}>
                         <FileText size={40} color="#00A9E0" />
                     </div>
-                    <h1 className="display-5 fw-bold" style={{ color: "#1C1C1C" }}>
+                    {/* <h1 className="display-5 fw-bold" style={{ color: "#1C1C1C" }}>
                         Company <span style={{ color: "#00A9E0" }}>Legal Documents</span>
                     </h1>
                     <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#E6519B", letterSpacing: "1px" }}>
                         Feel Safe Pvt. Ltd.
-                    </h5>
+                    </h5> */}
+                    <LogoCompo />
                     <p className="text-muted small">CIN: U13996DL2026PTC465812</p>
                     <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
                 </div>

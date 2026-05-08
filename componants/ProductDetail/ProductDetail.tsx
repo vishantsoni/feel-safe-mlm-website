@@ -12,9 +12,10 @@ interface Props {
   product: Product;
   attributes: ProductAttributes[];
   variants: ProVariant[];
+  dId: number | null;
 }
 
-const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
+const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) => {
   const [selectedImage, setSelectedImage] = useState(product.f_image);
   const [quantity, setQuantity] = useState(1);
   const [selectedAttributes, setSelectedAttributes] = useState<
@@ -79,6 +80,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
     () => (currentVariant ? currentVariant.price : basePrice),
     [currentVariant, basePrice],
   );
+  console.log("current variant - ", currentVariant);
 
   const taxablePrice = useMemo(
     () =>
@@ -100,14 +102,20 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
     }
 
     try {
-      await addItem(
+      const res = await addItem(
         product.id,
         currentVariant ? currentVariant.id.toString() : null,
         quantity,
         taxablePrice,
+        dId
       );
-      setMessageType("success");
-      setMessage(`Added ${quantity} item(s) to cart!`);
+      if (res.status) {
+        setMessageType("success");
+        setMessage(`Added ${quantity} item(s) to cart!`);
+      } else {
+        setMessageType("error");
+        setMessage(res.message || "Failed to add to cart. Please try again.");
+      }
     } catch (error) {
       console.error("Add to cart failed:", error);
       setMessageType("error");
@@ -185,7 +193,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
             <span className="fw-bold mb-2 badge bg-primary">
               {product.category?.name}
             </span>
-            {/* <p className="lead mb-2">{product.description}</p> */}
+            <p className="lead mb-2">{product?.short_desc}</p>
 
             <div className="">
               <span className="fs-1 fw-bold text-success">
@@ -297,6 +305,8 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants }) => {
                 )}
               </div>
             </div>
+            <div>admin - {currentVariant ? currentVariant.admin_inventory : product.admin_stock}</div>
+            <div>Distributor - {currentVariant ? currentVariant.distributor_inventory : product.distributor_stock}</div>
 
             {/* Quick Specs */}
             {/* <div className="mb-4">

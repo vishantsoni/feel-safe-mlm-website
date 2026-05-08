@@ -4,6 +4,7 @@ import React from "react";
 import { ShieldCheck, Info, Scale, Landmark, PhoneCall, Mail, MapPin } from "lucide-react";
 import { useAuth } from "@/lib/contexts/AuthContext";
 import { ContactData } from "@/lib/types/Setting";
+import LogoCompo from "./logo/LogoCompo";
 
 
 const TermsAndConditions = () => {
@@ -59,9 +60,10 @@ const TermsAndConditions = () => {
                             <h1 className="fw-bold display-5" style={{ color: "#1C1C1C" }}>
                                 Terms & <span style={{ color: "#E6519B" }}>Conditions</span>
                             </h1>
-                            <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
+                            {/* <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
                                 Feel Safe Pvt. Ltd.
-                            </h5>
+                            </h5> */}
+                            <LogoCompo />
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="fw-bold" style={{ color: "#00A9E0" }}>Women Empowerment & Hygiene Awareness Campaign</p>
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />

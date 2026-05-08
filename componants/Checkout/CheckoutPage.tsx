@@ -17,6 +17,7 @@ import {
   setDefaultAddress,
 } from "@/lib/addressApi";
 import Script from "next/script";
+import { useAuth } from "@/lib/contexts/AuthContext";
 
 interface CheckoutItem {
   product_id: number;
@@ -35,6 +36,9 @@ const CheckoutPage = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { cart, loading: cartLoading, fetchCart, refreshCart } = useCart();
+  const { user } = useAuth();
+
+  const dId = user?.distributor_info?.id || ""; //
 
   const productId = searchParams.get("productId");
   const variantIdParam = searchParams.get("variantId");
@@ -58,7 +62,7 @@ const CheckoutPage = () => {
     phone: "",
   });
   const [couponCode, setCouponCode] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<string>("wallet");
+  const [paymentMethod, setPaymentMethod] = useState<string>("razorpay"); // COD for non-distributors
   const [orderLoading, setOrderLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -90,25 +94,25 @@ const CheckoutPage = () => {
   const displayItems = isCartMode
     ? cart!.items
     : singleItem
-    ? [singleItem]
-    : [];
+      ? [singleItem]
+      : [];
 
   const subTotal = isCartMode
     ? Number(cart!.subtotal)
     : singleItem
-    ? singleItem.price * singleItem.quantity
-    : 0;
+      ? singleItem.price * singleItem.quantity
+      : 0;
   const totalAmount = isCartMode
     ? Number(cart!.total)
     : singleItem
-    ? singleItem.price * singleItem.quantity
-    : 0;
+      ? singleItem.price * singleItem.quantity
+      : 0;
 
   const tax_amount = isCartMode
     ? Number(cart!.total_tax)
     : singleItem
-    ? singleItem.price * singleItem.quantity
-    : 0;
+      ? singleItem.price * singleItem.quantity
+      : 0;
 
   useEffect(() => {
     const loadCart = async () => {
@@ -123,6 +127,7 @@ const CheckoutPage = () => {
     };
     loadCart();
   }, []);
+
 
   useEffect(() => {
     if (!isCartMode && productId && slug) {
@@ -311,91 +316,52 @@ const CheckoutPage = () => {
     }
   };
 
-  // const handlePlaceOrder = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setOrderLoading(true);
-  //   setError("");
 
-  //   const useAddress = selectedAddress || null;
-  //   if (
-  //     !useAddress &&
-  //     (!formData.fullAddress ||
-  //       !formData.city ||
-  //       !formData.pincode ||
-  //       !formData.phone)
-  //   ) {
-  //     setError("Please select an address or fill manual shipping address.");
-  //     setOrderLoading(false);
-  //     return;
-  //   }
+  // Validation: All items must have the same distributor_id (or all be null/Admin)
+  const isConsistentFormat = isCartMode
+    ? cart!.items.every(item => item.distributor_id === cart!.items[0].distributor_id)
+    : true; // Single item checkout is always consistent
 
-  //   if (displayItems.length === 0) {
-  //     setError("No items to checkout. Go to cart.");
-  //     setOrderLoading(false);
-  //     return;
-  //   }
+  const formatError = !isConsistentFormat
+    ? "Mixed Fulfillment Error: Your cart contains items from different sources. Please ensure all items are from the same distributor or all from Main Store in your cart."
+    : null;
 
-  //   const orderItems = displayItems.map(
-  //     (item: CartItem | CheckoutItem) =>
-  //       ({
-  //         product_id: item.product_id,
-  //         variation_id: item.variation_id || null,
-  //         quantity: Number(item.quantity || (item as any).qty || 1),
-  //         price: Number((item.price as any) || (item as any).unit_price),
-  //         product_name: item.product_name || "Unknown Product",
-  //         ...(item.variant_details && {
-  //           variant_sku: "Variant",
-  //           variant_details: JSON.stringify(item.variant_details),
-  //         }),
-  //       } as any),
-  //   );
+  // useEffect(() => {
 
-  //   const shippingData = useAddress
-  //     ? {
-  //         address_line1: useAddress.address_line1,
-  //         address_line2: useAddress.address_line2,
-  //         city: useAddress.city,
-  //         state: useAddress.state,
-  //         pincode: useAddress.pincode,
-  //         phone: useAddress.phone,
-  //       }
-  //     : {
-  //         address_line1: formData.address_line1,
-  //         address_line2: formData.address_line2,
-
-  //         city: formData.city!,
-  //         state: formData.state,
-  //         pincode: formData.pincode!,
-  //         phone: formData.phone!,
-  //       };
-
-  //   const orderData = {
-  //     items: orderItems,
-  //     shipping_address: shippingData,
-  //     coupon_code: couponCode || undefined,
-  //     payment_method: paymentMethod,
-  //     order_for: "distributor_65",
-  //   };
-
-  //   try {
-  //     const res = (await serverCallFuction(
-  //       "POST",
-  //       "api/orders",
-  //       orderData,
-  //     )) as any;
-  //     const data = res;
-  //     if (data?.success) {
-  //       await refreshCart();
-  //       router.push(`/orders/success/${data.data.order_id}`);
+  //   // let determinedPaymentMethod = "razorpay"; // Default to online payment
+  //   if (dId === "") {
+  //     //admin
+  //     setPaymentMethod("razorpay");
+  //   } else {
+  //     if (cart?.items[0].distributor_id === null) {
+  //       setPaymentMethod("razorpay");
   //     } else {
-  //       setError(data?.message || "Order failed");
+  //       setPaymentMethod("cod");
   //     }
-  //   } catch (err: any) {
-  //     setError(err.message || "Order placement failed");
-  //   } finally {
-  //     setOrderLoading(false);
   //   }
-  // };
+
+  //   // setPaymentMethod(dId === "" ? "razorpay" : "cod")
+  // }, [cart, dId])
+
+  useEffect(() => {
+    // 1. Check if user is Admin or Distributor
+    if (dId === "") {
+      setPaymentMethod("razorpay");
+    } else {
+      // 2. Check if cart items exist before accessing the first item
+      if (cart && cart.items && cart.items.length > 0) {
+        // Safe access using optional chaining
+        if (cart.items[0].distributor_id === null) {
+          setPaymentMethod("razorpay");
+        } else {
+          setPaymentMethod("cod");
+        }
+      } else {
+        // Default fallback if cart is empty
+        setPaymentMethod("razorpay");
+      }
+    }
+  }, [cart, dId]);
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -441,29 +407,29 @@ const CheckoutPage = () => {
 
     const shippingData = useAddress
       ? {
-          address_line1: useAddress.address_line1,
-          address_line2: useAddress.address_line2,
-          city: useAddress.city,
-          state: useAddress.state,
-          pincode: useAddress.pincode,
-          phone: useAddress.phone,
-          full_name: useAddress.full_name, // Recommended
-        }
+        address_line1: useAddress.address_line1,
+        address_line2: useAddress.address_line2,
+        city: useAddress.city,
+        state: useAddress.state,
+        pincode: useAddress.pincode,
+        phone: useAddress.phone,
+        full_name: useAddress.full_name, // Recommended
+      }
       : {
-          address_line1: formData.address_line1 || formData.fullAddress,
-          address_line2: formData.address_line2,
-          city: formData.city,
-          state: formData.state,
-          pincode: formData.pincode,
-          phone: formData.phone,
-        };
+        address_line1: formData.address_line1 || formData.fullAddress,
+        address_line2: formData.address_line2,
+        city: formData.city,
+        state: formData.state,
+        pincode: formData.pincode,
+        phone: formData.phone,
+      };
 
     const orderPayload = {
       items: orderItems,
       shipping_address: shippingData,
       coupon_code: couponCode || undefined,
       payment_method: paymentMethod,
-      order_for: "distributor_65",
+      order_for: dId === "" ? "admin" : `distributor_${dId}`,
     };
 
     try {
@@ -476,13 +442,13 @@ const CheckoutPage = () => {
 
       if (res.success) {
         // iniitpayment flow
-        // if (paymentMethod === "razorpay") {
-        handlepayment(res);
-        // }
+        if (paymentMethod === "razorpay") {
+          handlepayment(res);
+        }
 
-        // await refreshCart();
-        // const orderId = res.data?.order_id || res.order_id;
-        // router.push(`/orders/success/${orderId}`);
+        await refreshCart();
+        const orderId = res.data?.order_id || res.order_id;
+        router.push(`/orders/success/${orderId}`);
       } else {
         console.log("order placed res =- ", res);
 
@@ -648,16 +614,17 @@ const CheckoutPage = () => {
                           </thead>
                           <tbody>
                             {displayItems.map((item, idx) => {
+                              const unit_price = parseFloat(item.unit_price);
                               let total_price = parseFloat(item.price);
                               let taxable_amount = 0;
 
                               if (item.tax_data != null) {
                                 taxable_amount =
-                                  (total_price *
+                                  (unit_price *
                                     parseFloat(item.tax_data.percentage)) /
                                   100;
 
-                                total_price += taxable_amount;
+                                // total_price += taxable_amount;
                               }
 
                               return (
@@ -682,25 +649,25 @@ const CheckoutPage = () => {
                                         </div>
                                         {item.variant_details
                                           ? item.variant_details.attributes.map(
-                                              (attr, idx) => (
-                                                <small
-                                                  key={idx}
-                                                  className="badge bg-primary text-white d-block"
-                                                >
-                                                  {attr.attribute_name}:{" "}
-                                                  {attr.value}
-                                                </small>
-                                              ),
-                                            )
+                                            (attr, idx) => (
+                                              <small
+                                                key={idx}
+                                                className="badge bg-primary text-white d-block"
+                                              >
+                                                {attr.attribute_name}:{" "}
+                                                {attr.attribute_val}
+                                              </small>
+                                            ),
+                                          )
                                           : "N/A"}
                                       </div>
                                     </div>
                                   </td>
                                   <td>
-                                    <ul style={{ listStyle: "none" }}>
-                                      <li>
+                                    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+                                      <li>Price :
                                         <IndianRupee size={15} />
-                                        {item.price}
+                                        {item.unit_price}
                                       </li>
                                       <li className="">
                                         GST :
@@ -708,9 +675,9 @@ const CheckoutPage = () => {
                                         {taxable_amount}
                                       </li>
                                       <li>
-                                        T. :
-                                        <IndianRupee size={15} />
-                                        {total_price}
+                                        <b>T. :
+                                          <IndianRupee size={15} />
+                                          {total_price}</b>
                                       </li>
                                     </ul>
                                   </td>
@@ -723,13 +690,13 @@ const CheckoutPage = () => {
                                     <IndianRupee size={15} />
                                     {"price" in item && "quantity" in item
                                       ? Number(
-                                          total_price * item.quantity,
-                                        ).toFixed(2)
+                                        total_price * item.quantity,
+                                      ).toFixed(2)
                                       : Number(
-                                          total_price ||
-                                            item.unit_price *
-                                              (item.quantity || item.qty || 1),
-                                        ).toFixed(2)}
+                                        total_price ||
+                                        item.unit_price *
+                                        (item.quantity || item.qty || 1),
+                                      ).toFixed(2)}
                                   </td>
                                 </tr>
                               );
@@ -1016,14 +983,27 @@ const CheckoutPage = () => {
                         <select
                           className="form-control"
                           value={paymentMethod}
+                          disabled
                           onChange={(e) =>
                             setPaymentMethod(e.target.value as "wallet")
                           }
                         >
                           <option value="razorpay">Online (Razorpay)</option>
-                          <option value="wallet">Wallet</option>
+                          <option value="cod">Cash on Delivery</option>
                         </select>
                       </div>
+
+                      {/* Find the payment method section in your JSX and add the error message */}
+                      {formatError && (
+                        <div className="alert alert-warning mb-4 shadow-sm border-warning">
+                          <small className="fw-bold">{formatError}</small>
+                          <div className="mt-2">
+                            <Link href="/cart" className="btn btn-sm btn-outline-warning">
+                              Go to Cart to Fix
+                            </Link>
+                          </div>
+                        </div>
+                      )}
 
                       {error && (
                         <div className="alert alert-danger mb-4">{error}</div>
@@ -1036,25 +1016,30 @@ const CheckoutPage = () => {
                         >
                           ← Edit Cart
                         </Link>
-                        <button
-                          type="submit"
-                          className="btn btn-primary btn-md px-4 w-100"
-                          form="orderForm"
-                          onClick={handlePlaceOrder}
-                          disabled={
-                            orderLoading ||
-                            displayItems.length === 0 ||
-                            (!selectedAddress &&
-                              (!formData.fullAddress ||
-                                !formData.city ||
-                                !formData.pincode ||
-                                !formData.phone))
-                          }
-                        >
-                          {orderLoading
-                            ? "Placing Order..."
-                            : `Place Order - ₹${totalAmount.toFixed(2)}`}
-                        </button>
+
+                        {isConsistentFormat ?
+
+
+                          <button
+                            type="submit"
+                            className="btn btn-primary btn-md px-4 w-100"
+                            form="orderForm"
+                            onClick={handlePlaceOrder}
+                            disabled={
+                              orderLoading ||
+                              displayItems.length === 0 ||
+                              (!selectedAddress &&
+                                (!formData.fullAddress ||
+                                  !formData.city ||
+                                  !formData.pincode ||
+                                  !formData.phone))
+                            }
+                          >
+                            {orderLoading
+                              ? "Placing Order..."
+                              : `Place Order`}
+                          </button>
+                          : <></>}
                       </div>
                     </div>
                   </div>
@@ -1207,8 +1192,8 @@ const CheckoutPage = () => {
                       {addressLoading
                         ? "Saving..."
                         : editingAddress
-                        ? "Update"
-                        : "Save Address"}
+                          ? "Update"
+                          : "Save Address"}
                     </button>
                   </div>
                 </form>

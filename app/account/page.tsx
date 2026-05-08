@@ -20,6 +20,32 @@ export default function AccountDashboard() {
   const [error, setError] = useState("");
   const [statsLoading, setStatsLoading] = useState(true);
 
+  const [dashStats, setDashStats] = useState({
+    total_orders: 0,
+    open_tickets: 0,
+    total_order_value: 0,
+  });
+
+  const fetchDash = useCallback(async () => {
+    try {
+
+      const dashRes = await serverCallFuction("GET", "api/dashboard/ecom/me");
+
+      if (dashRes.success) {
+        setDashStats(dashRes.data)
+      }
+
+      // if (ordersRes?.success) {
+      //   setRecentOrders(ordersRes.data || []);
+      // }
+
+    } catch (err) {
+      setError("Failed to load dashboard data");
+      console.error(err);
+    }
+  }, []);
+
+
   const fetchDashboardData = useCallback(async () => {
     try {
       setLoading(true);
@@ -27,7 +53,7 @@ export default function AccountDashboard() {
       setError("");
 
       // Fetch recent orders
-      const ordersRes = await serverCallFuction("GET", "api/ecom/orders?limit=5");
+      const ordersRes = await serverCallFuction("GET", "api/orders/my?limit=5");
       if (ordersRes?.success) {
         setRecentOrders(ordersRes.data || []);
       }
@@ -48,6 +74,7 @@ export default function AccountDashboard() {
 
   useEffect(() => {
     fetchDashboardData();
+    fetchDash()
   }, [fetchDashboardData]);
 
   if (loading) {
@@ -70,49 +97,39 @@ export default function AccountDashboard() {
 
       {/* Stats Cards */}
       <div className="row g-4 mb-5">
-        <div className="col-md-6 col-xl-3">
+        <div className="col-md-6 col-xl-4">
           <div className="card border-0 shadow-sm rounded-4 text-white h-100" style={{ background: "linear-gradient(135deg, #00A9E0 0%, #007bb0 100%)" }}>
             <div className="card-body p-4 d-flex align-items-center">
               <Package size={48} className="opacity-50 me-3" />
               <div>
                 <p className="small mb-0 opacity-75">Total Orders</p>
-                <h3 className="fw-bold mb-0">{stats.totalOrders}</h3>
+                <h3 className="fw-bold mb-0 text-white">{dashStats.total_orders}</h3>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="col-md-6 col-xl-3">
+        <div className="col-md-6 col-xl-4">
           <div className="card border-0 shadow-sm rounded-4 text-white h-100" style={{ background: "linear-gradient(135deg, #8DC63F 0%, #6f9d31 100%)" }}>
             <div className="card-body p-4 d-flex align-items-center">
               <ShoppingBag size={48} className="opacity-50 me-3" />
               <div>
                 <p className="small mb-0 opacity-75">Total Spent</p>
-                <h3 className="fw-bold mb-0">₹{stats.totalSpent.toLocaleString()}</h3>
+                <h3 className="fw-bold mb-0 text-white">₹{dashStats.total_order_value.toLocaleString()}</h3>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="col-md-6 col-xl-3">
-          <div className="card border-0 shadow-sm rounded-4 text-white h-100" style={{ background: "linear-gradient(135deg, #E6519B 0%, #b83d7a 100%)" }}>
-            <div className="card-body p-4 d-flex align-items-center">
-              <Heart size={48} className="opacity-50 me-3" />
-              <div>
-                <p className="small mb-0 opacity-75">Wishlist</p>
-                <h3 className="fw-bold mb-0">{stats.wishlistCount}</h3>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div className="col-md-6 col-xl-3">
+
+        <div className="col-md-6 col-xl-4">
           <div className="card border-0 shadow-sm rounded-4 text-white h-100" style={{ background: "linear-gradient(135deg, #fd7e14 0%, #e8590c 100%)" }}>
             <div className="card-body p-4 d-flex align-items-center">
               <HelpCircle size={48} className="opacity-50 me-3" />
               <div>
                 <p className="small mb-0 opacity-75">Open Tickets</p>
-                <h3 className="fw-bold mb-0">{openTickets}</h3>
+                <h3 className="fw-bold mb-0 text-white">{openTickets}</h3>
               </div>
             </div>
           </div>
@@ -168,10 +185,10 @@ export default function AccountDashboard() {
                     <td className="px-4 fw-bold">#{order.order_id}</td>
                     <td className="px-4 text-muted">{new Date(order.created_at).toLocaleDateString()}</td>
                     <td className="px-4">
-                      <span className={`badge rounded-pill px-3 py-2 ${order.status === "completed" ? "bg-success-subtle text-success" :
-                          order.status === "pending" ? "bg-warning-subtle text-warning" : "bg-secondary-subtle text-secondary"
+                      <span className={`badge rounded-pill px-3 py-2 ${order.order_status === "completed" ? "bg-success-subtle text-success" :
+                        order.order_status === "pending" ? "bg-warning-subtle text-dark" : "bg-secondary-subtle text-secondary"
                         }`}>
-                        {order.status.toUpperCase()}
+                        {order.order_status.toUpperCase()}
                       </span>
                     </td>
                     <td className="px-4 fw-bold">₹{Number(order.total_amount).toLocaleString()}</td>

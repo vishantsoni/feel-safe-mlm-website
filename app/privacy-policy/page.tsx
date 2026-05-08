@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/contexts/AuthContext";
 import { ContactData } from "@/lib/types/Setting";
+import LogoCompo from "@/componants/logo/LogoCompo";
 
 
 const PrivacyPolicy = () => {
@@ -50,9 +51,10 @@ const PrivacyPolicy = () => {
               <h1 className="fw-bold display-5" style={{ color: "#1C1C1C" }}>
                 Privacy <span style={{ color: "#00A9E0" }}>Policy</span>
               </h1>
-              <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
+              {/* <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
                 Feel Safe Pvt. Ltd.
-              </h5>
+              </h5> */}
+              <LogoCompo />
               <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
               <p className="fw-bold mb-1" style={{ color: "#E6519B" }}>Hamara Prayas, Aapki Suraksha</p>
               <p className="small text-muted mb-4">Last Updated: {lastUpdated}</p>

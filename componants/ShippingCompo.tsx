@@ -17,6 +17,7 @@ import {
     CheckCircle2
 } from "lucide-react";
 import React from "react";
+import LogoCompo from "./logo/LogoCompo";
 
 const ShippingCompo = () => {
     const { getSettingByKey } = useAuth();
@@ -36,9 +37,10 @@ const ShippingCompo = () => {
                             <h1 className="fw-bold display-5" style={{ color: "#1C1C1C" }}>
                                 Shipping & <span style={{ color: "#8DC63F" }}>Delivery</span> Policy
                             </h1>
-                            <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#E6519B", letterSpacing: "1px" }}>
+                            {/* <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#E6519B", letterSpacing: "1px" }}>
                                 Feel Safe Pvt. Ltd.
-                            </h5>
+                            </h5> */}
+                            <LogoCompo />
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="text-muted small">Website: www.feelsafeco.in</p>
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />

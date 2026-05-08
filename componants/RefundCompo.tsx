@@ -11,6 +11,7 @@ import {
     Mail
 } from "lucide-react";
 import { useAuth } from '@/lib/contexts/AuthContext'; // Adjusted to your context path
+import LogoCompo from './logo/LogoCompo';
 
 const RefundCompo = () => {
     const { getSettingByKey } = useAuth();
@@ -31,10 +32,11 @@ const RefundCompo = () => {
                             <h1 className="fw-bold mt-3" style={{ color: "#1C1C1C" }}>
                                 Refund <span style={{ color: "#E6519B" }}>Policy</span>
                             </h1>
-                            <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
+                            {/* <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
                                 Feel Safe Pvt. Ltd.
                             </h5>
-                            <p className="text-muted small">Hamara Prayas, Aapki Suraksha</p>
+                            <p className="text-muted small">Hamara Prayas, Aapki Suraksha</p> */}
+                            <LogoCompo />
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
                         </div>
 

@@ -14,4 +14,11 @@
   .copyright {
     font-size: 12px;
   }
+
+  .logo-font {
+    font-size: calc(1.075rem + 1vw);
+  }
+  .tag-line {
+    font-size: calc(0.875rem + 0.2vw);
+  }
 }

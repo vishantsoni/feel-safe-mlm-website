@@ -3,6 +3,7 @@
 import React from "react";
 import { AlertTriangle, TrendingDown, Activity, Gavel, ShieldAlert, Globe, UserCheck, Lock, CloudOff, Mail, PhoneCall, MapPin } from "lucide-react";
 import { useAuth } from "@/lib/contexts/AuthContext";
+import LogoCompo from "./logo/LogoCompo";
 
 
 const LegalDisclaimer = () => {
@@ -72,9 +73,10 @@ const LegalDisclaimer = () => {
                             <h1 className="fw-bold display-5" style={{ color: "#1C1C1C" }}>
                                 Legal <span style={{ color: "#E6519B" }}>Disclaimer</span>
                             </h1>
-                            <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
+                            {/* <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "2px" }}>
                                 Feel Safe Ptv. Ltd.
-                            </h5>
+                            </h5> */}
+                            <LogoCompo />
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="fw-bold mb-1" style={{ color: "#00A9E0" }}>Hamara Prayas, Aapki Suraksha</p>
                             <p className="small text-muted">Website: www.feelsafeco.in</p>

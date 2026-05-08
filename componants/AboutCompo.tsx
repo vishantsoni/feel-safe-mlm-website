@@ -4,6 +4,7 @@ import { Mail, MapPin, PhoneCall, ShieldCheck, Heart, Leaf, Users, Award, Trendi
 import { Icon } from "@iconify/react";
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { ContactData } from '@/lib/types/Setting';
+import LogoCompo from './logo/LogoCompo';
 const AboutCompo = () => {
 
     const { setting, getSettingByKey } = useAuth();
@@ -49,12 +50,11 @@ const AboutCompo = () => {
                             <span className="badge px-3 py-2 mb-3 rounded-pill" style={{ backgroundColor: "#8DC63F", color: "#fff" }}>
                                 CIN: U13996DL2026PTC465812
                             </span>
-                            <h1 className="display-3 fw-bold mb-3" style={{ color: "#1C1C1C" }}>
+                            {/* <h1 className="display-3 fw-bold mb-3" style={{ color: "#1C1C1C" }}>
                                 Feel Safe <span style={{ color: "#00A9E0" }}>Pvt. Ltd.</span>
-                            </h1>
-                            <h3 className="h4 text-uppercase fw-bold mb-4" style={{ color: "#E6519B", letterSpacing: "1px" }}>
-                                Hamara Prayas, Aapki Suraksha
-                            </h3>
+                            </h1> */}
+                            <LogoCompo />
+
                             <p className="lead text-muted mb-4 shadow-none">
                                 A leading manufacturer and distributor based in Najafgarh, New Delhi,
                                 committed to transforming women’s hygiene and health standards across India.

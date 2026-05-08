@@ -13,6 +13,7 @@ import {
     Gavel
 } from "lucide-react";
 import { useAuth } from '@/lib/contexts/AuthContext';
+import LogoCompo from './logo/LogoCompo';
 
 const ReturnBuybackCompo = () => {
     const { getSettingByKey } = useAuth();
@@ -43,7 +44,8 @@ const ReturnBuybackCompo = () => {
                             <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#00A9E0", letterSpacing: "1px" }}>
                                 For Distributors / Sakhis
                             </h5>
-                            <p className="text-muted small">Hamara Prayas, Aapki Suraksha</p>
+                            {/* <p className="text-muted small">Hamara Prayas, Aapki Suraksha</p> */}
+                            <LogoCompo />
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #E6519B", opacity: 1 }} />
                         </div>
 

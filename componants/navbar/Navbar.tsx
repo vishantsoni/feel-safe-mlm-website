@@ -85,7 +85,7 @@ const Navbar = () => {
             </li> */}
             <li data-bs-dismiss="offcanvas">
               <Link href="/products" className="nav-link">
-                All Products
+                Shop
               </Link>
             </li>
             <li data-bs-dismiss="offcanvas">
@@ -167,6 +167,9 @@ const Navbar = () => {
               <strong>₹{cart?.total}</strong>
             </li>
           </ul>
+          <Link href="/cart" className="btn btn-secondary w-100 mb-2">
+            View Cart
+          </Link>
           <Link href="/checkout" className="btn btn-primary w-100">
             Continue to checkout
           </Link>
@@ -321,7 +324,7 @@ const Navbar = () => {
                     href="/products"
                     className="nav-link text-dark"
                   >
-                    All Products
+                    Shop
                   </Link>
                 </li>
                 <li>

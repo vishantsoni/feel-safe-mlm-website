@@ -94,7 +94,7 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
                                 <IndianRupee className="p-1" />
                                 {formattedAmount(total_price)}
                               </span>
-                              <div className="d-flex align-items-center justify-content-between">
+                              {/* <div className="d-flex align-items-center justify-content-between">
                                 <div className="input-group product-qty">
                                   <span className="input-group-btn">
                                     <button
@@ -102,12 +102,10 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
                                       className="btn btn-danger btn-number"
                                     >
                                       <Minus size={16} />
-                                      {/* <svg width="16" height="16">
-                                        <use xlinkHref="#minus" />
-                                      </svg> */}
+
                                     </button>
                                   </span>
-                                  {/* In React/Next, use defaultValue for inputs if not controlled by state */}
+
                                   <input
                                     type="text"
                                     name="quantity"
@@ -120,16 +118,13 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
                                       className="btn btn-success btn-number"
                                     >
                                       <Plus size={16} />
-                                      {/* <svg width="16" height="16">
-                                        <use xlinkHref="#plus" />
-                                      </svg> */}
                                     </button>
                                   </span>
                                 </div>
                                 <a href="#" className="nav-link">
                                   Add to Cart <Icon icon="uil:shopping-cart" />
                                 </a>
-                              </div>
+                              </div> */}
                             </div>
                           </div>
                         );

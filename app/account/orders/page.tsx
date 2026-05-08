@@ -152,6 +152,7 @@ export default function OrdersPage() {
                     <th className="px-4 py-3 border-0">Order Details</th>
                     <th className="px-4 py-3 border-0">Items</th>
                     <th className="px-4 py-3 border-0">Status</th>
+                    <th className="px-4 py-3 border-0">Payment</th>
                     <th className="px-4 py-3 border-0 text-end">
                       Total Amount
                     </th>
@@ -164,8 +165,8 @@ export default function OrdersPage() {
                       <td className="px-4 py-3">
                         <div className="d-flex align-items-center">
                           {/* 1. Product Image Thumbnail */}
-                          <div className="me-3">
-                            <img
+                          {/* <div className="me-3"> */}
+                          {/* <img
                               src={
                                 order.product_image ||
                                 "/assets/product/placeholder.jpg"
@@ -180,14 +181,14 @@ export default function OrdersPage() {
                               onError={(e) => {
                                 // e.target.src = "https://via.placeholder.com/50";
                               }}
-                            />
-                          </div>
+                            /> */}
+                          {/* </div> */}
 
                           {/* 2. Product Details */}
                           <div>
-                            <div className="fw-bold text-dark mb-0">
+                            {/* <div className="fw-bold text-dark mb-0">
                               {order.product_name || "Product Deleted"}
-                            </div>
+                            </div> */}
                             <div className="d-flex flex-column">
                               <small
                                 className="badge bg-primary w-fit-content"
@@ -212,12 +213,15 @@ export default function OrdersPage() {
                       </td>
                       <td className="px-4 py-3">
                         <span className="text-dark fw-medium">
-                          {order.items_count}{" "}
-                          {order.items_count > 1 ? "Items" : "Item"}
+                          {order.items.length}{" "}
+                          {/* {order.items_count > 1 ? "Items" : "Item"} */}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         {getStatusBadge(order.order_status)}
+                      </td>
+                      <td className="px-4 py-3">
+                        {getStatusBadge(order.payment_status)}
                       </td>
                       <td className="px-4 py-3 text-end fw-bold text-primary">
                         ₹{Number(order.total_amount).toLocaleString("en-IN")}
@@ -259,9 +263,8 @@ export default function OrdersPage() {
                   </span>
                 </li>
                 <li
-                  className={`page-item ${
-                    page === totalPages ? "disabled" : ""
-                  }`}
+                  className={`page-item ${page === totalPages ? "disabled" : ""
+                    }`}
                 >
                   <button
                     className="page-link rounded-3 border-0 shadow-sm px-3 py-2"

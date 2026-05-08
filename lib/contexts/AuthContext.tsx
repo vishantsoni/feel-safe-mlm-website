@@ -76,6 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await serverCallFuction("GET", "api/ecom/auth/me");
       console.log("fetchUser response:", res);
       if (res.status) {
+        Cookies.set("user", JSON.stringify(res.user), { expires: 1 });
         setUser(res?.user);
         setIsAuthenticated(true);
       } else {
