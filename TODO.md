@@ -1,10 +1,9 @@
-# Mobile Drawer Auto-Hide Task
+# TODO
 
-## Steps:
-
-- [x] 1. Confirm plan with user (approved)
-- [x] 2. Edit componants/navbar/Navbar.tsx to add `data-bs-dismiss="offcanvas"` to the 7 mobile drawer <li> elements
-- [x] 3. Test changes (user to verify in mobile view)
-- [x] 4. Complete task
-
-**Task completed successfully.**
+- [x] Implement State -> City dropdowns in sample modal (`componants/sections/DiscountSection.tsx`) using:
+  - `GET /api/static/states`
+  - `GET /api/static/cities/:stateId`
+  - Replace State/City inputs with `<select>`.
+  - Reset City when State changes.
+  - Keep payload as `state` and `city` names (strings) as expected by backend.
+- [ ] (Optional) Run `npm run lint` and `npm run build` to verify no TS/ESLint issues.
