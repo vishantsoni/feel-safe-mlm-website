@@ -36,7 +36,7 @@ export default function TicketCard({ ticket }: TicketCardProps) {
                 <div className="card-body p-4">
                     <div className="row align-items-center g-3">
                         {/* Status Icon Indicator */}
-                        <div className="col-auto d-none d-md-block">
+                        {/* <div className="col-auto d-none d-md-block">
                             <div className="rounded-circle d-flex align-items-center justify-content-center"
                                 style={{
                                     width: "50px",
@@ -49,7 +49,9 @@ export default function TicketCard({ ticket }: TicketCardProps) {
                                             ticket.status === 'RESOLVED' ? 'text-success' : 'text-secondary'
                                 } />
                             </div>
-                        </div>
+                        </div> */}
+
+                        {ticket.is_unread && <span className='badge bg-primary' style={{ position: 'absolute', width: 'fit-content', right: "2%", top: "0" }}>Team Replied</span>}
 
                         {/* Content Area */}
                         <div className="col">

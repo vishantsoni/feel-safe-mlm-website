@@ -54,7 +54,7 @@ const TermsAndConditions = () => {
         <div className="container my-5 py-4">
             <div className="row justify-content-center">
                 <div className="col-lg-12">
-                    <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-white">
+                    <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
 
                         <div className="text-center mb-5">
                             <h1 className="fw-bold display-5" style={{ color: "#1C1C1C" }}>
@@ -67,7 +67,7 @@ const TermsAndConditions = () => {
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
                             <p className="fw-bold" style={{ color: "#00A9E0" }}>Women Empowerment & Hygiene Awareness Campaign</p>
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
-                            <p className="small fw-bold">Hamara Prayas, Aapki Suraksha</p>
+
                         </div>
 
                         <div className="row g-4 mb-5">

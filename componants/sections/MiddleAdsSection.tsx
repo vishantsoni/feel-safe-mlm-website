@@ -3,8 +3,8 @@ import React from "react";
 
 const MiddleAdsSection = () => {
   return (
-    <section className="py-5">
-      <div className="container-fluid">
+    <section className="pt-5">
+      <div className="container-fluid py-5">
         <div className="row">
           <div className="col-md-6">
             <div
@@ -48,9 +48,11 @@ const MiddleAdsSection = () => {
               </div>
             </div>
           </div>
-
-
         </div>
+
+      </div>
+      <div className="w-100 mt-5">
+        <img src={"/assets/banner/eco.png"} className="img-fluid w-100" />
       </div>
     </section>
   );

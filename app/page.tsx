@@ -7,6 +7,8 @@ import TeamMemberSection from "@/componants/sections/TeamMemberSection";
 import DiscountSection from "@/componants/sections/DiscountSection";
 import RecentBlogSection from "@/componants/sections/RecentBlogSection";
 import DownloadApkSection from "@/componants/sections/DownloadApkSection";
+import BreadkingBarier from "@/componants/sections/BreadkingBarier";
+import FeelSafeFeatures from "@/componants/sections/FeelSafeFeatures";
 export default function Home() {
   return (
     <>
@@ -15,7 +17,9 @@ export default function Home() {
       {/* <NewlyArrivedSection /> */}
       <TrendingProSection />
       <MiddleAdsSection />
+      <BreadkingBarier />
       <TeamMemberSection />
+      <FeelSafeFeatures />
       <DiscountSection />
       <RecentBlogSection />
       <DownloadApkSection />

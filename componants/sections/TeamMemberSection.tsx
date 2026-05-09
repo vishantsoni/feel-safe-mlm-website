@@ -29,7 +29,7 @@ const TeamMemberSection = () => {
 
   if (loading) {
     return (
-      <section className="py-5 bg-light">
+      <section className="py-5 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
         <div className="container-fluid">
           <div className="row justify-content-center align-items-center" style={{ height: '400px' }}>
             <div className="col-md-12 text-center">
@@ -61,7 +61,7 @@ const TeamMemberSection = () => {
 
   return (
     <>
-      <section className="py-5 bg-light">
+      <section className="py-5 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-12 text-center mb-5">

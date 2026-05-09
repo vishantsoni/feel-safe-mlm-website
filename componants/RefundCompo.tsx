@@ -21,7 +21,7 @@ const RefundCompo = () => {
         <div className="container my-5 py-5">
             <div className="row justify-content-center">
                 <div className="col-lg-12">
-                    <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-white">
+                    <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
 
                         {/* Header Section */}
                         <div className="text-center mb-5">
@@ -32,10 +32,7 @@ const RefundCompo = () => {
                             <h1 className="fw-bold mt-3" style={{ color: "#1C1C1C" }}>
                                 Refund <span style={{ color: "#E6519B" }}>Policy</span>
                             </h1>
-                            {/* <h5 className="text-uppercase fw-bold mt-2" style={{ color: "#8DC63F", letterSpacing: "1px" }}>
-                                Feel Safe Pvt. Ltd.
-                            </h5>
-                            <p className="text-muted small">Hamara Prayas, Aapki Suraksha</p> */}
+
                             <LogoCompo />
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
                         </div>

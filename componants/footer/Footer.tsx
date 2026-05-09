@@ -17,14 +17,18 @@ const Footer = () => {
         <div className="container-fluid">
           <div className="row">
             <div className="col-lg-3 col-md-6 col-sm-6">
-              <div className="footer-menu">
+              <div className="footer-menu  text-center">
                 <img
                   src="/assets/images/logo-footer.png"
                   alt="logo"
-                  className="w-50"
+                  className="w-50 mx-auto"
                 />
-                <div className="social-links mt-5">
-                  <ul className="d-flex list-unstyled gap-2">
+                <p className="p-0 m-0 card-text">
+                  Since 2026, Feel Safe Pvt. Ltd.
+                  has been empowering women through affordable hygiene products, menstrual health awareness, and women-led direct selling opportunities. Our mission is to promote health, self-reliance, and eco-friendly living across India.
+                </p>
+                <div className="social-links mt-2 text-center mx-auto" style={{ width: 'fit-content' }}>
+                  <ul className="d-flex list-unstyled gap-2 mx-auto">
                     <li>
                       <Link target="_blank" href="https://www.facebook.com/share/1DphQoFWK7/" className="btn btn-outline-light">
                         <svg

@@ -63,7 +63,7 @@ const LegalDisclaimer = () => {
         <div className="container my-5 py-4">
             <div className="row justify-content-center">
                 <div className="col-lg-12">
-                    <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-white">
+                    <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
 
                         {/* Header Section */}
                         <div className="text-center mb-5">
@@ -78,7 +78,7 @@ const LegalDisclaimer = () => {
                             </h5> */}
                             <LogoCompo />
                             <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
-                            <p className="fw-bold mb-1" style={{ color: "#00A9E0" }}>Hamara Prayas, Aapki Suraksha</p>
+
                             <p className="small text-muted">Website: www.feelsafeco.in</p>
                             <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
                         </div>
@@ -146,12 +146,12 @@ const LegalDisclaimer = () => {
                                 </div>
                             </div>
 
-                            <div className="mt-5 text-center p-3 rounded-3" style={{ backgroundColor: "#f8f9fa" }}>
+                            {/* <div className="mt-5 text-center p-3 rounded-3" style={{ backgroundColor: "#f8f9fa" }}>
                                 <p className="small text-muted mb-0">
                                     © 2026 Feel Safe Private Limited. All Rights Reserved. Disputes subject to <strong>Delhi Jurisdiction</strong>.
                                 </p>
                                 <p className="small text-muted mt-1">Last Updated: {lastUpdated}</p>
-                            </div>
+                            </div> */}
                         </div>
 
                     </div>

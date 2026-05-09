@@ -44,7 +44,7 @@ const PrivacyPolicy = () => {
     <div className="container my-5 py-4">
       <div className="row justify-content-center">
         <div className="col-lg-11">
-          <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 bg-white">
+          <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
 
             {/* Header Section */}
             <div className="text-center mb-5">
@@ -56,7 +56,6 @@ const PrivacyPolicy = () => {
               </h5> */}
               <LogoCompo />
               <p className="text-muted small mb-0">CIN: U13996DL2026PTC465812</p>
-              <p className="fw-bold mb-1" style={{ color: "#E6519B" }}>Hamara Prayas, Aapki Suraksha</p>
               <p className="small text-muted mb-4">Last Updated: {lastUpdated}</p>
               <hr className="w-25 mx-auto" style={{ borderTop: "3px solid #8DC63F", opacity: 1 }} />
             </div>

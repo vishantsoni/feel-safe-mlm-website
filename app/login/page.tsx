@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import serverCallFuction from "@/lib/constantFunction";
 import { LoginResponse } from "@/lib/types/User";
+import GoogleSignIn from "@/componants/auth/GoogleSignIn";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -52,7 +53,7 @@ export default function LoginPage() {
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
-              <div className="card shadow-lg border-0" style={{ backgroundColor: "#ffbede" }}>
+              <div className="card shadow-lg border-0" style={{ backgroundColor: "#ffe0f0" }}>
                 <div className="card-body p-5">
                   <div className="text-center mb-5">
                     <Image
@@ -177,9 +178,10 @@ export default function LoginPage() {
                   <hr className="my-4" />
                   <div className="text-center">
                     <p className="text-muted mb-3">Or continue with</p>
-                    <button className="btn btn-outline-dark w-100 py-2 mb-2">
+                    <GoogleSignIn />
+                    {/* <button className="btn btn-outline-dark w-100 py-2 mb-2">
                       <i className="fab fa-google me-2"></i>Google
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>

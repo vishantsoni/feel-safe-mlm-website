@@ -47,27 +47,71 @@ const AboutCompo = () => {
                 <div className="container py-5">
                     <div className="row align-items-center">
                         <div className="col-lg-12 mx-auto">
+                            {/* Branding Badge */}
                             <span className="badge px-3 py-2 mb-3 rounded-pill" style={{ backgroundColor: "#8DC63F", color: "#fff" }}>
                                 CIN: U13996DL2026PTC465812
                             </span>
-                            {/* <h1 className="display-3 fw-bold mb-3" style={{ color: "#1C1C1C" }}>
-                                Feel Safe <span style={{ color: "#00A9E0" }}>Pvt. Ltd.</span>
-                            </h1> */}
-                            <LogoCompo />
 
-                            <p className="lead text-muted mb-4 shadow-none">
-                                A leading manufacturer and distributor based in Najafgarh, New Delhi,
-                                committed to transforming women’s hygiene and health standards across India.
+                            <div className="mb-4">
+                                <LogoCompo notCenter={true} />
+                                <h2 className="fw-bold mt-3" style={{ color: "#1C1C1C" }}>
+                                    India’s Trusted Women Hygiene & Empowerment Brand
+                                </h2>
+                            </div>
+
+                            {/* Introduction Text */}
+                            <div className="col-lg-12 ps-0 mb-5">
+                                <p className="lead text-dark fw-bold mb-3">
+                                    Welcome to Feel Safe Pvt. Ltd. — a women-focused health and hygiene company dedicated to providing affordable sanitary pads, hygiene products, and women empowerment opportunities across India.
+                                </p>
+                                <p className="text-muted mb-3">
+                                    Since 2026, Feel Safe has been working to spread menstrual hygiene awareness and help women become financially independent through our “Feel Safe Sakhi Yojna” direct selling network. Our mission is to improve women’s health, confidence, and self-reliance while promoting eco-friendly and safe hygiene solutions.
+                                </p>
+                                <p className="text-muted">
+                                    We believe every woman deserves access to quality sanitary napkins, hygiene education, and income opportunities. That’s why our products are designed for comfort, safety, and affordability — trusted by families, distributors, and customers nationwide.
+                                </p>
+                            </div>
+
+                            {/* Why Choose Us Grid */}
+                            <div className="mb-5">
+                                <h4 className="fw-bold mb-4" style={{ color: "#E6519B" }}>Why Choose Feel Safe?</h4>
+                                <div className="row g-3">
+                                    {[
+                                        "Premium Quality Sanitary Pads",
+                                        "Affordable & Eco-Friendly Hygiene Products",
+                                        "Women Empowerment & Self-Employment Opportunities",
+                                        "Direct Selling & Sakhi Network Across India",
+                                        "Menstrual Health & Hygiene Awareness Campaigns",
+                                        "Made in India Hygiene Brand"
+                                    ].map((item, index) => (
+                                        <div key={index} className="col-md-6 col-lg-4">
+                                            <div className="d-flex align-items-center p-2 rounded bg-white shadow-sm border-start border-4" style={{ borderColor: "#8DC63F" }}>
+                                                <span className="me-2 text-success">✔️</span>
+                                                <span className="small fw-bold text-secondary">{item}</span>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Footer Tagline */}
+                            <p className="fw-bold mb-4" style={{ color: "#1C1C1C" }}>
+                                Feel Safe Pvt. Ltd. — Your Health, Your Confidence, Our Responsibility.
                             </p>
+
+                            {/* Action Buttons */}
                             <div className="d-flex gap-3 flex-column flex-md-row">
-                                <button className="btn btn-lg shadow-sm px-4 text-white" style={{ backgroundColor: "#00A9E0" }} onClick={() => {
-                                    navigation.navigate("/become-distributor")
-                                }} >
+                                <button className="btn btn-lg shadow-sm px-4 text-white border-0"
+                                    style={{ backgroundColor: "#00A9E0" }}
+                                    onClick={() => navigation.navigate("/become-distributor")}
+                                >
                                     Join Sakhi Mission
                                 </button>
-                                <button className="btn btn-lg btn-outline-dark px-4" onClick={() => {
-                                    navigation.navigate('/products')
-                                }}>Our Products</button>
+                                <button className="btn btn-lg btn-outline-dark px-4"
+                                    onClick={() => navigation.navigate('/products')}
+                                >
+                                    Our Products
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -79,7 +123,8 @@ const AboutCompo = () => {
                 <div className="row mb-5">
                     <div className="col-md-8 mx-auto">
                         <h2 className="fw-bold mb-3">Our Identity</h2>
-                        <p className="text-muted">Founded by <strong>Ram Niwas</strong>, the company is built on quality, trust, and social responsibility, focusing on creating both health awareness and economic opportunities for women.</p>
+                        <p>Feel Safe Pvt Ltd, founded by <strong>Smt. Sharbati & Shri Ram Niwas,</strong> is a premier corporate organization dedicated to the pillars of quality, integrity, and social impact. As a leader in feminine hygiene, we operate with a dual-purpose mission: to deliver world-class healthcare products and to catalyze economic independence for women. Our identity is defined by our commitment to excellence and our drive to create a safer, more self-reliant future for every woman</p>
+
                     </div>
                 </div>
                 <div className="row g-4">
@@ -124,8 +169,9 @@ const AboutCompo = () => {
                             </div>
                         </div>
                         <div className="col-lg-6 text-center">
-                            <div className="p-5 rounded-circle d-inline-block shadow-lg bg-white">
-                                <Icon icon="solar:shield-user-bold" style={{ fontSize: "180px", color: "#00A9E0" }} />
+                            <div className="p-5 d-inline-block shadow-lg bg-white overflow-hidden">
+                                {/* <Icon icon="solar:shield-user-bold" style={{ fontSize: "180px", color: "#00A9E0" }} /> */}
+                                <img src="/assets/images/certificate_logs.jpg" alt="Feel Sanitary Pad" className='img-fluid' />
                             </div>
                         </div>
                     </div>
@@ -135,24 +181,60 @@ const AboutCompo = () => {
             {/* Sakhi Yojna Section */}
             <section className="py-5 bg-gray mt-4 rounded" style={{ backgroundColor: "#ffb9dc" }}>
                 <div className="container py-4">
-                    <div className="text-center mb-5">
+                    <div className="text-center mb-2">
                         <h2 className="display-6 fw-bold">Vision 2030: <span style={{ color: "#E6519B" }}>1 Lakh Sakhi Mission</span></h2>
-                        <p className="lead opacity-75 text-dark">Nurturing women as Entrepreneurs, Leaders, and Ambassadors.</p>
+                        <p className="lead opacity-75 text-dark">Empowering women as Entrepreneurs, Leaders, and Health Ambassadors.</p>
+                    </div>
+
+                    <div className="text-center mb-5">
+                        <p className="lead opacity-75 text-dark"><strong>Our Core Objective:</strong> At Feel Safe Pvt Ltd, our vision extends beyond business. Under the leadership of our founders, Smt. Sharbati & Shri Ram Niwas, we are committed to building a nation where every woman is healthy, safe, and financially independent. Our goal is to create a robust network of 100,000 Sakhis by 2030, transforming the landscape of menstrual hygiene in India.</p>
                     </div>
 
                     <div className="row g-4 text-center">
-                        {[
-                            { step: "1", title: "Register", desc: "Join as a Sakhi partner" },
-                            { step: "2", title: "Training", desc: "Get professional support" },
-                            { step: "3", title: "Awareness", desc: "Educate your community" },
-                            { step: "4", title: "Earn", desc: "Stable growing income" }
-                        ].map((item, i) => (
-                            <div className="col-md-3" key={i}>
-                                <div className="h1 fw-bold text-dark mb-0" style={{ fontSize: '4rem' }}>{item.step}</div>
-                                <h5 className="fw-bold" style={{ color: "#E6519B" }}>{item.title}</h5>
-                                <p className="small opacity-75 text-dark">{item.desc}</p>
-                            </div>
-                        ))}
+                        {
+                            [
+                                {
+                                    step: "1",
+                                    title: "Economic Empowerment",
+                                    desc: "To provide a sustainable and scalable income platform for women with Zero Registration Fees, fostering true financial autonomy."
+                                },
+                                {
+                                    step: "2",
+                                    title: "Menstrual Health Revolution",
+                                    desc: "To ensure that every household has access to premium, BIS and ISO-certified hygiene products featuring advanced 7-layer protection."
+                                },
+                                {
+                                    step: "3",
+                                    title: "Skill & Leadership Development",
+                                    desc: "To equip our Sakhis with professional training in sales, digital marketing, and health advocacy, turning them into community leaders."
+                                },
+                                {
+                                    step: "4",
+                                    title: "Eradicating Social Stigma",
+                                    desc: "To dismantle the age-old taboos surrounding menstruation through continuous education and grassroots awareness campaigns."
+                                },
+                                {
+                                    step: "5",
+                                    title: "Quality & Trust",
+                                    desc: "To maintain uncompromising manufacturing standards as a GMP-certified entity, ensuring the highest medical-grade safety for our users."
+                                },
+                                {
+                                    step: "6",
+                                    title: "Atmanirbhar Bharat Initiative",
+                                    desc: "To contribute to the national mission of self-reliance by promoting local entrepreneurship and a women-led direct-selling model."
+                                },
+                                {
+                                    step: "7",
+                                    title: "Legal & Ethical Excellence",
+                                    desc: "To operate with 100% transparency as a registered Private Limited organization, upholding the interests of our partners and customers (CIN: U13996DL2026PTC465812)."
+                                }
+                            ].map((item, i) => (
+                                <div className="col-md-3" key={i}>
+                                    <div className="h1 fw-bold text-dark mb-0" style={{ fontSize: '4rem' }}>{item.step}</div>
+                                    <h5 className="fw-bold" style={{ color: "#E6519B" }}>{item.title}</h5>
+                                    <p className="small opacity-75 text-dark">{item.desc}</p>
+                                </div>
+                            ))}
                     </div>
                 </div>
             </section>

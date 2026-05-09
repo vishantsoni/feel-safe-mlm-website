@@ -7,6 +7,7 @@ import Script from "next/script";
 import { AuthProvider } from "@/lib/contexts/AuthContext";
 import { CartProvider } from "@/lib/contexts/CartContext";
 import { ToastProvider } from "@/lib/contexts/ToastContext";
+import WhatsappButton from "@/componants/whatsappFloating/WhatsappButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,11 +95,15 @@ export default function RootLayout({
               <Navbar />
               {children}
               <Footer />
+              <WhatsappButton />
             </ToastProvider>
           </CartProvider>
         </AuthProvider>
 
-
+        <Script
+          src="https://accounts.google.com/gsi/client"
+          strategy="beforeInteractive"
+        />
         <Script src="/assets/js/jquery-1.11.0.min.js" />
         <Script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></Script>
         <Script
