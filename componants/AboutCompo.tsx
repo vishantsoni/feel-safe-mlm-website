@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react";
 import { useAuth } from '@/lib/contexts/AuthContext';
 import { ContactData } from '@/lib/types/Setting';
 import LogoCompo from './logo/LogoCompo';
+import TrustQuality from './TrustQuality';
 const AboutCompo = () => {
 
     const { setting, getSettingByKey } = useAuth();
@@ -227,6 +228,11 @@ const AboutCompo = () => {
                                     step: "7",
                                     title: "Legal & Ethical Excellence",
                                     desc: "To operate with 100% transparency as a registered Private Limited organization, upholding the interests of our partners and customers (CIN: U13996DL2026PTC465812)."
+                                },
+                                {
+                                    step: "8",
+                                    title: "Community Wellness & Health",
+                                    desc: "Bringing health awareness to every home and empowering women as pillars of wellness for their entire family."
                                 }
                             ].map((item, i) => (
                                 <div className="col-md-3" key={i}>
@@ -272,10 +278,10 @@ const AboutCompo = () => {
 
                         <div className="col-lg-8">
                             <div className="card border-0 shadow-sm p-4 h-100 bg-light">
-                                <h4 className="fw-bold mb-3 text-center">Legal Compliance</h4>
+                                <h4 className="fw-bold mb-3 text-center">Legal Compliance & Ethical Standards</h4>
                                 <p className="text-center text-muted px-lg-5 mb-4">
-                                    Fully transparent organization adhering to the <strong>Direct Selling Rules, 2021</strong>.
-                                    All transactions are secured via Razorpay.
+                                    At Feel Safe Pvt. Ltd.
+                                    , we are committed to transparency, ethical business practices, and women empowerment through a legally compliant direct selling model in India. Our operations strictly follow the Consumer Protection (Direct Selling) Rules, 2021 and Government of India guidelines.
                                 </p>
                                 <div className="row text-center g-3">
                                     <div className="col-6 col-md-3">
@@ -308,6 +314,10 @@ const AboutCompo = () => {
                     </div>
                 </div>
             </section>
+
+
+            <TrustQuality />
+
 
             {/* Grievance Footer Section */}
             <section className="py-4 border-top">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const DownloadApkSection = () => {
@@ -26,12 +27,56 @@ const DownloadApkSection = () => {
                     parent or a growing entrepreneur, staying protected and
                     profitable has never been easier.
                   </p>
-                  <div className="d-flex gap-2 flex-wrap">
-                    <img src="assets/images/app-store.jpg" alt="app-store" />
+                  {/* <div className="d-flex gap-2 flex-md-wrap">
+                    <img src="assets/images/app-store.jpg" alt="app-store" className="w-50 h-50 w-md-100 h-md-100" />
                     <img
                       src="assets/images/google-play.jpg"
                       alt="google-play"
+                      className="w-50 h-50 w-md-100 h-md-100"
                     />
+                  </div> */}
+                  <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start align-items-center mt-3">
+                    {/* App Store Button */}
+                    <Link
+                      href="#"
+                      className="d-inline-block hover-lift transition"
+                      aria-label="Download Feel Safe App on the App Store"
+                    >
+                      <img
+                        src="assets/images/app-store.jpg"
+                        alt="Download on App Store"
+                        width={140}
+                        height={42}
+                        className="img-fluid rounded-2 shadow-sm"
+                        style={{ objectFit: "contain" }}
+                      />
+                    </Link>
+
+                    {/* Google Play Button */}
+                    <Link
+                      href="#"
+                      className="d-inline-block hover-lift transition"
+                      aria-label="Get Feel Safe App on Google Play"
+                    >
+                      <img
+                        src="assets/images/google-play.jpg"
+                        alt="Get it on Google Play"
+                        width={140}
+                        height={42}
+                        className="img-fluid rounded-2 shadow-sm"
+                        style={{ objectFit: "contain" }}
+                      />
+                    </Link>
+
+                    <style >{`
+    .hover-lift:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.1);
+    }
+    .transition {
+      transition: all 0.2s ease-in-out;
+    }
+  `}</style>
                   </div>
                 </div>
               </div>

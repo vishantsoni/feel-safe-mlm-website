@@ -16,6 +16,8 @@ interface Product {
     name: string;
     percentage: number;
   } | null;
+  admin_stock: number;
+  distributor_stock: number;
 }
 interface Category {
   id: number;
@@ -48,6 +50,10 @@ interface ProductApiResponse {
   category: Category;
   product_attributes: ProductAttributes[];
   variants: ProVariant[];
+  tax_data: {
+    name: string;
+    percentage: number;
+  } | null;
 }
 
 export type {

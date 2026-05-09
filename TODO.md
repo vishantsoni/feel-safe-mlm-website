@@ -1,9 +1,11 @@
 # TODO
 
-- [x] Implement State -> City dropdowns in sample modal (`componants/sections/DiscountSection.tsx`) using:
-  - `GET /api/static/states`
-  - `GET /api/static/cities/:stateId`
-  - Replace State/City inputs with `<select>`.
-  - Reset City when State changes.
-  - Keep payload as `state` and `city` names (strings) as expected by backend.
-- [ ] (Optional) Run `npm run lint` and `npm run build` to verify no TS/ESLint issues.
+- [x] Add a Reviews tab + UI (summary, list, and review form) to Product detail page.
+
+- [x] Implement client-side fetching of reviews using GET api/ecom/reviews/:product_id.
+
+- [ ] Implement POST to api/ecom/reviews/:product_id with payload { product_id, rating, review }.
+
+- [ ] Refresh reviews after successful submission.
+- [ ] Basic error/loading states and input validation.
+- [ ] Run lint/build if available.

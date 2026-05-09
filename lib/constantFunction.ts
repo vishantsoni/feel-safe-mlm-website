@@ -1,7 +1,8 @@
 import Cookies from "js-cookie";
 
 // API Configuration
-const host: string = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+export const host: string =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 // export const host: string =
 //   process.env.NEXT_PUBLIC_API_URL || "https://backend.feelsafeco.in";
 

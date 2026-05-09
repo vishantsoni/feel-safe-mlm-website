@@ -14,11 +14,69 @@ export async function generateMetadata({ params }: Props) {
     const { slug } = await params;
     const blog = await getBlogBySlug(slug);
 
-    if (!blog) return { title: 'Blog Post Not Found' };
+    const canonical = `https://feelsafeco.in/blog/${slug}`;
+
+    const fallbackDescription =
+        'Menstrual hygiene awareness and safe hygiene products by Feel Safe Pvt. Ltd. Explore ethical direct selling, legal compliance, and BIS certified sanitary pads.';
+
+    if (!blog)
+        return {
+            title: 'Blog Post Not Found | Feel Safe',
+            description: fallbackDescription,
+            alternates: { canonical },
+            openGraph: {
+                title: 'Blog Post Not Found | Feel Safe',
+                description: fallbackDescription,
+                url: canonical,
+                siteName: 'Feel Safe',
+                type: 'article',
+            },
+            twitter: {
+                card: 'summary_large_image',
+                title: 'Blog Post Not Found | Feel Safe',
+                description: fallbackDescription,
+            },
+        };
+
+    const title = blog.post.title;
+    const description =
+        blog.post.content
+            .slice(0, 160)
+            .replace(/<[^>]*>?/gm, '') +
+        '...';
+
+    const featured = blog.post.featured_image;
+    const imageUrl = featured
+        ? featured.startsWith('http')
+            ? featured
+            : `https://feelsafeco.in/assets/images/blog/${featured}`
+        : 'https://feelsafeco.in/og-feelsafe-hygiene.jpg';
 
     return {
-        title: blog.post.title,
-        description: blog.post.content.slice(0, 160).replace(/<[^>]*>?/gm, '') + '...', // Strip HTML tags for meta description
+        title: `${title} | Feel Safe`,
+        description,
+        alternates: { canonical },
+        openGraph: {
+            title: `${title} | Feel Safe`,
+            description,
+            url: canonical,
+            siteName: 'Feel Safe',
+            type: 'article',
+            images: [
+                {
+                    url: imageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: title,
+                },
+            ],
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: `${title} | Feel Safe`,
+            description,
+            images: [imageUrl],
+        },
     };
 }
 
@@ -35,6 +93,41 @@ export default async function BlogPostPage({ params }: Props) {
 
     return (
         <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'BlogPosting',
+                        headline: blog.post.title,
+                        description: blog.post.content
+                            .slice(0, 160)
+                            .replace(/<[^>]*>?/gm, '') + '...',
+                        datePublished: blog.post.created_at,
+                        author: {
+                            '@type': 'Organization',
+                            name: 'Feel Safe Pvt. Ltd.',
+                        },
+                        publisher: {
+                            '@type': 'Organization',
+                            name: 'Feel Safe Pvt. Ltd.',
+                            logo: {
+                                '@type': 'ImageObject',
+                                url: 'https://feelsafeco.in/assets/images/logo.png',
+                            },
+                        },
+                        mainEntityOfPage: {
+                            '@type': 'WebPage',
+                            '@id': `https://feelsafeco.in/blog/${blog.post.slug || slug}`,
+                        },
+                        image: blog.post.featured_image
+                            ? blog.post.featured_image.startsWith('http')
+                                ? blog.post.featured_image
+                                : `https://feelsafeco.in/assets/images/blog/${blog.post.featured_image}`
+                            : 'https://feelsafeco.in/og-feelsafe-hygiene.jpg',
+                    }),
+                }}
+            />
             <section className="py-5 bg-light">
                 <div className="container-fluid">
                     <div className="row justify-content-center">

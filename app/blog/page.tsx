@@ -3,6 +3,38 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { BlogPost } from '@/lib/types/Blog';
 
+export const metadata = {
+  title: 'Blog | Feel Safe',
+  description:
+    'Menstrual hygiene awareness and safe hygiene products by Feel Safe Pvt. Ltd. Explore ethical direct selling, legal compliance, and BIS certified sanitary pads.',
+  alternates: {
+    canonical: 'https://feelsafeco.in/blog',
+  },
+  openGraph: {
+    title: 'Blog | Feel Safe',
+    description:
+      'Menstrual hygiene awareness and safe hygiene products by Feel Safe Pvt. Ltd. Explore ethical direct selling, legal compliance, and BIS certified sanitary pads.',
+    url: 'https://feelsafeco.in/blog',
+    siteName: 'Feel Safe',
+    type: 'website',
+    images: [
+      {
+        url: 'https://feelsafeco.in/og-feelsafe-hygiene.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Feel Safe Blog',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog | Feel Safe',
+    description:
+      'Menstrual hygiene awareness and safe hygiene products by Feel Safe Pvt. Ltd. Explore ethical direct selling, legal compliance, and BIS certified sanitary pads.',
+    images: ['https://feelsafeco.in/og-feelsafe-hygiene.jpg'],
+  },
+};
+
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', {
@@ -36,16 +68,18 @@ export default async function BlogPage() {
         ) : (
           <div className="row g-4">
             {blogs.map((blog) => {
-              const excerpt = blog.content.length > 150
-                ? blog.content.slice(0, 150) + '...'
-                : blog.content;
+              const excerpt = blog.content.length > 150 ? blog.content.slice(0, 150) + '...' : blog.content;
               return (
                 <div key={blog.id} className="col-lg-4 col-md-6">
-                  <article className="card  border-0 shadow-sm hover-shadow">
+                  <article className="card border-0 shadow-sm hover-shadow">
                     <div className="image-holder zoom-effect position-relative">
                       <Link href={`/blog/${blog.slug}`}>
                         <Image
-                          src={blog.featured_image && !blog.featured_image.startsWith('http') ? `/assets/images/blog/${blog.featured_image}` : (blog.featured_image || '/assets/images/post-thumb-1.jpg')}
+                          src={
+                            blog.featured_image && !blog.featured_image.startsWith('http')
+                              ? `/assets/images/blog/${blog.featured_image}`
+                              : blog.featured_image || '/assets/images/post-thumb-1.jpg'
+                          }
                           alt={blog.title}
                           fill
                           className="object-cover card-img-top position-relative"
@@ -53,20 +87,6 @@ export default async function BlogPage() {
                         />
                       </Link>
                     </div>
-                    {/* <div className="position-relative overflow-hidden card-img-top">
-                      <Image
-                        src={blog.featured_image ?
-                          (blog.featured_image.startsWith('http') ?
-                            blog.featured_image
-                            :
-                            `/assets/images/blog/${blog.featured_image}`)
-                          : '/assets/images/post-thumb-1.jpg'}
-                        alt={blog.title}
-                        fill
-                        className="object-cover"
-                        sizes="100vw"
-                      />
-                    </div> */}
                     <div className="card-body d-flex flex-column p-4">
                       <div className="post-meta mb-2">
                         <span className="badge bg-primary text-white me-2">{blog.category_name}</span>
@@ -78,10 +98,7 @@ export default async function BlogPage() {
                         </Link>
                       </h3>
                       <p className="text-muted flex-grow-1 mt-2">{excerpt}</p>
-                      <Link
-                        href={`/blog/${blog.slug}`}
-                        className="btn btn-outline-primary mt-3"
-                      >
+                      <Link href={`/blog/${blog.slug}`} className="btn btn-outline-primary mt-3">
                         Read More
                       </Link>
                     </div>
@@ -95,3 +112,4 @@ export default async function BlogPage() {
     </section>
   );
 }
+

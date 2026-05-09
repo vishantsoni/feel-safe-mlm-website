@@ -41,8 +41,10 @@ const HeroSection = () => {
                             <img
                               src="./assets/banner/sanitory_pad.png"
                               className="img-fluid"
+                              alt="Feel Safe sanitary pads"
                             />
                           </div>
+
                         </div>
                       </div>
 
@@ -71,8 +73,10 @@ const HeroSection = () => {
                             <img
                               src="./assets/banner/sanitary-pads.png"
                               className="img-fluid"
+                              alt="Feel Safe sanitary pads"
                             />
                           </div>
+
                         </div>
                       </div>
 
@@ -101,8 +105,10 @@ const HeroSection = () => {
                             <img
                               src="./assets/banner/night-pads.png"
                               className="img-fluid"
+                              alt="Feel Safe night pads"
                             />
                           </div>
+
                         </div>
                       </div>
                     </div>

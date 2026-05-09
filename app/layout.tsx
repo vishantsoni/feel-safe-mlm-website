@@ -22,14 +22,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://feelsafeco.in/"),
   title: {
-    default: "Feel Safe | Premium Hygiene & Personal Care Products",
-    template: "%s | Hamara Prayas, Aapki Suraksha | Feel Safe Private Limited",
+    // Optimized for the 20-70 character SEO requirement
+    default: "Best Sanitary Napkin Manufacturer in India | Feel Safe Private Limited",
+    template: "%s | Feel Safe Private Limited",
   },
   description:
-    "India's trusted manufacturer of Feel™ brand Sanitary Napkins, Baby Diapers, and Adult Care. BIS 5405:2019 certified, rash-free, and high-absorbency hygiene solutions. Wholesale & bulk suppliers for NGOs, distributors, and Sakhi Yojana PAN India.",
+    "India's trusted manufacturer of Feel™ brand Sanitary Napkins, Baby Diapers, and Adult Care. BIS certified, rash-free hygiene solutions for women empowerment. Contact: +91 9013499385 · support@feelsafeco.in",
   keywords: [
     "Feel Safe Private Limited",
-    "Sanitary Napkin Manufacturer India",
+    "Sanitary Napkin India",
     "Feel Baby Diapers",
     "Adult Diapers India",
     "Wholesale Sanitary Pads",
@@ -37,18 +38,36 @@ export const metadata: Metadata = {
     "NGO Hygiene Supplier",
     "Rash-free Sanitary Napkins",
   ],
+  // SEO Tip: Ensure these icons are actually available at these paths
   icons: {
-    icon: "https://feelsafeco.in/favicon.ico?favicon.0roezpub-jmq0.ico",
-    shortcut: "https://feelsafeco.in/favicon.ico?favicon.0roezpub-jmq0.ico",
-    apple: "https://feelsafeco.in/favicon.ico?favicon.0roezpub-jmq0.ico",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
-    title: "Feel Safe Private Limited | Quality Personal Care Products",
-    description: "Shop premium Sanitary Pads, Baby Diapers, and Adult Care products by Feel Safe. Quality you can trust, comfort you can feel.",
+    title: "Feel Safe Private Limited | Premium Hygiene & Empowerment Brand",
+    description: "Shop BIS certified Sanitary Pads, Baby Diapers, and Adult Care products. Join our Sakhi Mission for women's financial independence.",
     url: "https://feelsafeco.in/",
     siteName: "Feel Safe",
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "/og-feelsafe-hygiene.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Feel Safe Private Limited - Hygiene and Care Solutions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Feel Safe Private Limited | Premium Personal Care",
+    description: "Quality BIS certified hygiene products and empowerment opportunities across India.",
+    images: ["/og-feelsafe-hygiene.jpg"],
+  },
+  alternates: {
+    canonical: "https://feelsafeco.in/",
   },
 };
 
@@ -57,16 +76,55 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Enhanced Schema for Sitelinks Searchbox and Organization
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://feelsafeco.in/#organization",
+        "name": "Feel Safe Private Limited",
+        "url": "https://feelsafeco.in/",
+        "logo": "https://feelsafeco.in/assets/images/logo.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-9013499385",
+          "contactType": "customer service",
+          "email": "support@feelsafeco.in",
+          "areaServed": "IN",
+          "availableLanguage": "en"
+        },
+        "sameAs": [
+          "https://www.facebook.com/feelsafe/",
+          "https://www.youtube.com/@FeelSafe-co",
+          "https://www.instagram.com/feelsafe25/"
+        ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://feelsafeco.in/#website",
+        "url": "https://feelsafeco.in/",
+        "name": "Feel Safe",
+        "publisher": { "@id": "https://feelsafeco.in/#organization" },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://feelsafeco.in/products?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  };
+
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
-        />
+        {/* Next.js manages viewport automatically via Metadata, but manual tags here are fine for clarity */}
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
           rel="stylesheet"
@@ -78,41 +136,38 @@ export default function RootLayout({
         <link rel="stylesheet" type="text/css" href="/mobile.css" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin=""
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-          rel="stylesheet"
-        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
       </head>
       <body className="min-h-full flex flex-col">
+        {/* Unified Schema Script */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+
         <AuthProvider>
           <CartProvider>
             <ToastProvider>
               <Navbar />
-              {children}
+              <main className="flex-grow">{children}</main>
               <Footer />
               <WhatsappButton />
             </ToastProvider>
           </CartProvider>
         </AuthProvider>
 
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="beforeInteractive"
-        />
-        <Script src="/assets/js/jquery-1.11.0.min.js" />
-        <Script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></Script>
+        {/* Script Management: Use strategy="lazyOnload" for non-critical scripts */}
+        <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" />
+        <Script src="/assets/js/jquery-1.11.0.min.js" strategy="lazyOnload" />
+        <Script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js" strategy="lazyOnload" />
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
           integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
           crossOrigin="anonymous"
-        ></Script>
-        <Script src="/assets/js/plugins.js"></Script>
-        <Script src="/assets/js/script.js"></Script>
+          strategy="lazyOnload"
+        />
+        <Script src="/assets/js/plugins.js" strategy="lazyOnload" />
+        <Script src="/assets/js/script.js" strategy="lazyOnload" />
       </body>
     </html>
   );

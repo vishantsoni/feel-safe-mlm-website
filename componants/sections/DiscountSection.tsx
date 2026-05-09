@@ -137,7 +137,6 @@ const DiscountSection = () => {
       return;
     }
 
-    // Basic validation
     const email = form.email.trim();
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       setError("Please enter a valid email address.");
@@ -154,7 +153,6 @@ const DiscountSection = () => {
       setError("Please select state and city.");
       return;
     }
-
 
     setLoading(true);
     try {
@@ -177,7 +175,6 @@ const DiscountSection = () => {
       )) as { status?: boolean; message?: string };
 
       if (resp?.status === false) {
-
         setError(resp?.message || "Request failed");
         return;
       }
@@ -190,7 +187,6 @@ const DiscountSection = () => {
     } catch (err) {
       const message = err instanceof Error ? err.message : "Something went wrong";
       setError(message);
-
     } finally {
       setLoading(false);
     }
@@ -201,39 +197,55 @@ const DiscountSection = () => {
       <section className="py-5">
         <div className="container-fluid">
           <div
-            className=" py-5 my-5 rounded-5"
+            className="py-5 my-5 rounded-5"
             style={{
-              // backgroundImage:
-              //   "url('./assets/images/bg-leaves-img-pattern.png')",
               backgroundRepeat: "no-repeat",
-              backgroundImage:
-                "linear-gradient(45deg, #8DC63F, 1%, #8ee3ff,  60%, #e4a5c5)",
+              backgroundImage: "linear-gradient(45deg, #8DC63F, 1%, #8ee3ff, 60%, #e4a5c5)",
             }}
           >
             <div className="container my-md-5">
               <div className="row">
-                <div className="col-md-10 col-12 mx-auto p-md-5 text-center">
+                <div className="col-md-10 col-12 mx-auto p-md-5 text-center text-dark">
                   <div className="section-header">
-                    <h2 className="section-title display-4">
-                      Experience the <span className="text-primary">Softness.</span>{" "}
-                      Request Your <span className="text-primary">Free Sample!</span>
+                    <h2 className="section-title display-5 fw-bold mb-4">
+                      Experience Premium Quality & Join the Feel Safe Mission
                     </h2>
                   </div>
-                  <p>
-                    Why wait to feel the difference? Try our premium bamboo-fiber pads and diapers before you join the movement. Your comfort, our priority.
+                  <p className="lead mb-4">
+                    Start your journey with <strong>Feel Safe Pvt. Ltd.</strong> by requesting a product sample and exploring our women empowerment business opportunity. This is the first step to experience the quality of our premium sanitary pads and hygiene products while becoming a part of the <strong>Feel Safe Sakhi Network</strong>.
+                  </p>
+
+                  <div className="row justify-content-center g-3 mb-4">
+                    {[
+                      "Premium Quality Hygiene Products",
+                      "Safe, Soft & Comfortable Protection",
+                      "Women Empowerment & Self-Employment Opportunity",
+                      "Trusted Direct Selling Business in India"
+                    ].map((item, idx) => (
+                      <div key={idx} className="col-md-auto">
+                        <span className="badge bg-white text-dark border p-2 px-3 rounded-pill text-wrap">
+                          ✔️ {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="fw-bold mt-4" style={{ color: "#1C1C1C" }}>
+                    Feel Safe Sakhi Yojana — Quality Products, Better Health, Brighter Future.
                   </p>
                 </div>
-                <div className="col-md-10 col-12 mx-auto text-center">
+
+                <div className="col-md-10 col-12 mx-auto text-center mt-3">
                   <button
                     type="button"
-                    className="btn btn-primary btn-lg "
+                    className="btn btn-dark btn-lg shadow-sm px-5 rounded-pill"
                     onClick={openModal}
                   >
-                    Get Sample
+                    Get Free Sample
                   </button>
                 </div>
 
-                {/* Modal */}
+                {/* Modal remains same */}
                 {isOpen && (
                   <div
                     className="modal show d-block"
@@ -268,9 +280,7 @@ const DiscountSection = () => {
 
                             <div className="row g-3">
                               <div className="col-md-6">
-                                <label htmlFor="sample_name" className="form-label">
-                                  Name*
-                                </label>
+                                <label htmlFor="sample_name" className="form-label">Name*</label>
                                 <input
                                   id="sample_name"
                                   name="name"
@@ -283,37 +293,27 @@ const DiscountSection = () => {
                               </div>
 
                               <div className="col-md-6">
-                                <label htmlFor="sample_phone" className="form-label">
-                                  Phone*
-                                </label>
+                                <label htmlFor="sample_phone" className="form-label">Phone*</label>
                                 <input
                                   id="sample_phone"
                                   name="phone"
                                   type="text"
-                                  keyboardType="numeric"
                                   className="form-control form-control-lg"
                                   placeholder="Phone"
                                   value={form.phone}
                                   onChange={(e) => {
                                     const value = e.target.value;
-                                    // 1. Only allow digits (0-9)
-                                    // 2. Limit length to 10
                                     const cleanValue = value.replace(/\D/g, "").slice(0, 10);
                                     onChange({
-                                      target: {
-                                        name: "phone",
-                                        value: cleanValue
-                                      }
-                                    });
+                                      target: { name: "phone", value: cleanValue }
+                                    } as any);
                                   }}
                                   maxLength={10}
                                 />
                               </div>
 
                               <div className="col-md-4">
-                                <label htmlFor="sample_email" className="form-label">
-                                  Email*
-                                </label>
+                                <label htmlFor="sample_email" className="form-label">Email*</label>
                                 <input
                                   id="sample_email"
                                   name="email"
@@ -326,9 +326,7 @@ const DiscountSection = () => {
                               </div>
 
                               <div className="col-md-4">
-                                <label htmlFor="sample_gender" className="form-label">
-                                  Gender
-                                </label>
+                                <label htmlFor="sample_gender" className="form-label">Gender</label>
                                 <select
                                   id="sample_gender"
                                   name="gender"
@@ -344,9 +342,7 @@ const DiscountSection = () => {
                               </div>
 
                               <div className="col-md-4">
-                                <label htmlFor="sample_dob" className="form-label">
-                                  DOB
-                                </label>
+                                <label htmlFor="sample_dob" className="form-label">DOB</label>
                                 <input
                                   id="sample_dob"
                                   name="dob"
@@ -358,9 +354,7 @@ const DiscountSection = () => {
                               </div>
 
                               <div className="col-12">
-                                <label htmlFor="sample_address" className="form-label">
-                                  Address
-                                </label>
+                                <label htmlFor="sample_address" className="form-label">Address</label>
                                 <input
                                   id="sample_address"
                                   name="address"
@@ -373,9 +367,7 @@ const DiscountSection = () => {
                               </div>
 
                               <div className="col-md-4">
-                                <label htmlFor="sample_state" className="form-label">
-                                  State
-                                </label>
+                                <label htmlFor="sample_state" className="form-label">State</label>
                                 <select
                                   id="sample_state"
                                   name="state"
@@ -385,31 +377,22 @@ const DiscountSection = () => {
                                     const nextStateName = e.target.value;
                                     const nextState = states.find((s) => String(s.name) === String(nextStateName));
                                     const nextStateId = nextState?.id ?? null;
-
                                     setSelectedStateId(nextStateId);
                                     setForm((prev) => ({ ...prev, state: nextStateName, city: "" }));
-
-                                    if (nextStateId !== null) {
-                                      await fetchCities(nextStateId);
-                                    } else {
-                                      setCities([]);
-                                    }
+                                    if (nextStateId !== null) await fetchCities(nextStateId);
+                                    else setCities([]);
                                   }}
                                   disabled={statesLoading}
                                 >
-                                  <option value="">{statesLoading ? "Loading states..." : "Select state"}</option>
+                                  <option value="">{statesLoading ? "Loading..." : "Select state"}</option>
                                   {states.map((s) => (
-                                    <option key={String(s.id)} value={s.name}>
-                                      {s.name}
-                                    </option>
+                                    <option key={String(s.id)} value={s.name}>{s.name}</option>
                                   ))}
                                 </select>
                               </div>
 
                               <div className="col-md-4">
-                                <label htmlFor="sample_city" className="form-label">
-                                  City
-                                </label>
+                                <label htmlFor="sample_city" className="form-label">City</label>
                                 <select
                                   id="sample_city"
                                   name="city"
@@ -418,20 +401,15 @@ const DiscountSection = () => {
                                   onChange={(e) => setForm((prev) => ({ ...prev, city: e.target.value }))}
                                   disabled={!form.state || citiesLoading}
                                 >
-                                  <option value="">{citiesLoading ? "Loading cities..." : "Select city"}</option>
+                                  <option value="">{citiesLoading ? "Loading..." : "Select city"}</option>
                                   {cities.map((c) => (
-                                    <option key={String(c.id)} value={c.name}>
-                                      {c.name}
-                                    </option>
+                                    <option key={String(c.id)} value={c.name}>{c.name}</option>
                                   ))}
                                 </select>
                               </div>
 
-
                               <div className="col-md-4">
-                                <label htmlFor="sample_pincode" className="form-label">
-                                  Pincode
-                                </label>
+                                <label htmlFor="sample_pincode" className="form-label">Pincode</label>
                                 <input
                                   id="sample_pincode"
                                   name="pincode"
@@ -446,19 +424,10 @@ const DiscountSection = () => {
                           </div>
 
                           <div className="modal-footer">
-                            <button
-                              type="button"
-                              className="btn btn-secondary"
-                              onClick={closeModal}
-                              disabled={loading}
-                            >
+                            <button type="button" className="btn btn-secondary" onClick={closeModal} disabled={loading}>
                               Cancel
                             </button>
-                            <button
-                              type="submit"
-                              className="btn btn-primary"
-                              disabled={loading}
-                            >
+                            <button type="submit" className="btn btn-primary" disabled={loading}>
                               {loading ? "Submitting..." : "Submit"}
                             </button>
                           </div>

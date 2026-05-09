@@ -3,10 +3,16 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { IndianRupee, Star } from "lucide-react";
+import { IndianRupee } from "lucide-react";
+
 import { Product, ProductAttributes, ProVariant } from "@/lib/types/Product";
 import { useCart } from "@/lib/contexts/CartContext";
 import TrendingProSection from "../sections/TrendingProSection";
+import ReviewsSection from "./ReviewsSection";
+
+// NOTE: ProductDetail already has its own TS typing in this repo.
+
+
 
 interface Props {
   product: Product;
@@ -26,6 +32,16 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");
 
   const { addItem, loading } = useCart();
+
+  // NOTE: serverCallFuction/CartContext currently types addItem() as Promise<void>.
+  // This component uses res.status/res.message; keep runtime behavior but loosen typing.
+  const addItemTyped = addItem as unknown as (
+    productId: number,
+    variantId: string | null,
+    quantity: number,
+    price: number,
+    distributor_id: number | null
+  ) => Promise<{ status?: boolean; message?: string }>;
   const router = useRouter();
 
   useEffect(() => {
@@ -43,12 +59,14 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     if (attributes && attributes.length > 0) {
       const defaultSelection: Record<number, number> = {};
       attributes.forEach((attr) => {
+
         if (attr.values && attr.values.length > 0) {
           // Har attribute ki pehli value (0 index) select kar rahe hain
           defaultSelection[attr.id] = attr.values[0].id;
         }
       });
-      setSelectedAttributes(defaultSelection);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      queueMicrotask(() => setSelectedAttributes(defaultSelection));
     }
   }, [attributes]);
 
@@ -102,7 +120,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     }
 
     try {
-      const res = await addItem(
+      const res = await addItemTyped(
         product.id,
         currentVariant ? currentVariant.id.toString() : null,
         quantity,
@@ -137,6 +155,8 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     });
     router.push(`/checkout?${params.toString()}`);
   };
+
+  console.log("selected image ", selectedImage);
 
   return (
     <section className="pb-5 pt-4">
@@ -305,8 +325,11 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                 )}
               </div>
             </div>
-            <div>admin - {currentVariant ? currentVariant.admin_inventory : product.admin_stock}</div>
-            <div>Distributor - {currentVariant ? currentVariant.distributor_inventory : product.distributor_stock}</div>
+            {/* Inventory info (optional) */}
+            <div>admin - {product.admin_stock}</div>
+            <div>Distributor - {product.distributor_stock}</div>
+
+
 
             {/* Quick Specs */}
             {/* <div className="mb-4">
@@ -340,6 +363,16 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                   Description
                 </button>
               </li>
+
+              <li className="nav-item">
+                <button
+                  className="nav-link"
+                  data-bs-toggle="tab"
+                  data-bs-target="#reviews"
+                >
+                  Reviews
+                </button>
+              </li>
               {/* <li className="nav-item">
                 <button
                   className="nav-link"
@@ -350,10 +383,24 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                 </button>
               </li> */}
             </ul>
+
             <div className="tab-content border border-top-0 p-4">
               <div className="tab-pane fade show active" id="description">
                 {product.description}
               </div>
+
+              <div className="tab-pane fade" id="reviews">
+                <div>
+                  <h5 className="fw-bold">Customer Reviews</h5>
+                  <div className="text-muted mb-3">
+                    Share your experience with this product.
+                  </div>
+
+                  {/** Summary + list + form handled in-state below */}
+                  <ReviewsSection productId={product.id} />
+                </div>
+              </div>
+
               <div className="tab-pane fade" id="specs">
                 {/* Same specs list or table */}
               </div>

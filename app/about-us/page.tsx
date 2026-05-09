@@ -2,8 +2,11 @@ import React from "react";
 import { Mail, MapPin, PhoneCall, ShieldCheck, Heart, Leaf, Users, Award, TrendingUp, CheckCircle } from "lucide-react";
 import { Icon } from "@iconify/react";
 import AboutCompo from "@/componants/AboutCompo";
+import PageHeader from "@/componants/sections/PageHeader";
 
 export const metadata = {
+
+
   title: "About Feel Safe ",
   description: "Feel Safe Private Limited is dedicated to dignity and hygiene. We provide high-quality sanitary pads, baby diapers, and adult care products designed for comfort and security.",
   keywords: [
@@ -36,8 +39,12 @@ export const metadata = {
 
 const AboutPage = () => {
   return (
-    <AboutCompo />
+    <main>
+      <PageHeader />
+      <AboutCompo />
+    </main>
   );
 };
 
 export default AboutPage;
+

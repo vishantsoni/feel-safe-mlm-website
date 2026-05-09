@@ -1,50 +1,43 @@
 "use client";
+import serverCallFuction from "@/lib/constantFunction";
 import { useAuth } from "@/lib/contexts/AuthContext";
 import { useCart } from "@/lib/contexts/CartContext";
-import { Trash } from "lucide-react";
+import { Trash, Search, User, ShoppingCart, Menu } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
 const Navbar = () => {
-  const { isAuthenticated, user, logout, setting, getSettingByKey } = useAuth();
-  const contact_setting = getSettingByKey("contact_us")
+  const { isAuthenticated, user, logout, getSettingByKey } = useAuth();
+  const contact_setting = getSettingByKey("contact_us");
   const { cart, removeItem } = useCart();
 
 
+  const [category, setCategory] = React.useState([]);
 
+  const fetchCategories = async () => {
+    try {
+
+      const res = await serverCallFuction('GET', 'api/products/categories')
+      if (res.status) {
+        setCategory(res.data);
+      }
+
+    } catch (error) {
+      console.log("error - ", error);
+
+    }
+  }
+
+  useEffect(() => {
+    fetchCategories()
+
+  }, [user]);
+
+  console.log("categor 0- ", category);
 
   return (
     <>
-      <svg xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
-        <defs>
-          <symbol id="user" viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M15.71 12.71a6 6 0 1 0-7.42 0a10 10 0 0 0-6.22 8.18a1 1 0 0 0 2 .22a8 8 0 0 1 15.9 0a1 1 0 0 0 1 .89h.11a1 1 0 0 0 .88-1.1a10 10 0 0 0-6.25-8.19ZM12 12a4 4 0 1 1 4-4a4 4 0 0 1-4 4Z"
-            />
-          </symbol>
-          <symbol id="heart" viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M20.16 4.61A6.27 6.27 0 0 0 12 4a6.27 6.27 0 0 0-8.16 9.48l7.45 7.45a1 1 0 0 0 1.42 0l7.45-7.45a6.27 6.27 0 0 0 0-8.87Zm-1.41 7.46L12 18.81l-6.75-6.74a4.28 4.28 0 0 1 3-7.3a4.25 4.25 0 0 1 3 1.25a1 1 0 0 0 1.42 0a4.27 4.27 0 0 1 6 6.05Z"
-            />
-          </symbol>
-          <symbol id="cart" viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M8.5 19a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 8.5 19ZM19 16H7a1 1 0 0 1 0-2h8.491a3.013 3.013 0 0 0 2.885-2.176l1.585-5.55A1 1 0 0 0 19 5H6.74a3.007 3.007 0 0 0-2.82-2H3a1 1 0 0 0 0 2h.921a1.005 1.005 0 0 1 .962.725l.155.545v.005l1.641 5.742A3 3 0 0 0 7 18h12a1 1 0 0 0 0-2Zm-1.326-9l-1.22 4.274a1.005 1.005 0 0 1-.963.726H8.754l-.255-.892L7.326 7ZM16.5 19a1.5 1.5 0 1 0 1.5 1.5a1.5 1.5 0 0 0-1.5-1.5Z"
-            />
-          </symbol>
-          <symbol id="search" viewBox="0 0 24 24">
-            <path
-              fill="currentColor"
-              d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z"
-            />
-          </symbol>
-        </defs>
-      </svg>
-
-      {/* --- 1. COMMON DRAWERS (Dono Header ke liye) --- */}
+      {/* --- 1. COMMON DRAWERS --- */}
 
       {/* Navigation Drawer */}
       <div
@@ -53,7 +46,8 @@ const Navbar = () => {
         aria-labelledby="offcanvasNavbarLabel"
       >
         <div className="offcanvas-header border-bottom">
-          <h5 className="offcanvas-title">Menu</h5>
+          {/* SEO FIX: Changed h5 to div with fw-bold to remove from header outline */}
+          <div className="offcanvas-title fw-bold fs-5" id="offcanvasNavbarLabel">Menu</div>
           <button
             type="button"
             className="btn-close"
@@ -62,49 +56,28 @@ const Navbar = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <ul className="navbar-nav gap-2">
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/" className="nav-link">
-                Home
-              </Link>
-            </li>
-            {/* <li data-bs-dismiss="offcanvas">
-              <Link href="/products/sanitory-pad" className="nav-link">
-                Sanitary Pads
-              </Link>
-            </li>
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/products/adult-diaper" className="nav-link">
-                Adult Diapers
-              </Link>
-            </li>
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/products/baby-diaper" className="nav-link">
-                Baby Diapers
-              </Link>
-            </li> */}
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/products" className="nav-link">
-                Shop
-              </Link>
-            </li>
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/blog" className="nav-link">
-                Blog
-              </Link>
-            </li>
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/about-us" className="nav-link">
-                About Us
-              </Link>
-            </li>
-            <li data-bs-dismiss="offcanvas">
-              <Link href="/contact-us" className="nav-link">
-                Contact Us
-              </Link>
-            </li>
-
-          </ul>
+          <nav aria-label="Mobile Navigation">
+            <ul className="navbar-nav gap-2">
+              <li data-bs-dismiss="offcanvas"><Link href="/" className="nav-link">Home</Link></li>
+              {/* <li data-bs-dismiss="offcanvas"><Link href="/products" className="nav-link">Shop</Link></li> */}
+              {/* Mobile Shop Section */}
+              <li className="nav-item">
+                <div className="nav-link fw-bold text-muted small uppercase">Shop</div>
+                <ul className="list-unstyled ps-3">
+                  {category?.map((cat: any, index: number) => (
+                    <li key={index} data-bs-dismiss="offcanvas">
+                      <Link href={`/products?category=${cat.id}`} className="nav-link py-1">
+                        {cat.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+              <li data-bs-dismiss="offcanvas"><Link href="/blog" className="nav-link">Blog</Link></li>
+              <li data-bs-dismiss="offcanvas"><Link href="/about-us" className="nav-link">About Us</Link></li>
+              <li data-bs-dismiss="offcanvas"><Link href="/contact-us" className="nav-link">Contact Us</Link></li>
+            </ul>
+          </nav>
         </div>
       </div>
 
@@ -112,10 +85,11 @@ const Navbar = () => {
       <div
         className="offcanvas offcanvas-end"
         id="offcanvasCart"
-        aria-labelledby="My Cart"
+        aria-labelledby="offcanvasCartLabel"
       >
         <div className="offcanvas-header border-bottom justify-content-between">
-          <h5 className="mb-0">Your Cart</h5>
+          {/* SEO FIX: Changed h5 to div */}
+          <div id="offcanvasCartLabel" className="mb-0 fw-bold fs-5">Your Cart</div>
           <button
             type="button"
             className="btn-close"
@@ -124,12 +98,13 @@ const Navbar = () => {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <h4 className="d-flex justify-content-between align-items-center mb-3">
+          {/* SEO FIX: Changed h4 to div */}
+          <div className="d-flex justify-content-between align-items-center mb-3 fw-bold fs-4">
             <span className="text-primary">Items</span>
             <span className="badge bg-primary rounded-pill">
               {cart?.total_items || 0}
             </span>
-          </h4>
+          </div>
           <ul className="list-group mb-3">
             {cart?.items.map((item, index) => (
               <li
@@ -139,13 +114,11 @@ const Navbar = () => {
                 <div className="d-flex align-items-center">
                   <img
                     src={item.f_image}
-                    alt=""
+                    alt={item.product_name}
+                    width={50}
+                    height={50}
                     className="img-thumbnail me-2"
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      objectFit: "cover",
-                    }}
+                    style={{ objectFit: "cover" }}
                   />
                   <div>
                     <h6 className="my-0 small">{item.product_name}</h6>
@@ -157,6 +130,7 @@ const Navbar = () => {
                 <button
                   className="btn btn-sm"
                   onClick={() => removeItem(item.id)}
+                  aria-label={`Remove ${item.product_name}`}
                 >
                   <Trash size={16} color="red" />
                 </button>
@@ -176,101 +150,80 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* --- 2. DESKTOP HEADER (Original Design) --- */}
+      {/* --- 2. DESKTOP HEADER (Same as before) --- */}
       <header className="d-none d-xl-block">
         <div className="container-fluid">
           <div className="row py-3 border-bottom align-items-center">
             <div className="col-lg-3">
-              <Link href="/">
+              <Link href="/" aria-label="Feel Safe Home">
                 <img
                   src="/assets/images/logo.png"
-                  alt="logo"
+                  alt="Feel Safe Logo"
+
                   className="img-fluid"
                 />
               </Link>
             </div>
             <div className="col-lg-5">
-              <div className="search-bar row bg-light p-2 rounded-4 mx-0">
+              <form className="search-bar row bg-light p-2 rounded-4 mx-0" role="search">
                 <div className="col-md-4">
-                  <select className="form-select border-0 bg-transparent shadow-none">
+                  <select className="form-select border-0 bg-transparent shadow-none" aria-label="Select Category">
                     <option>All Categories</option>
+                    {category && category.length > 0 && category.map((cat: any, index: number) => (
+                      <option key={index} value={cat.id}>{cat.name}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="col-md-7">
                   <input
-                    type="text"
+                    type="search"
                     className="form-control border-0 bg-transparent shadow-none"
                     placeholder="Search products..."
+                    aria-label="Search products"
                   />
                 </div>
-                <div className="col-1">
-                  <svg width="24" height="24">
-                    <use xlinkHref="#search"></use>
-                  </svg>
+                <div className="col-1 d-flex align-items-center">
+                  <Search size={24} className="text-muted" />
                 </div>
-              </div>
+              </form>
             </div>
             <div className="col-lg-4 d-flex justify-content-end gap-4 align-items-center">
-              {!isAuthenticated ?
-                <div className="support-box text-end d-none d-xl-block">
+              {!isAuthenticated ? (
+                <div className="support-box text-end">
                   <span className="fs-6 text-muted">For Support?</span>
-                  <h5 className="mb-0">+91 {contact_setting?.phone}</h5>
-                </div> : <div className="support-box text-dark d-none d-xl-block">Welcome! {user?.name}</div>
-              }
-              <ul className="d-flex list-unstyled m-0 gap-3">
+                  {/* SEO FIX: Changed h5 to div */}
+                  <div className="mb-0 fw-bold fs-5">+91 {contact_setting?.phone}</div>
+                </div>
+              ) : (
+                <div className="support-box text-dark">Welcome! {user?.name}</div>
+              )}
+              <ul className="d-flex list-unstyled m-0 gap-3 align-items-center">
                 <li className="dropdown">
-                  <a
-                    href="#"
-                    className="rounded-circle bg-light p-2 d-block"
+                  <button
+                    className="rounded-circle bg-light p-2 border-0"
                     data-bs-toggle="dropdown"
+                    aria-label="Account menu"
                   >
-                    <svg width="24" height="24">
-                      <use xlinkHref="#user"></use>
-                    </svg>
-                  </a>
+                    <User size={24} />
+                  </button>
                   <ul className="dropdown-menu dropdown-menu-end">
                     {isAuthenticated ? (
                       <>
-                        <li>
-                          <Link href={"/account"} className="dropdown-item">
-                            My Account
-                          </Link>
-                        </li>
-                        <li>
-                          <Link
-                            href={"/account/orders"}
-                            className="dropdown-item"
-                          >
-                            Orders
-                          </Link>
-                        </li>
-                        <li>
-                          <button onClick={logout} className="dropdown-item">
-                            Logout
-                          </button>
-                        </li>
+                        <li><Link href="/account" className="dropdown-item">My Account</Link></li>
+                        <li><Link href="/account/orders" className="dropdown-item">Orders</Link></li>
+                        <li><button onClick={logout} className="dropdown-item">Logout</button></li>
                       </>
                     ) : (
-                      <li>
-                        <Link href="/login" className="dropdown-item">
-                          Login
-                        </Link>
-                      </li>
+                      <li><Link href="/login" className="dropdown-item">Login</Link></li>
                     )}
                   </ul>
                 </li>
-                {/* <li>
-                  <a href="#" className="rounded-circle bg-light p-2 d-block">
-                    <svg width="24" height="24">
-                      <use xlinkHref="#heart"></use>
-                    </svg>
-                  </a>
-                </li> */}
                 <li>
                   <button
                     className="border-0 bg-transparent d-flex flex-column gap-1 lh-1"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasCart"
+                    aria-label="Open cart"
                   >
                     <span className="fs-6 text-muted">Your Cart</span>
                     <span className="cart-total fs-5 fw-bold">
@@ -281,123 +234,84 @@ const Navbar = () => {
               </ul>
             </div>
           </div>
-          {/* Desktop Nav Links */}
-          <div className="row py-2 border-bottom">
+          <nav className="row py-2 border-bottom" aria-label="Desktop Navigation">
             <div className="col-12">
-              <ul className="nav  gap-4">
-                <li>
-                  <Link
-                    href="/"
-                    className="nav-link text-dark"
-                  >
-                    Home
-                  </Link>
-                </li>
-
-
-                {/* <li>
-                  <Link
-                    href="/products/sanitory-pad"
-                    className="nav-link text-dark"
-                  >
-                    Sanitary Pads
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/products/adult-diaper"
-                    className="nav-link text-dark"
-                  >
-                    Adult Diapers
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/products/baby-diaper"
-                    className="nav-link text-dark"
-                  >
-                    Baby Diapers
-                  </Link>
-                </li> */}
-                <li>
+              <ul className="nav gap-4">
+                <li><Link href="/" className="nav-link text-dark">Home</Link></li>
+                <li className="nav-link dropdown">
                   <Link
                     href="/products"
-                    className="nav-link text-dark"
+                    className="nav-link text-dark p-0 dropdown-toggle"
+                    id="shopDropdown"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
                   >
                     Shop
                   </Link>
+                  <ul className="dropdown-menu shadow border-0 mt-2" aria-labelledby="shopDropdown">
+                    <li>
+                      <Link href="/products" className="dropdown-item fw-bold text-primary">
+                        All Products
+                      </Link>
+                    </li>
+                    <li><hr className="dropdown-divider" /></li>
+
+                    {category && category.length > 0 ? (
+                      category.map((cat: any, index: number) => (
+                        <li key={index}>
+                          <Link href={`/products?category=${cat.id}`} className="dropdown-item">
+                            {cat.name}
+                          </Link>
+                        </li>
+                      ))
+                    ) : (
+                      <li><span className="dropdown-item text-muted">No categories found</span></li>
+                    )}
+                  </ul>
                 </li>
-                <li>
-                  <Link href="/blog" className="nav-link text-dark">
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about-us" className="nav-link text-dark">
-                    About Us
-                  </Link>
-                </li>
-                <li data-bs-dismiss="offcanvas">
-                  <Link href="/contact-us" className="nav-link">
-                    Contact Us
-                  </Link>
-                </li>
-                {/* <li>
-                  <Link href="/documents" className="nav-link text-dark">
-                    Documents
-                  </Link>
-                </li> */}
+                {/* SHOP DROPDOWN END */}
+                <li><Link href="/blog" className="nav-link text-dark">Blog</Link></li>
+                <li><Link href="/about-us" className="nav-link text-dark">About Us</Link></li>
+                <li><Link href="/contact-us" className="nav-link text-dark">Contact Us</Link></li>
               </ul>
             </div>
-          </div>
+          </nav>
         </div>
       </header>
 
-      {/* --- 3. MOBILE HEADER (Single Row Design) --- */}
+      {/* --- 3. MOBILE HEADER (Same as before) --- */}
       <header className="sticky-top bg-white border-bottom d-block d-xl-none py-2">
         <div className="container-fluid">
           <div className="row align-items-center">
-            {/* Left: Hamburger */}
             <div className="col-3">
               <button
                 className="border-0 bg-transparent p-0 shadow-none"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasNavbar"
+                aria-label="Toggle navigation"
               >
-                <svg
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <line x1="3" y1="12" x2="21" y2="12"></line>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
+                <Menu size={30} />
               </button>
             </div>
-            {/* Center: Logo */}
             <div className="col-6 text-center">
               <Link href="/">
                 <img
                   src="/assets/images/logo.png"
-                  alt="logo"
+                  alt="Feel Safe Logo"
+
                   style={{ maxHeight: "35px" }}
                 />
               </Link>
             </div>
-            {/* Right: Cart */}
             <div className="col-3 text-end">
               <button
                 className="border-0 bg-transparent p-0 position-relative shadow-none"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasCart"
+                aria-label="Open cart"
               >
-                <svg width="28" height="28">
-                  <use xlinkHref="#cart"></use>
-                </svg>
+                <ShoppingCart size={28} />
                 <span
                   className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary"
                   style={{ fontSize: "0.6rem" }}
