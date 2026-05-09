@@ -8,19 +8,42 @@ const externalSignupUrl = "https://panel.feelsafeco.in/signup";
 const faqs = [
     {
         q: "Who can apply to become a distributor?",
-        a: "Retailers, wholesalers, NGOs, and business owners across India who can support distribution, promotion, and timely supply of Feel Safe products.",
+        a: `The Feel Safe Sakhi Yojna: Exclusively for Women
+Our Sakhi Yojna is a specialized initiative dedicated solely to women’s empowerment.We believe in creating leaders at the grassroots level.
+
+            Women - Only Initiative: This program is exclusively designed for women who wish to become financially independent and lead the hygiene revolution in their communities.
+
+Exclusive Territory Mapping: To ensure your business growth, each Sakhi is allotted a specific work area based on their Location and PIN Code.
+
+Territory Protection: Once an area is assigned to a Sakhi, no other distributor or partner can be onboarded for that specific location.This "Area Lock" policy ensures you have zero internal competition and maximum earning potential.`,
     },
     {
         q: "Is there any form submission on this page?",
-        a: "No. This page is only informational. To complete your application, use the button below which opens the official signup panel.",
+        a: `This page is intended for informational purposes to help you understand our vision and partnership models. To move forward and officially join the Feel Safe Pvt. Ltd. network, please use our secure application portal.
+
+<br/>Note: No application forms are hosted directly on this page for your data security. To complete your registration as a Distributor or join the Feel Safe Sakhi Yojna, click the button below.`,
     },
     {
         q: "What products can I distribute?",
-        a: "You’ll be able to distribute eligible Feel Safe products available through the distributor panel after signup and approval.",
+        a: `Authorized Distribution & Inventory Access
+Upon successful registration and official approval of your profile, you will gain full authorization to manage your business through the Feel Safe Pvt. Ltd. partner portal.
+
+<br/>Exclusive Inventory: Gain access to a comprehensive range of eligible ‘Feel’ hygiene products directly through your dashboard.
+
+<br/>Seamless Ordering: Once your territory is verified and approved, you can initiate orders and manage supplies effortlessly.
+
+<br/>Business Growth: Start distributing premium, certified products in your designated market and scale your operations with the full support of our supply chain.`,
     },
     {
         q: "How long does approval take?",
-        a: "Approval timelines can vary based on location and partner requirements. After signup, the panel will guide you through next steps.",
+        a: `Onboarding Timelines & Guidance
+We believe in a thorough and strategic verification process to protect your business territory.
+
+<br/>Variable Approval Timelines: Please note that the verification period may vary depending on your specific Location, PIN Code mapping, and the documentation requirements for your partnership type.
+
+<br/>Step-by-Step Guidance: Immediately following your registration, our digital panel acts as your dedicated assistant. It will provide a personalized checklist and guide you through the remaining steps of the onboarding journey.
+
+<br/>Transparent Progress: You can monitor the status of your application at any time via the portal, ensuring you are always informed as we work toward activating your authorized distribution area.`,
     },
     {
         q: "Can I promote Feel Safe products in my local market?",
@@ -365,8 +388,8 @@ export default function BecomeDistributorPage() {
                                         aria-labelledby={headingId}
                                         data-bs-parent="#becomeDistributorFaq"
                                     >
-                                        <div className="accordion-body" style={{ color: "#747474" }}>
-                                            {f.a}
+                                        <div className="accordion-body" style={{ color: "#747474" }} dangerouslySetInnerHTML={{ __html: f.a }}>
+
                                         </div>
                                     </div>
                                 </div>
