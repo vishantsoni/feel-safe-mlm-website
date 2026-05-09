@@ -7,7 +7,7 @@ import Link from "next/link";
 import serverCallFuction from "@/lib/constantFunction";
 import { APIResponse } from "@/lib/types/User";
 import TermsAndConditions from "../TermsCompo";
-import PrivacyPolicy from "@/app/privacy-policy/page";
+import PrivacyCompo from "../PrivacyCompo";
 
 interface FormData {
   phone: string;
@@ -532,7 +532,7 @@ export default function RegisterPage() {
                     <div className="modal-body p-4">
 
                       {modalContent === "Terms & Conditions" ?
-                        <TermsAndConditions /> : <PrivacyPolicy />}
+                        <TermsAndConditions /> : <PrivacyCompo />}
 
                     </div>
                     <div className="modal-footer">

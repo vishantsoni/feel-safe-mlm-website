@@ -1,9 +1,9 @@
 
 import React from "react";
-
 import PrivacyCompo from "@/componants/PrivacyCompo";
+import { Metadata } from "next";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Privacy Policy | Feel Safe",
   description:
     "Read Feel Safe Private Limited privacy policy to understand how we collect, use, and protect your personal information.",
@@ -43,22 +43,7 @@ const PrivacyPolicy = () => {
   );
 };
 
-const Info = ({ size }: { size: number }) => (
-  <svg
-    width={size}
-    height={size}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <circle cx="12" cy="12" r="10" />
-    <line x1="12" y1="16" x2="12" y2="12" />
-    <line x1="12" y1="8" x2="12.01" y2="8" />
-  </svg>
-);
+
 
 export default PrivacyPolicy;
 
