@@ -54,11 +54,11 @@ export default function LoginPage() {
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
               <div className="card shadow-lg border-0" style={{ backgroundColor: "#ffe0f0" }}>
-                <div className="card-body p-5">
+                <div className="card-body p-md-5 p-3">
                   <div className="text-center mb-5">
                     <Image
                       src="/assets/images/logo.png"
-                      alt="Feel Safe Co."
+                      alt="Feel Safe PVt. Ltd.."
                       width={80}
                       height={80}
                       className="mb-3"
@@ -119,14 +119,14 @@ export default function LoginPage() {
                       />
                     </div>
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                      <div className="form-check">
+                      <div className="form-check d-flex align-items-center gap-2 justify-content-center">
                         <input
                           className="form-check-input"
                           type="checkbox"
                           id="remember"
                         />
                         <label
-                          className="form-check-label text-muted"
+                          className="form-check-label text-muted text-sm"
                           htmlFor="remember"
                         >
                           Remember me
@@ -134,7 +134,7 @@ export default function LoginPage() {
                       </div>
                       <Link
                         href="/forgot-password"
-                        className="text-decoration-none text-muted"
+                        className="text-decoration-none text-muted text-sm"
                       >
                         Forgot Password?
                       </Link>

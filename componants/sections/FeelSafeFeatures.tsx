@@ -6,12 +6,12 @@ const FeelSafeFeatures = () => {
     const features = [
         {
             title: "Biodegradable & Compostable",
-            desc: "Sanitary pads manufactured by Feel Safe Co. are biodegradable and compostable within six months — nearly 1,200 times faster than conventional plastic pads!",
+            desc: "Sanitary pads manufactured by Feel Safe Pvt. Ltd.. are biodegradable and compostable within six months — nearly 1,200 times faster than conventional plastic pads!",
             icon: <Leaf size={40} className="text-success" />,
             bg: "#f0fdf4", // Light green
         },
         {
-            title: "Empowering Women Employees",
+            title: "Entrepreneurs / Micro-Entrepreneurs",
             desc: "Creating opportunities, fostering independence, and building a stronger, self-reliant future for women through Feel Safe Sakhi Yojna.",
             icon: <Users size={40} style={{ color: "#E6519B" }} />,
             bg: "#fdf2f8", // Light pink
@@ -42,7 +42,7 @@ const FeelSafeFeatures = () => {
                     {features.map((item, index) => (
                         <div className="col-md-6 col-lg-3" key={index}>
                             <div
-                                className="card h-100 border-0 shadow-sm p-4 text-center feature-card"
+                                className="card h-100 border-1 border-dark shadow-sm p-4 text-center feature-card"
                                 style={{ borderRadius: "20px", transition: "transform 0.3s ease" }}
                             >
                                 <div

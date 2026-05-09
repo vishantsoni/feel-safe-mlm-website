@@ -16,7 +16,7 @@ const BreakingBarriers = () => {
               </span>
               <h2 className="fw-bold mb-4 display-6" style={{ color: "#1C1C1C", lineHeight: "1.2" }}>
                 Solving India’s Menstrual Health Crisis with <br />
-                <span style={{ color: "#1C1C1C" }}>Feel Safe Co.</span>
+                <span style={{ color: "#1C1C1C" }}>Feel Safe Pvt. Ltd..</span>
               </h2>
               <div className="text-secondary" style={{ fontSize: "15px", lineHeight: "1.7" }}>
                 <p className="mb-3">
@@ -25,7 +25,7 @@ const BreakingBarriers = () => {
                   risks and social stigma.
                 </p>
                 <p className="mb-3">
-                  At Feel Safe Co., we are committed to changing this reality. Through our
+                  At Feel Safe PVt. Ltd.., we are committed to changing this reality. Through our
                   affordable, eco-friendly, and high-quality sanitary pads, we prioritize comfort,
                   safety, and dignity for every woman.
                 </p>

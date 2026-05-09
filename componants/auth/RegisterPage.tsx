@@ -184,18 +184,18 @@ export default function RegisterPage() {
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
               <div className="card shadow-lg border-0">
-                <div className="card-body p-5" style={{ backgroundColor: "#ffbede" }}>
+                <div className="card-body p-md-5 p-3" style={{ backgroundColor: "#ffbede" }}>
                   <div className="text-center mb-5">
                     <Image
                       src="/assets/images/logo.png"
-                      alt="Feel Safe Co."
+                      alt="Feel Safe PVt. Ltd.."
                       width={80}
                       height={80}
                       className="mb-3"
                       priority
                     />
                     <h1 className="fw-bold mb-1" style={{ color: "#1C1C1C" }}>
-                      Join Feel Safe MLM
+                      Join Feel Safe
                     </h1>
                     <p className="text-muted">
                       Step {step} of 3 - {steps[step - 1]}

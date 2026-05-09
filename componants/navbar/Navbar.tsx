@@ -57,26 +57,67 @@ const Navbar = () => {
         </div>
         <div className="offcanvas-body">
           <nav aria-label="Mobile Navigation">
+
+
+            {/* Inside your Mobile Offcanvas Body */}
             <ul className="navbar-nav gap-2">
-              <li data-bs-dismiss="offcanvas"><Link href="/" className="nav-link">Home</Link></li>
-              {/* <li data-bs-dismiss="offcanvas"><Link href="/products" className="nav-link">Shop</Link></li> */}
-              {/* Mobile Shop Section */}
+              <li data-bs-dismiss="offcanvas">
+                <Link href="/" className="nav-link">Home</Link>
+              </li>
+
+              {/* MOBILE SHOP ACCORDION */}
               <li className="nav-item">
-                <div className="nav-link fw-bold text-muted small uppercase">Shop</div>
-                <ul className="list-unstyled ps-3">
-                  {category?.map((cat: any, index: number) => (
-                    <li key={index} data-bs-dismiss="offcanvas">
-                      <Link href={`/products?category=${cat.id}`} className="nav-link py-1">
-                        {cat.name}
+                <a
+                  className="nav-link d-flex justify-content-between align-items-center"
+                  data-bs-toggle="collapse"
+                  href="#mobileShopCollapse"
+                  role="button"
+                  aria-expanded="false"
+                >
+                  Shop
+                  <span className="small">▼</span> {/* or a Lucide Chevron icon */}
+                </a>
+
+                {/* This div is CLOSED by default because it doesn't have the "show" class */}
+                <div className="collapse" id="mobileShopCollapse">
+                  <ul className="list-unstyled ps-3 border-start ms-2">
+                    <li data-bs-dismiss="offcanvas">
+                      <Link href="/products" className="nav-link py-1 text-primary fw-bold">
+                        All Products
                       </Link>
                     </li>
-                  ))}
-                </ul>
+                    {category?.map((cat: any, index: number) => (
+                      <li key={index} data-bs-dismiss="offcanvas">
+                        <Link href={`/products?category=${cat.id}`} className="nav-link py-1">
+                          {cat.name}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </li>
-              <li data-bs-dismiss="offcanvas"><Link href="/blog" className="nav-link">Blog</Link></li>
+
+              <li data-bs-dismiss="offcanvas">
+                <Link href="/blog" className="nav-link">Blog</Link>
+              </li>
+
               <li data-bs-dismiss="offcanvas"><Link href="/about-us" className="nav-link">About Us</Link></li>
               <li data-bs-dismiss="offcanvas"><Link href="/contact-us" className="nav-link">Contact Us</Link></li>
+
             </ul>
+            <button
+              className="btn btn-primary w-100 mt-3"
+              data-bs-dismiss="offcanvas"
+              onClick={() => {
+                if (isAuthenticated) {
+                  logout()
+                } else {
+                  navigation.navigate('/login')
+                }
+              }}
+            >
+              {isAuthenticated ? "Logout" : "Login"}
+            </button>
           </nav>
         </div>
       </div>
@@ -274,6 +315,7 @@ const Navbar = () => {
                 <li><Link href="/blog" className="nav-link text-dark">Blog</Link></li>
                 <li><Link href="/about-us" className="nav-link text-dark">About Us</Link></li>
                 <li><Link href="/contact-us" className="nav-link text-dark">Contact Us</Link></li>
+
               </ul>
             </div>
           </nav>
