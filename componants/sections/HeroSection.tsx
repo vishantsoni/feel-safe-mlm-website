@@ -23,12 +23,11 @@ const HeroSection = () => {
                           <div className="content-wrapper col-md-7">
                             <div className="categories my-3">100% Safe</div>
                             <h3 className="display-4">
-                              Feel Safe Unstoppable, Every Day.
+                              Feel Safe: Unstoppable, Every Day.
                             </h3>
                             <p>
-                              Experience ultimate leak protection and
-                              unparalleled comfort with [Your Brand Name]. Move
-                              with confidence, live with ease.
+                              Empowering Every Woman and Every Girl – Ultimate Protection & Unmatched Comfort
+                              In today’s fast-paced world, nothing should stand between you and your dreams. Whether you are a student attending school, a professional leading at the workplace, or a homemaker managing your world—Feel Safe Pvt. Ltd. is here to ensure you move with freedom. Our brand ‘Feel’ is thoughtfully crafted to meet the unique hygiene needs of every woman and girl, at every stage of her life
                             </p>
                             <a
                               href="#"

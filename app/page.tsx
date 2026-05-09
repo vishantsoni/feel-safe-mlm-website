@@ -9,12 +9,14 @@ import RecentBlogSection from "@/componants/sections/RecentBlogSection";
 import DownloadApkSection from "@/componants/sections/DownloadApkSection";
 import BreadkingBarier from "@/componants/sections/BreadkingBarier";
 import FeelSafeFeatures from "@/componants/sections/FeelSafeFeatures";
+import MissionSection from "@/componants/sections/MissionSection";
 export default function Home() {
   return (
     <>
       <HeroSection />
       {/* <CategorySection /> */}
       {/* <NewlyArrivedSection /> */}
+      <MissionSection />
       <TrendingProSection />
       <MiddleAdsSection />
       <BreadkingBarier />

@@ -25,7 +25,7 @@ const BreakingBarriers = () => {
                   risks and social stigma.
                 </p>
                 <p className="mb-3">
-                  At Feel Safe PVt. Ltd.., we are committed to changing this reality. Through our
+                  At Feel Safe Pvt. Ltd.., we are committed to changing this reality. Through our
                   affordable, eco-friendly, and high-quality sanitary pads, we prioritize comfort,
                   safety, and dignity for every woman.
                 </p>

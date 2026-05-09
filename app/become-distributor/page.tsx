@@ -56,16 +56,15 @@ export default function BecomeDistributorPage() {
                             </div>
 
                             <h1 className="display-5 mb-3" style={{ lineHeight: 1.2 }}>
-                                Become a distributor of <span style={{ color: "#00a9e0" }}>Feel Safe</span>
+                                Partner with Feel Safe Pvt. Ltd. – Empowering Businesses Across Bharat
+
                             </h1>
 
                             <p className="mb-4" style={{ maxWidth: 620, color: "#747474" }}>
-                                Expand your business with trusted, high-absorbency sanitary napkins and hygiene
-                                products. Apply through the official signup panel and start distributing across
-                                your market.
+                                Are you looking to expand your business with a brand that millions trust? Feel Safe Pvt. Ltd. invites you to become a key part of our growing network. As a distributor of ‘Feel’ premium hygiene products, you don’t just sell a product—you join a national mission of health, hygiene, and women's empowerment.
                             </p>
 
-                            <div className="d-flex gap-3 flex-wrap">
+                            {/* <div className="d-flex gap-3 flex-wrap">
                                 <a
                                     href={externalSignupUrl}
                                     target="_blank"
@@ -77,7 +76,7 @@ export default function BecomeDistributorPage() {
                                 <Link href="/contact-us" className="btn btn-outline-primary">
                                     Contact Us
                                 </Link>
-                            </div>
+                            </div> */}
 
                             <div className="mt-4">
                                 <small className="text-muted">
@@ -140,25 +139,14 @@ export default function BecomeDistributorPage() {
                                         </a>
                                     </div>
 
-                                    <div className="mt-2 text-center">
+                                    {/* <div className="mt-2 text-center">
                                         <small className="text-muted">No form on this page</small>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
                             {/* Breadcrumb-like */}
-                            <div className="mt-4">
-                                <div
-                                    className="d-flex align-items-center gap-2 text-muted small"
-                                    style={{ opacity: 0.9 }}
-                                >
-                                    <span>Home</span>
-                                    <span>•</span>
-                                    <span className="fw-bold" style={{ color: "#222" }}>
-                                        Become a Distributor
-                                    </span>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -171,11 +159,12 @@ export default function BecomeDistributorPage() {
                         <div className="col-lg-7">
                             <h2 className="mb-2">Why partner with Feel Safe?</h2>
                             <p className="mb-0" style={{ color: "#747474" }}>
-                                Build a reliable distribution channel with trusted hygiene products and a
-                                streamlined onboarding experience.
+                                Build a Profitable Legacy in the Hygiene Industry
+                                Establish a high-growth distribution channel with India’s most trusted hygiene brand. At Feel Safe Pvt. Ltd., we combine the spirit of "Vocal for Local" with international quality standards to help you build a business that is both successful and socially impactful.
+
                             </p>
                         </div>
-                        <div className="col-lg-5 text-lg-end">
+                        {/* <div className="col-lg-5 text-lg-end">
                             <a
                                 href={externalSignupUrl}
                                 target="_blank"
@@ -184,26 +173,26 @@ export default function BecomeDistributorPage() {
                             >
                                 Apply Now
                             </a>
-                        </div>
+                        </div> */}
                     </div>
 
                     <div className="row g-4">
                         {[
                             {
-                                title: "Trusted brand",
-                                desc: "Feel Safe is known for quality hygiene products and strong market presence.",
+                                title: "A Trusted & Certified Brand",
+                                desc: "Feel Safe is a name synonymous with premium quality. Distribute products that are BIS, GMP, and ISO Certified, giving you a massive competitive edge and your customers complete peace of mind.",
                             },
                             {
-                                title: "Better distribution",
-                                desc: "Help customers access authentic products through a dependable supply chain.",
+                                title: "Superior Distribution Network",
+                                desc: "Gain access to a dependable and transparent supply chain. We ensure that our ‘Feel’ premium pads reach your warehouse through a streamlined process, allowing you to serve your customers with authentic, high-performance products without delays.",
                             },
                             {
-                                title: "Local growth",
-                                desc: "Reach new customers, build repeat demand, and expand your business locally.",
+                                title: "Driven by Local Growth",
+                                desc: "Grow where you live. Our model is designed to help you reach new customers, build high repeat demand, and expand your business locally. We support the Atmanirbhar Bharat vision by empowering local partners to lead the market.",
                             },
                             {
-                                title: "Simple onboarding",
-                                desc: "Use the distributor signup panel to submit your request and follow next steps.",
+                                title: "Modern & Simple Onboarding",
+                                desc: "No complicated paperwork. Use our advanced Distributor Signup Panel to submit your request. Our professional workflow guides you through every step, ensuring you are ready to start your business journey quickly and efficiently.",
                             },
                         ].map((item) => (
                             <div key={item.title} className="col-md-6 col-lg-3">
@@ -252,29 +241,30 @@ export default function BecomeDistributorPage() {
                 }}
             >
                 <div className="container-fluid">
-                    <h2 className="mb-4">How it works</h2>
+                    <h2 className="mb-4">Our Seamless Onboarding Process</h2>
+                    <p>Partnering with Feel Safe Pvt. Ltd. is a streamlined digital experience. We have designed a four-step framework to get your distribution business operational in the shortest time possible.</p>
 
                     <div className="row g-4">
                         {[
                             {
                                 step: "01",
-                                title: "Open the distributor signup panel",
-                                desc: "Use the Apply button to reach the official signup workflow.",
+                                title: "Digital Registration",
+                                desc: "Click the ‘Apply’ button to access our secure Partnership Portal. This centralized dashboard is the starting point for all official collaborations with our brand.",
                             },
                             {
                                 step: "02",
-                                title: "Complete your request details",
-                                desc: "Share basic business and location information in the panel.",
+                                title: "Profile Documentation",
+                                desc: "Submit your essential business credentials and geographical coverage details through the panel. This information allows our team to evaluate territory availability and align our support with your local market needs.",
                             },
                             {
                                 step: "03",
-                                title: "Get onboarding updates",
-                                desc: "After review, the panel will guide you through further steps.",
+                                title: "Evaluation & Approval",
+                                desc: "Our strategic team will review your application for compliance and market synergy. You can track your progress in real-time through the portal, receiving automated notifications regarding your verification status.",
                             },
                             {
                                 step: "04",
-                                title: "Start distributing Feel Safe products",
-                                desc: "Stock and sell Feel Safe hygiene products in your market.",
+                                title: "Commercial Activation",
+                                desc: "Once authorized, you gain full access to procure ‘Feel’ inventory. You are now ready to launch operations as an official representative of Feel Safe Pvt. Ltd., bringing world-class hygiene to your region.",
                             },
                         ].map((s) => (
                             <div key={s.step} className="col-md-6 col-lg-3">
