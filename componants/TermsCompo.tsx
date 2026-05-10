@@ -51,7 +51,7 @@ const TermsAndConditions = () => {
     ];
 
     return (
-        <div className="container my-5 py-4">
+        <div className="container my-5 py-md-4 py-2">
             <div className="row justify-content-center">
                 <div className="col-lg-12">
                     <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 " style={{ backgroundColor: 'var(--light-pink-color)' }}>

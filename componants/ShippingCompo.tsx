@@ -303,14 +303,16 @@ const ShippingCompo = () => {
                             </div>
 
                             {/* Contact Support Section */}
-                            <div className="mt-5 p-5 rounded-4 border text-center shadow-sm bg-white">
-                                <h2 className="fw-bold mb-4">Contact for Shipping Support</h2>
+                            <div className="mt-5 p-md-5 p-2 rounded-4 border text-center shadow-sm bg-white">
+                                <h2 className="fw-bold mb-4 h4 text-dark mt-4">Contact for Shipping Support</h2>
                                 <div className="d-flex flex-column flex-md-row gap-4 align-items-center justify-content-center">
-                                    <a href={`tel:+91${contact_setting?.phone || '9013499385'}`} className="text-decoration-none d-flex align-items-center px-4 py-3 rounded-pill border shadow-sm hover-up bg-white">
+                                    <a href={`tel:+91${contact_setting?.phone || '9013499385'}`}
+                                        className="text-decoration-none d-flex align-items-center px-md-4 px-2 py-md-3 py-2 rounded-pill border shadow-sm hover-up bg-white small">
                                         <PhoneCall size={22} className="me-3 text-primary" />
                                         <span className="fw-bold text-dark">+91 {contact_setting?.phone || '9013499385'}</span>
                                     </a>
-                                    <a href={`mailto:${contact_setting?.email_1 || 'support@feelsafeco.in'}`} className="text-decoration-none d-flex align-items-center px-4 py-3 rounded-pill border shadow-sm hover-up bg-white">
+                                    <a href={`mailto:${contact_setting?.email_1 || 'support@feelsafeco.in'}`}
+                                        className="text-decoration-none d-flex align-items-center px-md-4 px-2 py-md-3 py-2 rounded-pill border shadow-sm hover-up bg-white small">
                                         <Mail size={22} className="me-3 text-pink" style={{ color: "#E6519B" }} />
                                         <span className="fw-bold text-dark">{contact_setting?.email_1 || 'support@feelsafeco.in'}</span>
                                     </a>

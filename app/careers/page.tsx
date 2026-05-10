@@ -170,7 +170,7 @@ const CareersPage = () => {
         <h2 className="fw-bold">Don't see a role for you?</h2>
         <p className="text-muted">
           Send your resume to{" "}
-          <span className="fw-bold text-dark">careers@feelsafe.co</span> and we
+          <span className="fw-bold text-dark">careers@feelsafeco.in</span> and we
           will reach out!
         </p>
       </section>

@@ -115,9 +115,9 @@ const RefundCompo = () => {
 
                         {/* Contact Footer */}
                         <div className="mt-5 pt-5 border-top">
-                            <div className="row g-4 text-center text-md-start">
+                            <div className="row g-4 text-md-center text-md-start">
                                 <div className="col-md-6 ">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start">
+                                    <div className="d-flex align-items-center justify-content-md-center justify-content-md-start">
                                         <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 shadow-sm"
                                             style={{ backgroundColor: "#e0f2fe", width: "50px", height: "50px" }}>
                                             <PhoneCall size={20} color="#00A9E0" />
@@ -129,7 +129,7 @@ const RefundCompo = () => {
                                     </div>
                                 </div>
                                 <div className="col-md-6 ">
-                                    <div className="d-flex align-items-center justify-content-center justify-content-md-start">
+                                    <div className="d-flex align-items-center justify-content-md-center justify-content-md-start">
                                         <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 shadow-sm"
                                             style={{ backgroundColor: "#fdf2f8", width: "50px", height: "50px" }}>
                                             <Mail size={20} color="#E6519B" />

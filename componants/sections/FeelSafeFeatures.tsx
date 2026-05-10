@@ -5,8 +5,8 @@ import { Leaf, Users, ShieldCheck, Globe } from "lucide-react";
 const FeelSafeFeatures = () => {
     const features = [
         {
-            title: "Biodegradable & Compostable",
-            desc: "Sanitary pads manufactured by Feel Safe Pvt. Ltd.. are biodegradable and compostable within six months — nearly 1,200 times faster than conventional plastic pads!",
+            title: "eco-Friendly & Sustainable",
+            desc: "A Greener Choice, At Feel Safe Pvt. Ltd., we are committed to protecting both women and the planet. Our 'Feel' brand stands for a cleaner, greener future with products that respect nature.",
             icon: <Leaf size={40} className="text-success" />,
             bg: "#f0fdf4", // Light green
         },

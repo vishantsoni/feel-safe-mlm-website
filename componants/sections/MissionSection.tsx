@@ -31,7 +31,7 @@ const MissionSection = () => {
                         </p>
                         <ul className="list-unstyled mt-4">
                             <li className="d-flex mb-3">
-                                <div className="bg-primary-subtle p-2 rounded-circle me-3">
+                                <div className="bg-primary-subtle p-2 rounded-circle me-3 w-2 h-2 d-flex align-items-center justify-content-center">
                                     <ShieldCheck className="text-primary" size={24} />
                                 </div>
                                 <div>
@@ -39,7 +39,7 @@ const MissionSection = () => {
                                 </div>
                             </li>
                             <li className="d-flex mb-3">
-                                <div className="bg-primary-subtle p-2 rounded-circle me-3">
+                                <div className="bg-primary-subtle p-2 rounded-circle me-3 w-2 h-2 d-flex align-items-center justify-content-center">
                                     <Heart className="text-primary" size={24} />
                                 </div>
                                 <div>
@@ -47,7 +47,7 @@ const MissionSection = () => {
                                 </div>
                             </li>
                             <li className="d-flex mb-3">
-                                <div className="bg-primary-subtle p-2 rounded-circle me-3">
+                                <div className="bg-primary-subtle p-2 rounded-circle me-3 w-2 h-2 d-flex align-items-center justify-content-center">
                                     <Leaf className="text-primary" size={24} />
                                 </div>
                                 <div>
@@ -55,7 +55,7 @@ const MissionSection = () => {
                                 </div>
                             </li>
                             <li className="d-flex mb-3">
-                                <div className="bg-primary-subtle p-2 rounded-circle me-3">
+                                <div className="bg-primary-subtle p-2 rounded-circle me-3 w-2 h-2 d-flex align-items-center justify-content-center">
                                     <Award className="text-primary" size={24} />
                                 </div>
                                 <div>

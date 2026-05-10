@@ -148,7 +148,7 @@ export default async function BlogPostPage({ params }: Props) {
                                         alt={blog.post.title}
                                         width={1200}
                                         height={600}
-                                        className="rounded shadow"
+                                        className="rounded shadow img-fluid"
                                         style={{ objectFit: 'cover' }}
                                         priority
                                     />

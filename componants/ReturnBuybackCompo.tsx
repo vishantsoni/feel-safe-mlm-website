@@ -156,7 +156,7 @@ const ReturnBuybackCompo = () => {
 
                                 <div className="col-md-6">
                                     <div className="p-3 rounded-3" style={{ backgroundColor: "#fff5f5", borderLeft: "4px solid #f87171" }}>
-                                        <h6 className="fw-bold mb-1 text-danger d-flex align-items-center">
+                                        <h6 className="fw-bold mb-1 text-error d-flex align-items-center">
                                             <AlertCircle size={16} className="me-2" /> Grievance Redressal
                                         </h6>
                                         <p className="x-small text-muted mb-2">Email: Grievance@feelsafeco.in | Mobile: +91 8796262996</p>
