@@ -4,30 +4,27 @@ import React from "react";
 const DownloadApkSection = () => {
   return (
     <>
-      <section className="py-md-5 py-3 my-md-5 my-3">
+      <section className="py-md-5 py-3 my-md-5 my-3 d-flex align-items-end" style={{
+        backgroundImage: "url('/assets/banners-ai/mobile-banner-feel-safe.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh"
+      }}>
         <div className="container-fluid">
           <div
-            className="bg-warning py-5 rounded-5"
-            style={{
-              backgroundImage: "url('images/bg-pattern-2.png')",
-              backgroundRepeat: "no-repeat",
-            }}
+            className="row "
           >
-            <div className="container">
-              <div className="row">
-                <div className="col-md-4">
-                  {/* <img src="assets/images/phone.png" alt="phone" className="image-float img-fluid" /> */}
-                </div>
-                <div className="col-md-8">
-                  <h2 className="my-5">Shop & Earn with the Feel Safe App</h2>
-                  <p>
-                    Carry your business in your pocket. Use the Feel Safe App to
-                    order your monthly essentials in seconds and track your
-                    10-level matrix earnings in real-time. Whether you’re a busy
-                    parent or a growing entrepreneur, staying protected and
-                    profitable has never been easier.
-                  </p>
-                  {/* <div className="d-flex gap-2 flex-md-wrap">
+            <div className="col-md-6 mx-auto bg-warning py-4 px-5 rounded-5">
+              <h2 className="mb-2">Shop & Earn with the Feel Safe App</h2>
+              <p>
+                Carry your business in your pocket. Use the Feel Safe App to
+                order your monthly essentials in seconds and track your
+                10-level matrix earnings in real-time. Whether you’re a busy
+                parent or a growing entrepreneur, staying protected and
+                profitable has never been easier.
+              </p>
+              {/* <div className="d-flex gap-2 flex-md-wrap">
                     <img src="assets/images/app-store.jpg" alt="app-store" className="w-50 h-50 w-md-100 h-md-100" />
                     <img
                       src="assets/images/google-play.jpg"
@@ -35,40 +32,40 @@ const DownloadApkSection = () => {
                       className="w-50 h-50 w-md-100 h-md-100"
                     />
                   </div> */}
-                  <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start align-items-center mt-3">
-                    {/* App Store Button */}
-                    <Link
-                      href="#"
-                      className="d-inline-block hover-lift transition"
-                      aria-label="Download Feel Safe App on the App Store"
-                    >
-                      <img
-                        src="assets/images/app-store.jpg"
-                        alt="Download on App Store"
-                        width={140}
-                        height={42}
-                        className="img-fluid rounded-2 shadow-sm"
-                        style={{ objectFit: "contain" }}
-                      />
-                    </Link>
+              <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start align-items-center mt-3">
+                {/* App Store Button */}
+                <Link
+                  href="#"
+                  className="d-inline-block hover-lift transition"
+                  aria-label="Download Feel Safe App on the App Store"
+                >
+                  <img
+                    src="assets/images/app-store.jpg"
+                    alt="Download on App Store"
+                    width={140}
+                    height={42}
+                    className="img-fluid rounded-2 shadow-sm"
+                    style={{ objectFit: "contain" }}
+                  />
+                </Link>
 
-                    {/* Google Play Button */}
-                    <Link
-                      href="#"
-                      className="d-inline-block hover-lift transition"
-                      aria-label="Get Feel Safe App on Google Play"
-                    >
-                      <img
-                        src="assets/images/google-play.jpg"
-                        alt="Get it on Google Play"
-                        width={140}
-                        height={42}
-                        className="img-fluid rounded-2 shadow-sm"
-                        style={{ objectFit: "contain" }}
-                      />
-                    </Link>
+                {/* Google Play Button */}
+                <Link
+                  href="#"
+                  className="d-inline-block hover-lift transition"
+                  aria-label="Get Feel Safe App on Google Play"
+                >
+                  <img
+                    src="assets/images/google-play.jpg"
+                    alt="Get it on Google Play"
+                    width={140}
+                    height={42}
+                    className="img-fluid rounded-2 shadow-sm"
+                    style={{ objectFit: "contain" }}
+                  />
+                </Link>
 
-                    <style >{`
+                <style >{`
     .hover-lift:hover {
       transform: translateY(-3px);
       filter: brightness(1.1);
@@ -77,8 +74,6 @@ const DownloadApkSection = () => {
       transition: all 0.2s ease-in-out;
     }
   `}</style>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

@@ -2,9 +2,9 @@ import React from "react";
 
 const BreakingBarriers = () => {
   return (
-    <section className="py-5 bg-light">
-      <div className="container py-lg-5">
-        <div className="row align-items-center g-5">
+    <section className="py-5  bg-light">
+      <div className="container py-lg-5 my-lg-5">
+        <div className="row align-items-center g-5 ">
           {/* Left Content Column */}
           <div className="col-lg-6">
             <div className="pe-lg-4">

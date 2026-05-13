@@ -160,12 +160,36 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
 
   return (
     <section className="pb-5 pt-4">
+      <style jsx>{`
+        .product-detail-zoom {
+          overflow: hidden;
+        }
+
+        .product-detail-zoom__img {
+          transition: transform 350ms ease;
+          will-change: transform;
+        }
+
+        .product-detail-zoom:hover .product-detail-zoom__img {
+          transform: scale(1.08);
+        }
+
+        /* Prevent zoom on touch devices (hover-less) */
+        @media (hover: none) {
+          .product-detail-zoom__img {
+            transition: none;
+          }
+        }
+
+      `}</style>
+
       <div className="container-fluid">
+
         <div className="row">
           <div className="col-lg-5">
             {/* Image Gallery */}
             <div
-              className="position-relative w-100 mb-3"
+              className="position-relative w-100 mb-3 product-detail-zoom"
               style={{ aspectRatio: "1/1" }}
             >
               <Image
@@ -173,9 +197,10 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                 alt={product.name}
                 fill
                 priority
-                className="img-fluid rounded object-fit-cover"
+                className="img-fluid rounded object-fit-cover product-detail-zoom__img"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
+
               {currentPrice < originalPrice && (
                 <div className="position-absolute top-0 end-0 badge bg-success fs-6 m-2">
                   -

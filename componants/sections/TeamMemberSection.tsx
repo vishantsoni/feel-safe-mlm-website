@@ -61,8 +61,8 @@ const TeamMemberSection = () => {
 
   return (
     <>
-      <section className="py-5 " style={{ backgroundColor: 'var(--light-pink-color)' }}>
-        <div className="container-fluid">
+      <section className="py-5 empower-section" >
+        <div className="container-fluid py-5 rounded" style={{ backgroundColor: 'var(--light-pink-color)' }}>
           <div className="row">
             <div className="col-md-12 text-center mb-5">
               <h2 className="display-5 fw-bold text-dark mb-3">Our Leadership Team</h2>

@@ -17,8 +17,11 @@ export default function Home() {
       {/* <CategorySection /> */}
       {/* <NewlyArrivedSection /> */}
       <MissionSection />
-      <TrendingProSection />
       <MiddleAdsSection />
+      <TrendingProSection />
+      <div className="w-100 mt-5">
+        <img src={"/assets/banner/eco.png"} className="img-fluid w-100" />
+      </div>
       <BreadkingBarier />
       <TeamMemberSection />
       <FeelSafeFeatures />

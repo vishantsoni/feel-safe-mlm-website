@@ -69,7 +69,7 @@ const MissionSection = () => {
                     </div>
                     <div className="col-lg-6">
                         <img
-                            src="/assets/images/product-showcase.png"
+                            src="/assets/banners-ai/pro_image_feel_safe.png"
                             alt="Feel Sanitary Pads"
                             className="img-fluid rounded-4 shadow"
                         />
@@ -77,7 +77,7 @@ const MissionSection = () => {
                 </div>
 
                 {/* --- Empowerment Section (Sakhi Yojna) --- */}
-                <div className="bg-light p-4 p-md-5 rounded-5 border border-primary-subtle">
+                <div className="bg-light p-4 p-md-5 rounded-5 border border-primary-subtle ">
                     <div className="row g-4 align-items-center">
                         <div className="col-md-12 text-center mb-4">
                             <h3 className="display-6 fw-bold">Empowering Bharat: Feel Safe Sakhi Yojna</h3>
