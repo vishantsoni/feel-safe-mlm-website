@@ -120,7 +120,7 @@ export default async function ProductPage({ params }: Props) {
       "GET",
       url,
     )) as APIResponse;
-    console.log("API Response:", detailRes);
+    console.log("API Response:", url, detailRes);
   } catch (error) {
     console.error("API Fetch failed:", error);
     notFound();

@@ -15,7 +15,7 @@ const HeroSection = () => {
           <div className="row">
             <div className="col-md-12">
               <div className="banner-blocks">
-                <div className="banner-ad large bg-info block-1">
+                <div className="banner-ad large bg-info block-1" data-aos="zoom-in-up">
                   <div className="swiper main-swiper">
                     <div className="swiper-wrapper">
                       <div className="swiper-slide">
@@ -117,6 +117,7 @@ const HeroSection = () => {
                 </div>
 
                 <div
+                  data-aos="zoom-in-up"
                   className="banner-ad bg-success-subtle block-2"
                   style={{
                     background:
@@ -142,6 +143,7 @@ const HeroSection = () => {
                 </div>
 
                 <div
+                  data-aos="zoom-in-up"
                   className="banner-ad bg-pink block-3"
                   style={{
                     background:

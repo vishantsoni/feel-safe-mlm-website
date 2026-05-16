@@ -207,15 +207,15 @@ const DiscountSection = () => {
               <div className="row">
                 <div className="col-md-10 col-12 mx-auto p-md-5 text-center text-dark">
                   <div className="section-header">
-                    <h2 className="section-title display-5 fw-bold mb-4">
+                    <h2 className="section-title display-5 fw-bold mb-4" data-aos="zoom-in">
                       Experience Premium Quality & Join the Feel Safe Mission
                     </h2>
                   </div>
-                  <p className="lead mb-4">
+                  <p className="lead mb-4" data-aos="zoom-in-up">
                     Start your journey with <strong>Feel Safe Pvt. Ltd.</strong> by requesting a product sample and exploring our women empowerment business opportunity. This is the first step to experience the quality of our premium sanitary pads and hygiene products while becoming a part of the <strong>Feel Safe Sakhi Network</strong>.
                   </p>
 
-                  <div className="row justify-content-center g-3 mb-4">
+                  <div className="row justify-content-center g-3 mb-4" data-aos="flip-up">
                     {[
                       "Premium Quality Hygiene Products",
                       "Safe, Soft & Comfortable Protection",
@@ -230,12 +230,12 @@ const DiscountSection = () => {
                     ))}
                   </div>
 
-                  <p className="fw-bold mt-4" style={{ color: "#1C1C1C" }}>
+                  <p className="fw-bold mt-4" style={{ color: "#1C1C1C" }} data-aos="zoom-in-up">
                     Feel Safe Sakhi Yojana — Quality Products, Better Health, Brighter Future.
                   </p>
                 </div>
 
-                <div className="col-md-10 col-12 mx-auto text-center mt-3">
+                <div className="col-md-10 col-12 mx-auto text-center mt-3" data-aos="flip-up">
                   <button
                     type="button"
                     className="btn btn-dark btn-lg shadow-sm px-5 rounded-pill"

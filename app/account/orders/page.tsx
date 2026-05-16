@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   AlertCircle,
+  File,
 } from "lucide-react";
 
 interface Order {
@@ -65,9 +66,9 @@ export default function OrdersPage() {
   const getStatusBadge = (status: string) => {
     const s = status?.toLowerCase();
     let bgClass = "bg-secondary";
-    if (s === "completed") bgClass = "bg-success";
-    if (s === "processing" || s === "pending") bgClass = "bg-warning text-dark";
-    if (s === "shipped") bgClass = "bg-info text-white";
+    if (s === "delivered") bgClass = "bg-success";
+    if (s === "accepted" || s === "pending") bgClass = "bg-warning text-dark";
+    if (s === "dispatched") bgClass = "bg-info text-white";
     if (s === "cancelled") bgClass = "bg-danger";
 
     return (
@@ -226,12 +227,19 @@ export default function OrdersPage() {
                       <td className="px-4 py-3 text-end fw-bold text-primary">
                         ₹{Number(order.total_amount).toLocaleString("en-IN")}
                       </td>
-                      <td className="px-4 py-3 text-center">
+                      <td className="px-4 py-3 text-center gap-2">
                         <Link
                           href={`/orders/success/${order.order_id}`}
-                          className="btn btn-light btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary"
+                          className="btn btn-secondary btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary me-2"
                         >
-                          <Eye size={16} /> <span>View Details</span>
+                          <Eye size={16} />
+                        </Link>
+                        <Link
+                          href={`/orders/success/${order.order_id}`}
+                          className="btn btn-primary btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary"
+                          title="Invoice"
+                        >
+                          <File size={16} />
                         </Link>
                       </td>
                     </tr>

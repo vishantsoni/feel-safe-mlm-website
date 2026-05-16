@@ -33,14 +33,14 @@ const FeelSafeFeatures = () => {
     return (
         <section className="py-5 my-5 bg-white">
             <div className="container">
-                <div className="text-center mb-5">
+                <div className="text-center mb-5" data-aos="zoom-in">
                     <h2 className="fw-bold display-6">Why Choose <span style={{ color: 'var(--primary-color)' }}>Feel Safe?</span></h2>
                     <p className="text-muted">Innovation in hygiene, commitment to nature.</p>
                 </div>
 
                 <div className="row g-4">
                     {features.map((item, index) => (
-                        <div className="col-md-6 col-lg-3" key={index}>
+                        <div className="col-md-6 col-lg-3" key={index} data-aos="zoom-in-up">
                             <div
                                 className="card h-100 border-1 border-dark shadow-sm p-4 text-center feature-card"
                                 style={{ borderRadius: "20px", transition: "transform 0.3s ease" }}

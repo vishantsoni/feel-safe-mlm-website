@@ -64,11 +64,11 @@ const TeamMemberSection = () => {
       <section className="py-5 empower-section" >
         <div className="container-fluid py-5 rounded" style={{ backgroundColor: 'var(--light-pink-color)' }}>
           <div className="row">
-            <div className="col-md-12 text-center mb-5">
+            <div className="col-md-12 text-center mb-5" data-aos="zoom-in">
               <h2 className="display-5 fw-bold text-dark mb-3">Our Leadership Team</h2>
               <p className="lead text-muted">Meet the experts powering your MLM success across 10 levels</p>
             </div>
-            <div className="team-slider-wrapper">
+            <div className="team-slider-wrapper" data-aos="zoom-in-up">
               <div className="d-flex flex-nowrap gap-3 team-slider overflow-auto pb-3" style={{ scrollSnapType: 'x mandatory' }}>
                 {teamMembers.map((member) => (
                   <div className="flex-shrink-0 team-card text-center p-4 border rounded-3 shadow-sm hover-shadow-lg" style={{ minWidth: '100%', maxWidth: '100%', scrollSnapAlign: 'start' }} key={member.id}>

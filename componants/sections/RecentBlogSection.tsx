@@ -38,11 +38,11 @@ const RecentBlogSection = () => {
       <section id="latest-blog" className="py-5">
         <div className="container-fluid">
           <div className="row">
-            <div className="section-header d-flex align-items-center justify-content-between my-md-5 mb-5 mb-md-0">
+            <div className="section-header d-flex align-items-center justify-content-between my-md-5 mb-5 mb-md-0" data-aos="zoom-in">
               <h2 className="section-title">Our Recent Blog</h2>
             </div>
           </div>
-          <div className="blog-slider-wrapper">
+          <div className="blog-slider-wrapper" data-aos="zoom-in-up">
             <div className="d-flex flex-nowrap gap-3 blog-slider overflow-auto pb-3">
               {[...Array(3)].map((_, index) => (
                 <div key={index} className="flex-shrink-0 blog-card" style={{ minWidth: '100%', maxWidth: '100%' }}>

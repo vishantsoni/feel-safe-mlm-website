@@ -3,12 +3,12 @@ import React from "react";
 
 const MiddleAdsSection = () => {
   return (
-    <section className="py-5 section21">
+    <section className="py-5 section21" >
       <div className="container-fluid py-5">
         <div className="row">
           <div className="col-md-6">
             <div className="row">
-              <div className="col-md-12">
+              <div className="col-md-12" data-aos="slide-up">
                 <div
                   className="banner-ad bg-pink mb-3"
                   style={{
@@ -16,8 +16,9 @@ const MiddleAdsSection = () => {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "right bottom",
                   }}
+
                 >
-                  <div className="banner-content p-5">
+                  <div className="banner-content p-md-5 p-4">
                     <div className="categories  fs-3 fw-bold">
                       Earn Passive Income
                     </div>
@@ -29,7 +30,7 @@ const MiddleAdsSection = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-12">
+              <div className="col-md-12" data-aos="slide-up">
                 <div
                   className="banner-ad bg-info"
                   style={{
@@ -38,7 +39,7 @@ const MiddleAdsSection = () => {
                     backgroundPosition: "right bottom",
                   }}
                 >
-                  <div className="banner-content p-5">
+                  <div className="banner-content p-md-5 p-4">
                     <div className="categories text-primary fs-3 fw-bold">
                       Daily Essentials, Daily Profits
                     </div>

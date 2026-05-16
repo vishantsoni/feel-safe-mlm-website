@@ -85,7 +85,7 @@ const CartPage = () => {
     );
   }
 
-  const subtotal = cart.items.reduce((sum, item) => sum + (Number(item.price) * item.quantity), 0);
+  const subtotal = cart.subtotal;
 
   return (
     <div className="container-fluid py-5 my-5">
@@ -220,8 +220,16 @@ const CartPage = () => {
               <div className="d-flex justify-content-between mb-3">
                 <span>Subtotal:</span>
                 <span>
-                  <IndianRupee />
+                  <IndianRupee className='currency_icon' />
                   {subtotal.toFixed(2)}
+                </span>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-between mb-3">
+                <span>Tax:</span>
+                <span>
+                  <IndianRupee className='currency_icon' />
+                  {cart?.total_tax.toFixed(2)}
                 </span>
               </div>
               <hr />

@@ -15,24 +15,16 @@ const DownloadApkSection = () => {
           <div
             className="row "
           >
-            <div className="col-md-6 mx-auto bg-warning py-4 px-5 rounded-5">
-              <h2 className="mb-2">Shop & Earn with the Feel Safe App</h2>
-              <p>
+            <div className="col-md-6 mx-auto bg-warning py-4 px-5 rounded-5" data-aos="fade-in-up" >
+              <h2 className="mb-2" data-aos="zoom-in" data-aos-duration="1000">Shop & Earn with the Feel Safe App</h2>
+              <p data-aos="zoom-in-up">
                 Carry your business in your pocket. Use the Feel Safe App to
                 order your monthly essentials in seconds and track your
                 10-level matrix earnings in real-time. Whether you’re a busy
                 parent or a growing entrepreneur, staying protected and
                 profitable has never been easier.
               </p>
-              {/* <div className="d-flex gap-2 flex-md-wrap">
-                    <img src="assets/images/app-store.jpg" alt="app-store" className="w-50 h-50 w-md-100 h-md-100" />
-                    <img
-                      src="assets/images/google-play.jpg"
-                      alt="google-play"
-                      className="w-50 h-50 w-md-100 h-md-100"
-                    />
-                  </div> */}
-              <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start align-items-center mt-3">
+              <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start align-items-center mt-3" data-aos="zoom-in-up">
                 {/* App Store Button */}
                 <Link
                   href="#"

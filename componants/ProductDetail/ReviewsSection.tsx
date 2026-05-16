@@ -48,8 +48,8 @@ const ReviewsSection: React.FC<Props> = ({ productId }) => {
             );
 
             // Be resilient to different API shapes
-            const data = Array.isArray((res as { data?: unknown })?.data)
-                ? ((res as { data: Review[] }).data)
+            const data = Array.isArray((res as { reviews?: unknown })?.reviews)
+                ? ((res as { reviews: Review[] }).reviews)
                 : Array.isArray(res)
                     ? (res as Review[])
                     : [];
@@ -118,6 +118,9 @@ const ReviewsSection: React.FC<Props> = ({ productId }) => {
         }
     };
 
+
+
+
     return (
         <div>
             <div className="mb-3">
@@ -154,33 +157,42 @@ const ReviewsSection: React.FC<Props> = ({ productId }) => {
                         {reviews.map((r, idx) => {
                             const rRating = Number(r.rating) || 0;
                             return (
-                                <div key={r.id ?? idx} className="border rounded-3 p-3">
-                                    <div className="d-flex justify-content-between align-items-start gap-3">
-                                        <div>
-                                            <div className="fw-bold">
-                                                {r.user_name || "Anonymous"}
-                                            </div>
-                                            <div className="text-warning">
-                                                {Array.from({ length: 5 }).map((_, i) => {
-                                                    const star = i + 1;
-                                                    const active = rRating >= star;
-                                                    return (
-                                                        <span key={star} style={{ fontSize: 16, marginRight: 2 }}>
-                                                            {active ? "★" : "☆"}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </div>
+                                <div key={r.id ?? idx} className="border border-primary rounded-3  card">
+
+                                    <div className="card-header">
+                                        <div className="fw-bold text-dark">
+                                            {r.user_name || "Anonymous"}
                                         </div>
-                                        {r.created_at && (
-                                            <div className="text-muted small">
-                                                {new Date(r.created_at).toLocaleDateString("en-IN")}
+                                    </div>
+                                    <div className="card-body">
+                                        <div className="" style={{ whiteSpace: "pre-wrap" }}>
+                                            {r.review || ""}
+                                        </div>
+                                        <div className="d-flex justify-content-between align-items-start gap-3">
+                                            <div>
+                                                <div className="text-primary">
+                                                    {Array.from({ length: 5 }).map((_, i) => {
+                                                        const star = i + 1;
+                                                        const active = rRating >= star;
+                                                        return (
+                                                            <span key={star} style={{ fontSize: 16, marginRight: 2 }}>
+                                                                {active ? "★" : "☆"}
+                                                            </span>
+                                                        );
+                                                    })}
+                                                </div>
                                             </div>
-                                        )}
+                                            {r.created_at && (
+                                                <div className="text-muted small">
+                                                    {new Date(r.created_at).toLocaleDateString("en-IN")}
+                                                </div>
+                                            )}
+                                        </div>
+
                                     </div>
-                                    <div className="mt-2" style={{ whiteSpace: "pre-wrap" }}>
-                                        {r.review || ""}
-                                    </div>
+
+
+
                                 </div>
                             );
                         })}
@@ -188,7 +200,7 @@ const ReviewsSection: React.FC<Props> = ({ productId }) => {
                 ) : null}
             </div>
 
-            <div className="border rounded-3 p-3">
+            <div className="border border-primary rounded-3 p-3">
                 <h6 className="fw-bold">Add a review</h6>
                 <form onSubmit={onSubmit} className="mt-3">
                     <div className="mb-3">

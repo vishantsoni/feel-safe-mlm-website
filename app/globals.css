@@ -63,3 +63,20 @@ a {
   margin-top: 2rem;
   margin-bottom: 1rem;
 } */
+
+.currency_icon {
+  width: 20px;
+  height: 20px;
+}
+/* Zoom animation for product cards */
+.zoom-effect {
+  transition: transform 0.4s ease-in-out;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Jab card ya link par hover hoga tab image zoom hogi */
+.product-item:hover .zoom-effect {
+  transform: scale(1.2); /* 10% Zoom increment */
+}

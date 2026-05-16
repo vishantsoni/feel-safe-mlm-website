@@ -30,7 +30,7 @@ const KeywordSection = () => {
       <section className="py-5">
         <div className="container-fluid">
           <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-4">
-            <div className="col mb-5 mb-md-0">
+            <div className="col mb-5 mb-md-0" data-aos="zoom-in-right">
               <div className="card mb-3 border-0">
                 <div className="row">
                   <div className="col-md-2 text-dark text-center mb-4 mb-md-0">
@@ -45,7 +45,7 @@ const KeywordSection = () => {
                 </div>
               </div>
             </div>
-            <div className="col mb-5 mb-md-0">
+            <div className="col mb-5 mb-md-0" data-aos="zoom-in-right">
               <div className="card mb-3 border-0">
                 <div className="row">
                   <div className="col-md-2 text-dark text-center mb-4 mb-md-0">
@@ -60,7 +60,7 @@ const KeywordSection = () => {
                 </div>
               </div>
             </div>
-            <div className="col mb-5 mb-md-0">
+            <div className="col mb-5 mb-md-0" data-aos="zoom-in-right">
               <div className="card mb-3 border-0">
                 <div className="row">
                   <div className="col-md-2 text-dark text-center mb-4 mb-md-0">
@@ -75,7 +75,7 @@ const KeywordSection = () => {
                 </div>
               </div>
             </div>
-            <div className="col mb-5 mb-md-0">
+            <div className="col mb-5 mb-md-0" data-aos="zoom-in-right">
               <div className="card mb-3 border-0">
                 <div className="row">
                   <div className="col-md-2 text-dark text-center mb-4 mb-md-0">

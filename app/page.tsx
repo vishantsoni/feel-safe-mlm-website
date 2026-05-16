@@ -17,9 +17,12 @@ export default function Home() {
       {/* <CategorySection /> */}
       {/* <NewlyArrivedSection /> */}
       <MissionSection />
+      <div className="w-100 mt-5 section21 d-lg-none" style={{ minHeight: "50vh", backgroundPosition: "right" }}>
+      </div>
+
       <MiddleAdsSection />
       <TrendingProSection />
-      <div className="w-100 mt-5">
+      <div className="w-100 mt-5" data-aos="zoom-in-up">
         <img src={"/assets/banner/eco.png"} className="img-fluid w-100" />
       </div>
       <BreadkingBarier />

@@ -33,7 +33,7 @@ const Navbar = () => {
 
   }, [user]);
 
-  console.log("categor 0- ", category);
+  // console.log("categor 0- ", category);
 
   return (
     <>
@@ -290,7 +290,7 @@ const Navbar = () => {
                   >
                     Shop
                   </Link>
-                  <ul className="dropdown-menu shadow border-0 mt-2" aria-labelledby="shopDropdown">
+                  <ul className="dropdown-menu shadow border-0 mt-2 " aria-labelledby="shopDropdown" style={{ zIndex: 9999 }}>
                     <li>
                       <Link href="/products" className="dropdown-item fw-bold text-primary">
                         All Products

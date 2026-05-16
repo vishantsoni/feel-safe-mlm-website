@@ -108,13 +108,13 @@ const ContactCompo = () => {
         <>
             <section className="py-5 text-center section-contactus row " >
                 <div className="col-8 mx-auto py-4" style={{ zIndex: 1 }}>
-                    <h1 className="display-4 fw-bold" style={{ color: "#1C1C1C" }}>
+                    <h1 className="display-4 fw-bold" style={{ color: "#1C1C1C" }} data-aos="zoom-in-up">
                         Contact <span style={{ color: "#00A9E0" }}>Us</span>
                     </h1>
 
 
                     <LogoCompo />
-                    <p className="lead text-muted mx-auto mb-0" style={{ maxWidth: "700px" }}>
+                    <p className="lead text-muted mx-auto mb-0" style={{ maxWidth: "700px" }} data-aos="zoom-in-right">
                         We’re here to help you! If you have any questions about our products,
                         services, or Feel Safe Sakhi Yojna, feel free to reach out.
                     </p>
@@ -128,7 +128,7 @@ const ContactCompo = () => {
                 <section className="container py-5">
                     <div className="row g-5">
                         {/* Left Column: Contact Details & Support */}
-                        <div className="col-lg-5">
+                        <div className="col-lg-5" data-aos="zoom-in-right">
                             <div className="mb-5">
                                 <h3 className="fw-bold mb-4">Get in Touch</h3>
 
@@ -203,7 +203,7 @@ const ContactCompo = () => {
                         </div>
 
                         {/* Right Column: Form & Grievance */}
-                        <div className="col-lg-7">
+                        <div className="col-lg-7" data-aos="zoom-in-left">
                             <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 mb-4">
                                 <h3 className="fw-bold mb-4">Send us a Message</h3>
                                 <form onSubmit={handleSubmit}>
@@ -325,9 +325,9 @@ const ContactCompo = () => {
                 {/* CTA: Become a Sakhi */}
                 <section className="container mb-5">
                     <div className="p-4 p-md-5 rounded-4 text-center text-white shadow" style={{ backgroundColor: "#8DC63F" }}>
-                        <h3 className="fw-bold mb-3">Become a Sakhi (Join Us)</h3>
-                        <p className="mb-4">Interested in earning and becoming financially independent? Join our Feel Safe Sakhi Yojna today!</p>
-                        <div className="d-flex justify-content-center gap-3">
+                        <h3 className="fw-bold mb-3" data-aos="zoom-in-up">Become a Sakhi (Join Us)</h3>
+                        <p className="mb-4" data-aos="zoom-in-up">Interested in earning and becoming financially independent? Join our Feel Safe Sakhi Yojna today!</p>
+                        <div className="d-flex justify-content-center gap-3" data-aos="zoom-in">
                             <button className="btn btn-light fw-bold px-4 py-2 text-success" onClick={() => {
                                 navigation.navigate('/become-distributor')
                             }}>Register Now</button>

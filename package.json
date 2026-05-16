@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
+    "aos": "^2.3.4",
     "axios": "^1.14.0",
     "js-cookie": "^3.0.5",
     "lucide-react": "^1.7.0",

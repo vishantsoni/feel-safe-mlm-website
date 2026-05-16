@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef, MouseEvent } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,8 +11,6 @@ import TrendingProSection from "../sections/TrendingProSection";
 import ReviewsSection from "./ReviewsSection";
 
 // NOTE: ProductDetail already has its own TS typing in this repo.
-
-
 
 interface Props {
   product: Product;
@@ -30,6 +28,13 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");
+
+  // ZOOM STATE
+  const [zoomState, setZoomState] = useState({
+    backgroundPosition: '0% 0%',
+    backgroundSize: '100%'
+  });
+  const zoomRef = useRef<HTMLDivElement>(null);
 
   const { addItem, loading } = useCart();
 
@@ -70,15 +75,18 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     }
   }, [attributes]);
 
-  const originalPrice = product.base_price || 0;
+
   const basePrice = product.base_price;
   const discountedPrice = product.discounted_price;
-  const taxPrice = product.tax_data
-    ? (originalPrice * product.tax_data.percentage) / 100
-    : 0;
+
 
   // originalPrice += taxPrice;
 
+
+  const originalPrice = discountedPrice > 0 && discountedPrice < basePrice ? discountedPrice : basePrice
+  const taxPrice = product.tax_data
+    ? (originalPrice * product.tax_data.percentage) / 100
+    : 0;
   const currentVariant = useMemo(() => {
     if (variants.length === 0) return null;
     return (
@@ -95,15 +103,15 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
   }, [selectedAttributes, variants]);
 
   const currentPrice = useMemo(
-    () => (currentVariant ? currentVariant.price : basePrice),
-    [currentVariant, basePrice],
+    () => (currentVariant ? currentVariant.price : originalPrice),
+    [currentVariant, originalPrice],
   );
-  console.log("current variant - ", currentVariant);
+  // console.log("current variant - ", currentVariant);
 
   const taxablePrice = useMemo(
     () =>
-      currentVariant ? currentVariant.price : basePrice,
-    [currentVariant, basePrice],
+      currentVariant ? currentVariant.price : originalPrice,
+    [currentVariant, originalPrice],
   );
 
   const isOutOfStock = useMemo(
@@ -111,6 +119,31 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     [currentVariant],
   );
 
+
+  // ZOOM HANDLERS
+  const handleMouseEnter = () => {
+    setZoomState(prev => ({ ...prev, backgroundSize: '200%' })); // Initial zoom scale
+  };
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    if (!zoomRef.current) return;
+
+    const { left, top, width, height } = zoomRef.current.getBoundingClientRect();
+    const x = ((e.pageX - left - window.scrollX) / width) * 100;
+    const y = ((e.pageY - top - window.scrollY) / height) * 100;
+
+    setZoomState(prev => ({
+      ...prev,
+      backgroundPosition: `${x}% ${y}%`
+    }));
+  };
+
+  const handleMouseLeave = () => {
+    setZoomState({
+      backgroundPosition: '0% 0%',
+      backgroundSize: '100%'
+    });
+  };
 
   const handleAddToCart = async () => {
     if (isOutOfStock) {
@@ -156,57 +189,52 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     router.push(`/checkout?${params.toString()}`);
   };
 
-  console.log("selected image ", selectedImage);
+  // console.log("selected image ", selectedImage);
 
   return (
     <section className="pb-5 pt-4">
-      <style jsx>{`
-        .product-detail-zoom {
-          overflow: hidden;
-        }
-
-        .product-detail-zoom__img {
-          transition: transform 350ms ease;
-          will-change: transform;
-        }
-
-        .product-detail-zoom:hover .product-detail-zoom__img {
-          transform: scale(1.08);
-        }
-
-        /* Prevent zoom on touch devices (hover-less) */
-        @media (hover: none) {
-          .product-detail-zoom__img {
-            transition: none;
-          }
-        }
-
-      `}</style>
-
       <div className="container-fluid">
 
         <div className="row">
           <div className="col-lg-5">
-            {/* Image Gallery */}
+            {/* Image Gallery with Amazon-style Zoom */}
             <div
-              className="position-relative w-100 mb-3 product-detail-zoom"
-              style={{ aspectRatio: "1/1" }}
+              className="position-relative w-100 mb-3 border rounded overflow-hidden"
+              style={{ aspectRatio: "1/1", cursor: 'crosshair' }}
+              ref={zoomRef}
+              onMouseEnter={handleMouseEnter}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
             >
+              {/* Main displayed image */}
               <Image
                 src={selectedImage}
                 alt={product.name}
                 fill
                 priority
-                className="img-fluid rounded object-fit-cover product-detail-zoom__img"
+                className="img-fluid object-fit-cover transition-opacity duration-300"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ opacity: zoomState.backgroundSize === '100%' ? 1 : 0 }}
               />
 
-              {currentPrice < originalPrice && (
-                <div className="position-absolute top-0 end-0 badge bg-success fs-6 m-2">
+              {/* Zoomed version (background image of this div) */}
+              <div
+                className="position-absolute top-0 start-0 w-100 h-100 transition-opacity duration-300"
+                style={{
+                  backgroundImage: `url(${selectedImage})`,
+                  backgroundRepeat: 'no-repeat',
+                  ...zoomState,
+                  opacity: zoomState.backgroundSize === '100%' ? 0 : 1,
+                  zIndex: 1
+                }}
+              />
+
+              {currentPrice < basePrice && (
+                <div className="position-absolute top-0 end-0 badge bg-success fs-6 m-2" style={{ zIndex: 2 }}>
                   -
-                  {Math.round(
-                    ((originalPrice - currentPrice) / originalPrice) * 100,
-                  )}
+                  {
+                    (((basePrice - currentPrice) / basePrice) * 100).toFixed(2)
+                  }
                   %
                 </div>
               )}
@@ -245,10 +273,10 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                 <IndianRupee className="inline-block" size={24} />
                 {taxablePrice.toFixed(2)}
               </span>
-              {discountedPrice > 0 &&
+              {(discountedPrice > 0 && discountedPrice < basePrice) &&
                 <span className="text-muted text-decoration-line-through ms-3 fs-4">
                   <IndianRupee className="inline-block" size={18} />
-                  {discountedPrice.toFixed(2)}
+                  {basePrice.toFixed(2)}
                 </span>
               }
             </div>
@@ -351,27 +379,9 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
               </div>
             </div>
             {/* Inventory info (optional) */}
+            {(product?.distributor_stock === 0 && product?.admin_stock === 0) && <span className="badge bg-secondary">Out Of Stock</span>}
             <div>admin - {product.admin_stock}</div>
             <div>Distributor - {product.distributor_stock}</div>
-
-
-
-            {/* Quick Specs */}
-            {/* <div className="mb-4">
-              <h5>Product Specifications:</h5>
-              <ul className="list-group list-group-flush">
-                {product.specs &&
-                  Object.entries(product.specs).map(([key, value]) => (
-                    <li
-                      key={key}
-                      className="list-group-item d-flex justify-content-between"
-                    >
-                      <span>{key}</span>
-                      <strong>{String(value)}</strong>
-                    </li>
-                  ))}
-              </ul>
-            </div> */}
           </div>
         </div>
 
@@ -398,15 +408,6 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                   Reviews
                 </button>
               </li>
-              {/* <li className="nav-item">
-                <button
-                  className="nav-link"
-                  data-bs-toggle="tab"
-                  data-bs-target="#specs"
-                >
-                  Specifications
-                </button>
-              </li> */}
             </ul>
 
             <div className="tab-content border border-top-0 p-4">
@@ -415,15 +416,12 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
               </div>
 
               <div className="tab-pane fade" id="reviews">
-                <div>
-                  <h5 className="fw-bold">Customer Reviews</h5>
-                  <div className="text-muted mb-3">
-                    Share your experience with this product.
-                  </div>
-
-                  {/** Summary + list + form handled in-state below */}
-                  <ReviewsSection productId={product.id} />
+                <h5 className="fw-bold">Customer Reviews</h5>
+                <div className="text-muted mb-3">
+                  Share your experience with this product.
                 </div>
+                {/** Summary + list + form handled in-state below */}
+                <ReviewsSection productId={product.id} />
               </div>
 
               <div className="tab-pane fade" id="specs">

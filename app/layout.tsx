@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "./RouteLoaderStyles.css";
 import Navbar from "@/componants/navbar/Navbar";
 import Footer from "@/componants/footer/Footer";
 import Script from "next/script";
@@ -8,6 +9,10 @@ import { AuthProvider } from "@/lib/contexts/AuthContext";
 import { CartProvider } from "@/lib/contexts/CartContext";
 import { ToastProvider } from "@/lib/contexts/ToastContext";
 import WhatsappButton from "@/componants/whatsappFloating/WhatsappButton";
+import React from "react";
+import ClientRouteLoadingBoundary from "@/componants/loaders/ClientRouteLoadingBoundary";
+import AOSInit from "@/componants/animations/AOSInit";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -70,6 +75,8 @@ export const metadata: Metadata = {
     canonical: "https://feelsafeco.in/",
   },
 };
+
+
 
 export default function RootLayout({
   children,
@@ -149,7 +156,13 @@ export default function RootLayout({
           <CartProvider>
             <ToastProvider>
               <Navbar />
-              <main className="flex-grow">{children}</main>
+              <main className="flex-grow">
+                <ClientRouteLoadingBoundary>
+                  <AOSInit />
+                  {children}
+                </ClientRouteLoadingBoundary>
+
+              </main>
               <Footer />
               <WhatsappButton />
             </ToastProvider>

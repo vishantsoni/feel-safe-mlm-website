@@ -28,7 +28,6 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
     void loadProducts();
   }, []);
 
-
   return (
     <>
       <section className="py-5">
@@ -36,12 +35,11 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
           <div className="row">
             <div className="col-md-12">
               <div className="bootstrap-tabs product-tabs">
-                {titleShow &&
-                  <div className="tabs-header d-flex justify-content-between border-bottom my-5">
+                {titleShow && (
+                  <div className="tabs-header d-flex justify-content-between border-bottom my-5" data-aos="zoom-in">
                     <h3>{title}</h3>
-
                   </div>
-                }
+                )}
 
                 <div className="tab-content" id="nav-tabContent">
                   <div
@@ -56,75 +54,37 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
                         const total_price = item.taxable_price;
                         let tax_amount = 0;
                         if (item.tax_data) {
-                          tax_amount =
-                            (total_price * item.tax_data.percentage) / 100;
-                          // total_price += tax_amount;
+                          tax_amount = (total_price * item.tax_data.percentage) / 100;
                         }
 
                         return (
-                          <div className="col" key={index}>
+                          <div className="col" key={index} data-aos="zoom-out">
                             <div className="product-item">
-                              <span className="badge bg-success position-absolute m-3">
+                              <span className="badge bg-success position-absolute m-3" style={{ zIndex: 2 }}>
                                 {item.discount}
                               </span>
-                              {/* <a
-                                href="#"
-                                className="btn-wishlist"
-                                onClick={() => { }}
-                              >
-                                <svg width="24" height="24">
-                                  <use xlinkHref="#heart" />
-                                </svg>
-                              </a> */}
-                              <figure>
+
+                              {/* FIXED: Added 'overflow-hidden' wrapper to contain the zoom effect */}
+                              <figure className="overflow-hidden position-relative rounded">
                                 <Link
                                   href={`/products/${item.slug}`}
                                   title={item.name}
                                 >
+                                  {/* FIXED: Added 'zoom-effect' class */}
                                   <img
                                     src={item.f_image}
-                                    className="tab-image"
+                                    className="tab-image img-fluid zoom-effect"
                                     alt={item.name}
                                   />
                                 </Link>
                               </figure>
+
                               <h3>{item.name}</h3>
                               <span className="qty">{item.qty}</span>
-                              <span className="price">
-                                <IndianRupee className="p-1" />
+                              <span className="price d-flex align-items-center">
+                                <IndianRupee size={16} className="me-1" />
                                 {formattedAmount(total_price)}
                               </span>
-                              {/* <div className="d-flex align-items-center justify-content-between">
-                                <div className="input-group product-qty">
-                                  <span className="input-group-btn">
-                                    <button
-                                      type="button"
-                                      className="btn btn-danger btn-number"
-                                    >
-                                      <Minus size={16} />
-
-                                    </button>
-                                  </span>
-
-                                  <input
-                                    type="text"
-                                    name="quantity"
-                                    className="form-control input-number"
-                                    defaultValue="1"
-                                  />
-                                  <span className="input-group-btn">
-                                    <button
-                                      type="button"
-                                      className="btn btn-success btn-number"
-                                    >
-                                      <Plus size={16} />
-                                    </button>
-                                  </span>
-                                </div>
-                                <a href="#" className="nav-link">
-                                  Add to Cart <Icon icon="uil:shopping-cart" />
-                                </a>
-                              </div> */}
                             </div>
                           </div>
                         );

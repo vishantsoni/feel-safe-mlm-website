@@ -1,8 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useCart } from "@/lib/contexts/CartContext";
-import serverCallFuction from "@/lib/constantFunction";
+import serverCallFuction, { formattedAmountCommas } from "@/lib/constantFunction";
 import { IndianRupee } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -24,13 +24,10 @@ interface CheckoutItem {
   variation_id: string | null;
   quantity: number;
   price: number;
-
   product_name?: string;
   variant_sku?: string;
   variant_details: VariantDetails | null;
 }
-
-// interface ShippingAddress removed - using Address type
 
 const CheckoutPage = () => {
   const searchParams = useSearchParams();
@@ -38,7 +35,7 @@ const CheckoutPage = () => {
   const { cart, loading: cartLoading, fetchCart, refreshCart } = useCart();
   const { user } = useAuth();
 
-  const dId = user?.distributor_info?.id || ""; //
+  const dId = user?.distributor_info?.id || "";
 
   const productId = searchParams.get("productId");
   const variantIdParam = searchParams.get("variantId");
@@ -51,7 +48,7 @@ const CheckoutPage = () => {
   const [singleItem, setSingleItem] = useState<CheckoutItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [cartError, setCartError] = useState("");
-  // formData repurposed for manual entry fallback
+
   const [formData, setFormData] = useState({
     address_line1: "",
     address_line2: "",
@@ -62,18 +59,25 @@ const CheckoutPage = () => {
     phone: "",
   });
   const [couponCode, setCouponCode] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState<string>("razorpay"); // COD for non-distributors
+  const [paymentMethod, setPaymentMethod] = useState<string>("razorpay");
   const [orderLoading, setOrderLoading] = useState(false);
   const [error, setError] = useState("");
 
   // Address logic
   const [addresses, setAddresses] = useState<Address[]>([]);
-  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
-    null,
-  );
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
+
+  // FIXED: State/City validation loaders & array states added matching AddressesPage
+  const [statesLoading, setStatesLoading] = useState(false);
+  const [citiesLoading, setCitiesLoading] = useState(false);
+  const [states, setStates] = useState<Array<{ id: number | string; name: string }>>([]);
+  const [cities, setCities] = useState<Array<{ id: number | string; name: string }>>([]);
+  const [selectedStateId, setSelectedStateId] = useState<number | string | null>(null);
+  const [pincodeError, setPincodeError] = useState("");
+
   const [addressFormData, setAddressFormData] = useState({
     full_name: "",
     phone: "",
@@ -114,6 +118,13 @@ const CheckoutPage = () => {
       ? singleItem.price * singleItem.quantity
       : 0;
 
+  const { setting, getSettingByKey } = useAuth();
+
+  const shipping = useMemo(() => {
+    const res = getSettingByKey("shipping_charge");
+    return res?.charge || 0;
+  }, [setting, getSettingByKey]);
+
   useEffect(() => {
     const loadCart = async () => {
       try {
@@ -126,8 +137,8 @@ const CheckoutPage = () => {
       }
     };
     loadCart();
+    fetchStates(); // FIXED: Initializing states on component mount
   }, []);
-
 
   useEffect(() => {
     if (!isCartMode && productId && slug) {
@@ -158,6 +169,7 @@ const CheckoutPage = () => {
               product_name:
                 (apiProduct.product as any)?.name || `Product #${productId}`,
               variant_sku: variantId ? "Variant" : "Standard",
+              variant_details: null
             });
           }
         } catch (err) {
@@ -176,7 +188,6 @@ const CheckoutPage = () => {
         const res = await getAddresses();
         if (res.status && res.data) {
           setAddresses(res.data);
-          // Auto-select default
           const defaultAddr = res.data.find((addr) => addr.is_default);
           if (defaultAddr) {
             setSelectedAddressId(defaultAddr.id);
@@ -191,7 +202,51 @@ const CheckoutPage = () => {
     fetchAddresses();
   }, []);
 
-  // Address handlers
+  // FIXED: Fetch States API call implementation
+  const fetchStates = async () => {
+    try {
+      setStatesLoading(true);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/static/states`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await res.json();
+      if (json?.status && Array.isArray(json?.data)) {
+        setStates(json.data);
+      } else if (Array.isArray(json)) {
+        setStates(json);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setStatesLoading(false);
+    }
+  };
+
+  // FIXED: Fetch Cities API call implementation
+  const fetchCities = async (stateId: number | string) => {
+    try {
+      setCitiesLoading(true);
+      const url = `${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/static/cities/${stateId}`;
+      const res = await fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await res.json();
+      if (json?.status && Array.isArray(json?.data)) {
+        setCities(json.data);
+      } else if (Array.isArray(json)) {
+        setCities(json);
+      } else {
+        setCities([]);
+      }
+    } catch (e) {
+      setCities([]);
+    } finally {
+      setCitiesLoading(false);
+    }
+  };
+
   const selectedAddress =
     addresses.find((addr) => addr.id === selectedAddressId) || null;
 
@@ -209,16 +264,20 @@ const CheckoutPage = () => {
       is_default: false,
     });
     setEditingAddress(null);
+    setCities([]);
+    setSelectedStateId(null);
+    setPincodeError("");
+    setError("");
     setShowAddModal(true);
     setShowEditModal(false);
   };
 
-  const openEditModal = (addr: Address) => {
+  const openEditModal = async (addr: Address) => {
     setAddressFormData({
       full_name: addr.full_name,
       phone: addr.phone,
       address_line1: addr.address_line1,
-      address_line2: addr.address_line2,
+      address_line2: addr.address_line2 || "",
       city: addr.city,
       state: addr.state,
       country: "India",
@@ -227,24 +286,56 @@ const CheckoutPage = () => {
       is_default: addr.is_default || false,
     });
     setEditingAddress(addr);
+    setPincodeError("");
+    setError("");
     setShowEditModal(true);
     setShowAddModal(false);
+
+    // FIXED: Dynamically map state ID to pre-fetch corresponding cities on Edit view
+    const matchedState = states.find((s) => String(s.name) === String(addr.state));
+    if (matchedState) {
+      setSelectedStateId(matchedState.id);
+      await fetchCities(matchedState.id);
+    }
   };
 
   const closeModal = () => {
     setShowAddModal(false);
     setShowEditModal(false);
     setEditingAddress(null);
+    setSelectedStateId(null);
+    setCities([]);
+    setPincodeError("");
+    setError("");
   };
 
   const handleAddressSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setAddressLoading(true);
-    setError(""); // Purana error clear karein
+    setError("");
 
+    // FIXED: Strict 6-digit numeric validation block
+    const pincode = addressFormData.pincode?.trim() || "";
+    if (!/^\d{6}$/.test(pincode)) {
+      setPincodeError("Pincode must be exactly 6 digits.");
+      return;
+    }
+    setPincodeError("");
+
+    // FIXED: Strict 10-digit numeric validation block
+    const phone = (addressFormData.phone || "").trim();
+    if (!/^\d{10}$/.test(phone)) {
+      setError("Phone number must be exactly 10 digits.");
+      return;
+    }
+
+    if (!addressFormData.state || !addressFormData.city) {
+      setError("Please select state and city.");
+      return;
+    }
+
+    setAddressLoading(true);
     try {
       let res: any;
-      // addressFormData ko casting dena zaroori hai agar API keys mismatch hain
       const payload = { ...addressFormData };
 
       if (editingAddress) {
@@ -254,7 +345,6 @@ const CheckoutPage = () => {
       }
 
       if (res && res.status) {
-        // Refresh addresses list
         const freshRes = await getAddresses();
         if (freshRes.status && freshRes.data) {
           setAddresses(freshRes.data);
@@ -316,48 +406,25 @@ const CheckoutPage = () => {
     }
   };
 
-
-  // Validation: All items must have the same distributor_id (or all be null/Admin)
   const isConsistentFormat = isCartMode
     ? cart!.items.every(item => item.distributor_id === cart!.items[0].distributor_id)
-    : true; // Single item checkout is always consistent
+    : true;
 
   const formatError = !isConsistentFormat
     ? "Mixed Fulfillment Error: Your cart contains items from different sources. Please ensure all items are from the same distributor or all from Main Store in your cart."
     : null;
 
-  // useEffect(() => {
-
-  //   // let determinedPaymentMethod = "razorpay"; // Default to online payment
-  //   if (dId === "") {
-  //     //admin
-  //     setPaymentMethod("razorpay");
-  //   } else {
-  //     if (cart?.items[0].distributor_id === null) {
-  //       setPaymentMethod("razorpay");
-  //     } else {
-  //       setPaymentMethod("cod");
-  //     }
-  //   }
-
-  //   // setPaymentMethod(dId === "" ? "razorpay" : "cod")
-  // }, [cart, dId])
-
   useEffect(() => {
-    // 1. Check if user is Admin or Distributor
     if (dId === "") {
       setPaymentMethod("razorpay");
     } else {
-      // 2. Check if cart items exist before accessing the first item
       if (cart && cart.items && cart.items.length > 0) {
-        // Safe access using optional chaining
         if (cart.items[0].distributor_id === null) {
           setPaymentMethod("razorpay");
         } else {
           setPaymentMethod("cod");
         }
       } else {
-        // Default fallback if cart is empty
         setPaymentMethod("razorpay");
       }
     }
@@ -387,16 +454,13 @@ const CheckoutPage = () => {
       return;
     }
 
-    // Mapping items safely
     const orderItems = displayItems.map((item: any) => ({
       product_id: item.product_id,
       variation_id: item.variation_id || null,
-      // Handle both quantity (Cart) and qty (Manual)
       quantity: Number(item.quantity || item.qty || 1),
       price: Number(item.price || item.unit_price || 0),
       product_name: item.product_name || "Product",
-      variant_sku:
-        item.variant_sku || (item.variation_id ? "Variant" : "Standard"),
+      variant_sku: item.variant_sku || (item.variation_id ? "Variant" : "Standard"),
       ...(item.variant_details && {
         variant_details:
           typeof item.variant_details === "string"
@@ -413,7 +477,7 @@ const CheckoutPage = () => {
         state: useAddress.state,
         pincode: useAddress.pincode,
         phone: useAddress.phone,
-        full_name: useAddress.full_name, // Recommended
+        full_name: useAddress.full_name,
       }
       : {
         address_line1: formData.address_line1 || formData.fullAddress,
@@ -430,6 +494,7 @@ const CheckoutPage = () => {
       coupon_code: couponCode || undefined,
       payment_method: paymentMethod,
       order_for: dId === "" ? "admin" : `distributor_${dId}`,
+      distributor_id: dId
     };
 
     try {
@@ -438,25 +503,18 @@ const CheckoutPage = () => {
         "api/orders",
         orderPayload,
       )) as any;
-      console.log("res - ", res);
 
       if (res.success) {
-        // iniitpayment flow
         if (paymentMethod === "razorpay") {
           handlepayment(res);
         }
-
         await refreshCart();
         const orderId = res.data?.order_id || res.order_id;
         router.push(`/orders/success/${orderId}`);
       } else {
-        console.log("order placed res =- ", res);
-
         setError(res?.message || "Order failed");
       }
     } catch (err: any) {
-      console.log("order plance time error - ", err);
-
       setError(err.message || "Order placement failed");
     } finally {
       setOrderLoading(false);
@@ -469,28 +527,24 @@ const CheckoutPage = () => {
       return;
     }
 
-    console.log("handle payment func - ", orderRes);
-
     try {
       const orderId = orderRes.data?.order_id || orderRes.order_id;
-
       const order = await createRazorpayOrder(totalAmount, {
         amount: 100,
         currency: "",
         receipt: `receipt_${orderId}_${Date.now()}`,
       });
       const options = {
-        key:
-          process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_Sfdk41BOifNjN9",
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_Sfdk41BOifNjN9",
         amount: order.amount,
         currency: order.currency,
         name: "Feel Safe Shop",
         description: `Order Total ₹${totalAmount.toLocaleString()}`,
         order_id: order.id,
         prefill: {
-          name: selectedAddress.full_name,
-          email: formData.email || "",
-          contact: formData.phone,
+          name: selectedAddress?.full_name || "",
+          email: user?.email || "",
+          contact: selectedAddress?.phone || formData.phone,
         },
         theme: { color: "#3399cc" },
         handler: async (response: any) => {
@@ -500,7 +554,6 @@ const CheckoutPage = () => {
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
             });
-            // await placePurchaseOrder(response.razorpay_order_id, "razorpay");
             router.push(`/orders/success/${orderId}`);
           } catch (err) {
             alert(`Payment failed: ${(err as Error).message}`);
@@ -518,33 +571,24 @@ const CheckoutPage = () => {
 
   const createRazorpayOrder = async (amt: number, cartItems) => {
     try {
-      if (!selectedAddress) {
-        alert("Please select Shipping Address");
+      if (!selectedAddress && !formData.pincode) {
+        alert("Please select or enter Shipping Address");
         return;
       }
       const res = await serverCallFuction("POST", "api/payment/create-order", {
         amount: Math.round(amt),
         currency: "INR",
-        // cart_items: cartItems.map((item) => ({
-        //   id: item.id,
-        //   product_id: item.product_id,
-        //   quantity: item.quantity,
-        //   price: item.price,
-        // })),
         receipt: cartItems.receipt,
       });
-      console.log("create order ra - ", res);
 
       if (!res.status) throw new Error(res.message || "Order creation failed");
       return res.order;
     } catch (error) {
-      console.log("error or razorpay create order", error);
-
       throw new Error("Failed to create order");
     }
   };
 
-  const verifyPayment = async (paymentData: RazorpayPaymentResponse) => {
+  const verifyPayment = async (paymentData: any) => {
     try {
       const res = await serverCallFuction(
         "POST",
@@ -614,17 +658,12 @@ const CheckoutPage = () => {
                           </thead>
                           <tbody>
                             {displayItems.map((item, idx) => {
-                              const unit_price = parseFloat(item.unit_price);
-                              let total_price = parseFloat(item.price);
+                              const unit_price = parseFloat(item.unit_price || item.price || 0);
+                              let total_price = parseFloat(item.price || 0);
                               let taxable_amount = 0;
 
                               if (item.tax_data != null) {
-                                taxable_amount =
-                                  (unit_price *
-                                    parseFloat(item.tax_data.percentage)) /
-                                  100;
-
-                                // total_price += taxable_amount;
+                                taxable_amount = (unit_price * parseFloat(item.tax_data.percentage)) / 100;
                               }
 
                               return (
@@ -649,13 +688,12 @@ const CheckoutPage = () => {
                                         </div>
                                         {item.variant_details
                                           ? item.variant_details.attributes.map(
-                                            (attr, idx) => (
+                                            (attr: any, i: number) => (
                                               <small
-                                                key={idx}
-                                                className="badge bg-primary text-white d-block"
+                                                key={i}
+                                                className="badge bg-primary text-white d-block mt-1"
                                               >
-                                                {attr.attribute_name}:{" "}
-                                                {attr.attribute_val}
+                                                {attr.attribute_name}: {attr.attribute_val}
                                               </small>
                                             ),
                                           )
@@ -665,38 +703,15 @@ const CheckoutPage = () => {
                                   </td>
                                   <td>
                                     <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-                                      <li>Price :
-                                        <IndianRupee size={15} />
-                                        {item.unit_price}
-                                      </li>
-                                      <li className="">
-                                        GST :
-                                        <IndianRupee size={15} />
-                                        {taxable_amount}
-                                      </li>
-                                      <li>
-                                        <b>T. :
-                                          <IndianRupee size={15} />
-                                          {total_price}</b>
-                                      </li>
+                                      <li>Price : <IndianRupee size={15} /> {unit_price}</li>
+                                      <li>GST : <IndianRupee size={15} /> {taxable_amount}</li>
+                                      <li><b>T. : <IndianRupee size={15} /> {total_price}</b></li>
                                     </ul>
                                   </td>
-                                  <td>
-                                    {("quantity" in item
-                                      ? item.quantity
-                                      : item.qty) || 1}
-                                  </td>
+                                  <td>{item.quantity || item.qty || 1}</td>
                                   <td>
                                     <IndianRupee size={15} />
-                                    {"price" in item && "quantity" in item
-                                      ? Number(
-                                        total_price * item.quantity,
-                                      ).toFixed(2)
-                                      : Number(
-                                        total_price ||
-                                        item.unit_price *
-                                        (item.quantity || item.qty || 1),
-                                      ).toFixed(2)}
+                                    {Number(total_price * (item.quantity || item.qty || 1)).toFixed(2)}
                                   </td>
                                 </tr>
                               );
@@ -722,22 +737,14 @@ const CheckoutPage = () => {
                       <div className="card-body">
                         {addressesLoading ? (
                           <div className="text-center py-4">
-                            <div
-                              className="spinner-border text-primary"
-                              role="status"
-                            >
-                              <span className="visually-hidden">
-                                Loading addresses...
-                              </span>
+                            <div className="spinner-border text-primary" role="status">
+                              <span className="visually-hidden">Loading addresses...</span>
                             </div>
                           </div>
                         ) : addresses.length === 0 ? (
                           <div className="text-center py-4 text-muted">
                             No saved addresses.{" "}
-                            <button
-                              className="btn btn-link p-0"
-                              onClick={openAddModal}
-                            >
+                            <button className="btn btn-link p-0" onClick={openAddModal}>
                               Add your first address
                             </button>
                           </div>
@@ -746,7 +753,7 @@ const CheckoutPage = () => {
                             {addresses.map((addr) => (
                               <div key={addr.id} className="col-md-6">
                                 <div className="card border h-100">
-                                  <div className="card-body">
+                                  <div className="card-body d-flex flex-column">
                                     <div className="form-check">
                                       <input
                                         className="form-check-input"
@@ -754,75 +761,53 @@ const CheckoutPage = () => {
                                         name="address"
                                         id={`addr-${addr.id}`}
                                         checked={selectedAddressId === addr.id}
-                                        onChange={() =>
-                                          setSelectedAddressId(addr.id)
-                                        }
+                                        onChange={() => setSelectedAddressId(addr.id)}
                                         disabled={addressLoading}
                                       />
                                       <label
-                                        className="form-check-label w-100 p-3 border rounded cursor-pointer h-100 d-flex flex-column"
+                                        className="form-check-label w-100 cursor-pointer text-dark"
                                         htmlFor={`addr-${addr.id}`}
                                       >
-                                        <div>
-                                          <strong>{addr.full_name}</strong>
-                                          <br />
-                                          <small>{addr.address_line1}</small>,
-                                          <small> {addr.address_line2}</small>
-                                          {addr.city}, {addr.state} -{" "}
-                                          {addr.pincode}
-                                          <br />
-                                          <small className="text-muted">
-                                            Phone: {addr.phone}
-                                          </small>
-                                        </div>
-                                        {addr.is_default && (
-                                          <span className="badge bg-success mt-2">
-                                            Default
-                                          </span>
-                                        )}
-                                        <div className="mt-auto pt-2">
-                                          <div
-                                            className="btn-group btn-group-sm"
-                                            role="group"
-                                          >
-                                            <button
-                                              type="button"
-                                              className="btn btn-outline-secondary"
-                                              onClick={(e) => {
-                                                e.stopPropagation();
-                                                openEditModal(addr);
-                                              }}
-                                              disabled={addressLoading}
-                                            >
-                                              Edit
-                                            </button>
-                                            <button
-                                              type="button"
-                                              className="btn btn-outline-danger"
-                                              onClick={(e) => {
-                                                e.stopPropagation();
-                                                handleDeleteAddress(addr.id);
-                                              }}
-                                              disabled={addressLoading}
-                                            >
-                                              Delete
-                                            </button>
-                                            {!addr.is_default && (
-                                              <button
-                                                type="button"
-                                                className="btn btn-outline-primary"
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  handleSetDefault(addr.id);
-                                                }}
-                                                disabled={addressLoading}
-                                              >
-                                                Set Default
-                                              </button>
-                                            )}
-                                          </div>
-                                        </div>
+                                        <strong>{addr.full_name}</strong>
+                                        <br />
+                                        <small>{addr.address_line1}</small>
+                                        {addr.address_line2 && <small>, {addr.address_line2}</small>}
+                                        <br />
+                                        <small>{addr.city}, {addr.state} - {addr.pincode}</small>
+                                        <br />
+                                        <small className="text-muted">Phone: {addr.phone}</small>
                                       </label>
+                                    </div>
+                                    {addr.is_default && (
+                                      <span className="badge bg-success mt-2 align-self-start">Default</span>
+                                    )}
+                                    <div className="mt-auto pt-3 btn-group btn-group-sm">
+                                      <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        onClick={(e) => { e.stopPropagation(); openEditModal(addr); }}
+                                        disabled={addressLoading}
+                                      >
+                                        Edit
+                                      </button>
+                                      <button
+                                        type="button"
+                                        className="btn btn-outline-danger"
+                                        onClick={(e) => { e.stopPropagation(); handleDeleteAddress(addr.id); }}
+                                        disabled={addressLoading}
+                                      >
+                                        Delete
+                                      </button>
+                                      {!addr.is_default && (
+                                        <button
+                                          type="button"
+                                          className="btn btn-outline-primary"
+                                          onClick={(e) => { e.stopPropagation(); handleSetDefault(addr.id); }}
+                                          disabled={addressLoading}
+                                        >
+                                          Set Default
+                                        </button>
+                                      )}
                                     </div>
                                   </div>
                                 </div>
@@ -830,116 +815,20 @@ const CheckoutPage = () => {
                             ))}
                           </div>
                         )}
-                        {/* Manual Entry Fallback */}
-                        {(!selectedAddress || addresses.length === 0) && (
-                          <div className="mt-4 pt-4 border-top">
-                            <h6>Or enter new address</h6>
-                            <div className="row g-3">
-                              <div className="col-md-12">
-                                <label className="form-label">
-                                  Full Address *
-                                </label>
-                                <textarea
-                                  className="form-control"
-                                  rows={2}
-                                  value={formData.fullAddress}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      fullAddress: e.target.value,
-                                    })
-                                  }
-                                  placeholder="House no, Street, Landmark"
-                                />
-                              </div>
-                              <div className="col-md-4">
-                                <label className="form-label">City *</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={formData.city}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      city: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="col-md-4">
-                                <label className="form-label">State</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={formData.state}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      state: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="col-md-4">
-                                <label className="form-label">Pincode *</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  value={formData.pincode}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      pincode: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                              <div className="col-md-12">
-                                <label className="form-label">Phone *</label>
-                                <input
-                                  type="tel"
-                                  className="form-control"
-                                  value={formData.phone}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      phone: e.target.value,
-                                    })
-                                  }
-                                />
-                              </div>
-                            </div>
-                            <div className="mt-3">
-                              <button
-                                type="button"
-                                className="btn btn-outline-primary btn-sm me-2"
-                                onClick={openAddModal}
-                              >
-                                Save & Reuse
-                              </button>
-                              <small className="text-muted">
-                                Save for future use or enter once
-                              </small>
-                            </div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
 
-                  {/* right section */}
+                  {/* Right Column Summary Section */}
                   <div className="col-lg-4">
-                    <div
-                      className="card border-0 shadow-sm sticky-top"
-                      style={{ top: "20px" }}
-                    >
+                    <div className="card border-0 shadow-sm sticky-top" style={{ top: "20px" }}>
                       <div className="card-body px-4">
                         <h5 className="fw-bold mb-3">Order Summary</h5>
                         <div className="d-flex justify-content-between mb-2">
                           <span>Subtotal ({displayItems.length} items):</span>
                           <span>
-                            <IndianRupee />
-                            {subTotal.toFixed(2)}
+                            <IndianRupee size={16} />
+                            {formattedAmountCommas(subTotal)}
                           </span>
                         </div>
                         <hr />
@@ -947,23 +836,30 @@ const CheckoutPage = () => {
                           <span className="fw-bold h6 mb-0">Tax:</span>
                           <span className="fw-bold h6 mb-0">
                             <IndianRupee size={15} />
-                            {tax_amount.toFixed(2)}
+                            {formattedAmountCommas(tax_amount)}
+                          </span>
+                        </div>
+                        <hr />
+                        <div className="d-flex justify-content-between mb-1">
+                          <span className="fw-bold h6 mb-0">Shipping Charge:</span>
+                          <span className="fw-bold h6 mb-0">
+                            <IndianRupee size={15} />
+                            {shipping.toFixed(2)}
                           </span>
                         </div>
                         <hr />
                         <div className="d-flex justify-content-between mb-1">
                           <span className="fw-bold h4 mb-0">Total:</span>
                           <span className="fw-bold h4 mb-0">
-                            <IndianRupee />
-                            {totalAmount.toFixed(2)}
+                            <IndianRupee size={20} />
+                            {formattedAmountCommas((totalAmount + shipping).toFixed(2))}
                           </span>
                         </div>
                       </div>
                       <hr />
-                      {/* Coupon & Payment */}
                       <div className="col-md-12 px-4 mb-2">
                         <label className="form-label">Coupon Code</label>
-                        <div className="input-group ">
+                        <div className="input-group">
                           <input
                             type="text"
                             className="form-control"
@@ -971,31 +867,20 @@ const CheckoutPage = () => {
                             onChange={(e) => setCouponCode(e.target.value)}
                             placeholder="Enter code"
                           />
-                          <button className="btn btn-primary" type="button">
-                            Apply
-                          </button>
+                          <button className="btn btn-primary" type="button">Apply</button>
                         </div>
                       </div>
-
                       <hr />
                       <div className="px-4 mb-4">
                         <label className="form-label">Payment Method</label>
-                        <select
-                          className="form-control"
-                          value={paymentMethod}
-                          disabled
-                          onChange={(e) =>
-                            setPaymentMethod(e.target.value as "wallet")
-                          }
-                        >
+                        <select className="form-control" value={paymentMethod} disabled>
                           <option value="razorpay">Online (Razorpay)</option>
                           <option value="cod">Cash on Delivery</option>
                         </select>
                       </div>
 
-                      {/* Find the payment method section in your JSX and add the error message */}
                       {formatError && (
-                        <div className="alert alert-warning mb-4 shadow-sm border-warning">
+                        <div className="alert alert-warning mb-4 mx-4 shadow-sm border-warning">
                           <small className="fw-bold">{formatError}</small>
                           <div className="mt-2">
                             <Link href="/cart" className="btn btn-sm btn-outline-warning">
@@ -1005,195 +890,191 @@ const CheckoutPage = () => {
                         </div>
                       )}
 
-                      {error && (
-                        <div className="alert alert-danger mb-4">{error}</div>
-                      )}
+                      {error && <div className="alert alert-danger mb-4 mx-4">{error}</div>}
 
                       <div className="gap-2 d-flex justify-content-space-between mb-4 px-4">
-                        <Link
-                          href="/cart"
-                          className="btn btn-secondary me-md-2 btn-md w-100"
-                        >
+                        <Link href="/cart" className="btn btn-secondary btn-md w-100">
                           ← Edit Cart
                         </Link>
-
-                        {isConsistentFormat ?
-
-
+                        {isConsistentFormat && (
                           <button
-                            type="submit"
+                            type="button"
                             className="btn btn-primary btn-md px-4 w-100"
-                            form="orderForm"
                             onClick={handlePlaceOrder}
-                            disabled={
-                              orderLoading ||
-                              displayItems.length === 0 ||
-                              (!selectedAddress &&
-                                (!formData.fullAddress ||
-                                  !formData.city ||
-                                  !formData.pincode ||
-                                  !formData.phone))
-                            }
+                            disabled={orderLoading || displayItems.length === 0 || (!selectedAddress && !formData.pincode)}
                           >
-                            {orderLoading
-                              ? "Placing Order..."
-                              : `Place Order`}
+                            {orderLoading ? "Placing Order..." : `Place Order`}
                           </button>
-                          : <></>}
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
         </section>
       </ProtectedRoute>
 
-      {/* Add/Edit Address Modal */}
-      {showAddModal || showEditModal ? (
+      {/* FIXED: Dynamic State & City Dropdown Modal Implementation */}
+      {(showAddModal || showEditModal) && (
         <>
-          <div
-            className="modal show d-block"
-            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-            tabIndex={-1}
-          >
-            <div className="modal-dialog">
-              <div className="modal-content">
+          <div className="modal-backdrop fade show" style={{ zIndex: 1040, backgroundColor: "rgba(0,0,0,0.5)" }}></div>
+          <div className="modal show d-block fade show" style={{ zIndex: 1050 }} tabIndex={-1}>
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content border-0 rounded-4 shadow-lg">
                 <div className="modal-header">
-                  <h5 className="modal-title">
+                  <h5 className="modal-title fw-bold">
                     {editingAddress ? "Edit Address" : "Add New Address"}
                   </h5>
-                  <button
-                    type="button"
-                    className="btn-close"
-                    onClick={closeModal}
-                  ></button>
+                  <button type="button" className="btn-close" onClick={closeModal}></button>
                 </div>
                 <form onSubmit={handleAddressSubmit}>
-                  <div className="modal-body">
+                  <div className="modal-body p-4">
+                    {error && <div className="alert alert-danger rounded-3 p-2 small">{error}</div>}
+
                     <div className="mb-3">
-                      <label className="form-label">Full Address *</label>
+                      <label className="form-label small fw-bold text-muted text-uppercase">Full Name *</label>
                       <input
                         type="text"
-                        className="form-control mb-2"
+                        className="form-control"
                         value={addressFormData.full_name}
-                        onChange={(e) =>
-                          setAddressFormData({
-                            ...addressFormData,
-                            full_name: e.target.value,
-                          })
-                        }
-                        placeholder="Full Name *"
+                        onChange={(e) => setAddressFormData({ ...addressFormData, full_name: e.target.value })}
+                        placeholder="Full Name"
                         required
                       />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label small fw-bold text-muted text-uppercase">Address Line 1 *</label>
                       <textarea
                         className="form-control"
                         rows={2}
                         value={addressFormData.address_line1}
-                        onChange={(e) =>
-                          setAddressFormData({
-                            ...addressFormData,
-                            address_line1: e.target.value,
-                          })
-                        }
-                        placeholder="Address Line 1 (House, Street, etc.) *"
+                        onChange={(e) => setAddressFormData({ ...addressFormData, address_line1: e.target.value })}
+                        placeholder="House no, Street, etc."
                         required
                       />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label small fw-bold text-muted text-uppercase">Address Line 2 (Landmark)</label>
                       <input
                         type="text"
-                        className="form-control mt-2"
-                        value={addressFormData.address_line2}
-                        onChange={(e) =>
-                          setAddressFormData({
-                            ...addressFormData,
-                            address_line2: e.target.value,
-                          })
-                        }
-                        placeholder="Address Line 2 (Landmark)"
-                      />
-                    </div>
-                    <div className="row">
-                      <div className="col-md-4">
-                        <label className="form-label">City *</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={addressFormData.city}
-                          onChange={(e) =>
-                            setAddressFormData({
-                              ...addressFormData,
-                              city: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <label className="form-label">State</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={addressFormData.state}
-                          onChange={(e) =>
-                            setAddressFormData({
-                              ...addressFormData,
-                              state: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                      <div className="col-md-4">
-                        <label className="form-label">Pincode *</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          value={addressFormData.pincode}
-                          onChange={(e) =>
-                            setAddressFormData({
-                              ...addressFormData,
-                              pincode: e.target.value,
-                            })
-                          }
-                          required
-                        />
-                      </div>
-                    </div>
-                    <div className="mt-3">
-                      <label className="form-label">Phone *</label>
-                      <input
-                        type="tel"
                         className="form-control"
-                        value={addressFormData.phone}
-                        onChange={(e) =>
-                          setAddressFormData({
-                            ...addressFormData,
-                            phone: e.target.value,
-                          })
-                        }
-                        required
+                        value={addressFormData.address_line2}
+                        onChange={(e) => setAddressFormData({ ...addressFormData, address_line2: e.target.value })}
+                        placeholder="Landmark / Sector"
                       />
+                    </div>
+
+                    {/* FIXED: Dynamic Cascading States Dropdown */}
+                    <div className="row g-3 mb-3">
+                      <div className="col-6">
+                        <label className="form-label small fw-bold text-muted text-uppercase">State *</label>
+                        <select
+                          value={addressFormData.state}
+                          onChange={async (e) => {
+                            const nextStateName = e.target.value;
+                            const nextState = states.find((s) => String(s.name) === String(nextStateName));
+                            const nextStateId = nextState?.id ?? null;
+
+                            setSelectedStateId(nextStateId);
+                            setAddressFormData({ ...addressFormData, state: nextStateName, city: "" });
+
+                            if (nextStateId !== null) {
+                              await fetchCities(nextStateId);
+                            } else {
+                              setCities([]);
+                            }
+                          }}
+                          className="form-control"
+                          required
+                          disabled={statesLoading}
+                        >
+                          <option value="">{statesLoading ? "Loading..." : "Select State"}</option>
+                          {states.map((s) => (
+                            <option key={String(s.id)} value={s.name}>{s.name}</option>
+                          ))}
+                        </select>
+                      </div>
+
+                      {/* FIXED: Dynamic Cities Dropdown dependent on State selection */}
+                      <div className="col-6">
+                        <label className="form-label small fw-bold text-muted text-uppercase">City *</label>
+                        <select
+                          value={addressFormData.city}
+                          onChange={(e) => setAddressFormData({ ...addressFormData, city: e.target.value })}
+                          className="form-control"
+                          required
+                          disabled={!addressFormData.state || citiesLoading}
+                        >
+                          <option value="">{citiesLoading ? "Loading..." : "Select City"}</option>
+                          {cities.map((c) => (
+                            <option key={String(c.id)} value={c.name}>{c.name}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="row g-3 mb-3">
+                      <div className="col-6">
+                        <label className="form-label small fw-bold text-muted text-uppercase">Pincode *</label>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={6}
+                          placeholder="6 Digits"
+                          value={addressFormData.pincode}
+                          onChange={(e) => {
+                            const next = e.target.value.replace(/\D/g, "");
+                            setAddressFormData({ ...addressFormData, pincode: next });
+                            if (pincodeError) setPincodeError("");
+                          }}
+                          className={`form-control ${pincodeError ? "is-invalid" : ""}`}
+                          required
+                        />
+                        {pincodeError && <div className="invalid-feedback d-block small">{pincodeError}</div>}
+                      </div>
+
+                      <div className="col-6">
+                        <label className="form-label small fw-bold text-muted text-uppercase">Phone *</label>
+                        <input
+                          type="tel"
+                          maxLength={10}
+                          placeholder="10 Digits"
+                          value={addressFormData.phone}
+                          onChange={(e) => {
+                            const next = e.target.value.replace(/\D/g, "");
+                            setAddressFormData({ ...addressFormData, phone: next });
+                          }}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="form-check mb-4">
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="is_default"
+                        checked={addressFormData.is_default}
+                        onChange={(e) => setAddressFormData({ ...addressFormData, is_default: e.target.checked })}
+                      />
+                      <label className="form-check-label fw-medium" htmlFor="is_default">
+                        Set as default address
+                      </label>
                     </div>
                   </div>
-                  <div className="modal-footer">
-                    <button
-                      type="button"
-                      className="btn btn-secondary"
-                      onClick={closeModal}
-                      disabled={addressLoading}
-                    >
+
+                  <div className="modal-footer border-0 pt-0">
+                    <button type="button" className="btn btn-light" onClick={closeModal} disabled={addressLoading}>
                       Cancel
                     </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={addressLoading}
-                    >
-                      {addressLoading
-                        ? "Saving..."
-                        : editingAddress
-                          ? "Update"
-                          : "Save Address"}
+                    <button type="submit" className="btn btn-primary" disabled={addressLoading}>
+                      {addressLoading ? "Saving..." : editingAddress ? "Update" : "Save Address"}
                     </button>
                   </div>
                 </form>
@@ -1201,7 +1082,7 @@ const CheckoutPage = () => {
             </div>
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
 };

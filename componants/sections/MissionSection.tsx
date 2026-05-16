@@ -3,15 +3,15 @@ import { ShieldCheck, Leaf, Award, Users, Heart } from 'lucide-react';
 
 const MissionSection = () => {
     return (
-        <section className="py-5 bg-white">
+        <section className="py-5 bg-white" >
             <div className="container">
                 {/* --- Header Section --- */}
                 <div className="text-center mb-5">
-                    <h2 className="display-5 fw-bold text-primary">Premium Quality & Ultimate Protection</h2>
-                    <p className="lead text-muted mx-auto" style={{ maxWidth: '800px' }}>
+                    <h2 className="display-5 fw-bold text-primary" data-aos="zoom-in">Premium Quality & Ultimate Protection</h2>
+                    <p className="lead text-muted mx-auto" style={{ maxWidth: '800px' }} data-aos="zoom-in">
                         Feel Safe Pvt. Ltd. – India’s Trusted Home for Hygiene Solutions
                     </p>
-                    <div className="mt-3">
+                    <div className="mt-3" data-aos="zoom-in">
                         <p>
                             Welcome to <strong>Feel Safe Pvt. Ltd.</strong>, a premier name dedicated to high-quality hygiene and care.
                             Our flagship brand, <strong>‘Feel’</strong>, is designed to provide every woman with the comfort, health,
@@ -21,7 +21,7 @@ const MissionSection = () => {
                 </div>
 
                 {/* --- Product Excellence Section --- */}
-                <div className="row align-items-center mb-5 g-4">
+                <div className="row align-items-center mb-5 g-4" data-aos="zoom-in">
                     <div className="col-lg-6">
                         <h3 className="fw-bold mb-4">Experience the ‘Feel’ Difference</h3>
                         <p className="text-muted">
@@ -77,7 +77,7 @@ const MissionSection = () => {
                 </div>
 
                 {/* --- Empowerment Section (Sakhi Yojna) --- */}
-                <div className="bg-light p-4 p-md-5 rounded-5 border border-primary-subtle ">
+                <div className="bg-light p-4 p-md-5 rounded-5 border border-primary-subtle " data-aos="zoom-in">
                     <div className="row g-4 align-items-center">
                         <div className="col-md-12 text-center mb-4">
                             <h3 className="display-6 fw-bold">Empowering Bharat: Feel Safe Sakhi Yojna</h3>

@@ -23,6 +23,15 @@ export const isUri = (string: unknown): boolean => {
   );
 };
 
+export const formattedAmountCommas = (value: number): string => {
+  let amount: string = new Intl.NumberFormat("en-IN", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+
+  return amount;
+};
+
 export const formattedAmount = (value: number): string => {
   let amount: string = "";
 
