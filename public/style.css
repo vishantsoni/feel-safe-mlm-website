@@ -557,6 +557,9 @@ footer {
 .bg-pink {
   background-color: #ffbede !important;
 }
+.bg-danger {
+  background-color: rgb(255, 75, 75) !important;
+}
 
 /* Swiper carousel */
 .swiper-prev,

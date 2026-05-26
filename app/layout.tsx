@@ -12,6 +12,8 @@ import WhatsappButton from "@/componants/whatsappFloating/WhatsappButton";
 import React from "react";
 import ClientRouteLoadingBoundary from "@/componants/loaders/ClientRouteLoadingBoundary";
 import AOSInit from "@/componants/animations/AOSInit";
+import Chatbot from "@/componants/chatbot/Chatbot";
+
 
 
 const geistSans = Geist({
@@ -164,6 +166,7 @@ export default function RootLayout({
 
               </main>
               <Footer />
+              <Chatbot />
               <WhatsappButton />
             </ToastProvider>
           </CartProvider>
@@ -171,7 +174,7 @@ export default function RootLayout({
 
         {/* Script Management: Use strategy="lazyOnload" for non-critical scripts */}
         <Script src="https://accounts.google.com/gsi/client" strategy="beforeInteractive" />
-        <Script src="/assets/js/jquery-1.11.0.min.js" strategy="lazyOnload" />
+        <Script src="./assets/js/jquery-1.11.0.min.js" strategy="lazyOnload" />
         <Script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js" strategy="lazyOnload" />
         <Script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
@@ -179,8 +182,8 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="lazyOnload"
         />
-        <Script src="/assets/js/plugins.js" strategy="lazyOnload" />
-        <Script src="/assets/js/script.js" strategy="lazyOnload" />
+        <Script src="./assets/js/plugins.js" strategy="lazyOnload" />
+        <Script src="./assets/js/script.js" strategy="lazyOnload" />
       </body>
     </html>
   );

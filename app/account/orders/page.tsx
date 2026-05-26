@@ -11,6 +11,7 @@ import {
   ChevronRight,
   AlertCircle,
   File,
+  Undo2Icon,
 } from "lucide-react";
 
 interface Order {
@@ -19,9 +20,10 @@ interface Order {
   order_status: string;
   items_count: number;
   total_amount: number;
-  product_name: string; // Assuming this field is returned by the API for display purposes
-  product_image?: string; // Optional field for product image URL
+  payment_status?: string;
+  items?: unknown[];
 }
+
 
 interface OrdersResponse {
   success: boolean;
@@ -38,10 +40,54 @@ export default function OrdersPage() {
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [inFlightReturnRequestOrderIds, setInFlightReturnRequestOrderIds] =
+    useState<Set<string>>(() => new Set());
 
   useEffect(() => {
     fetchOrders();
   }, [page]);
+
+  const handleReturnRequest = async (orderId: string) => {
+    if (!orderId) return;
+    const reason = window.prompt("Enter return reason:");
+    if (!reason || !reason.trim()) {
+      window.alert("Return reason is required.");
+      return;
+    }
+
+    setInFlightReturnRequestOrderIds((prev) => {
+      const next = new Set(prev);
+      next.add(orderId);
+      return next;
+    });
+
+    try {
+      const res = await serverCallFuction(
+        "POST",
+        `api/orders/${orderId}/return-request`,
+        { reason: reason.trim() },
+      );
+
+      const resAny = res as { success?: boolean; message?: string };
+      if (resAny?.success) {
+        window.alert("Return request submitted successfully.");
+        await fetchOrders();
+      } else {
+        window.alert(
+          resAny?.message || "Failed to submit return request.",
+        );
+      }
+    } catch (e) {
+      console.error(e);
+      window.alert("Failed to submit return request.");
+    } finally {
+      setInFlightReturnRequestOrderIds((prev) => {
+        const next = new Set(prev);
+        next.delete(orderId);
+        return next;
+      });
+    }
+  };
 
   const fetchOrders = async () => {
     try {
@@ -68,8 +114,10 @@ export default function OrdersPage() {
     let bgClass = "bg-secondary";
     if (s === "delivered") bgClass = "bg-success";
     if (s === "accepted" || s === "pending") bgClass = "bg-warning text-dark";
-    if (s === "dispatched") bgClass = "bg-info text-white";
+    if (s === "dispatched") bgClass = "bg-primary text-white";
     if (s === "cancelled") bgClass = "bg-danger";
+    if (s === "return_requested") bgClass = "bg-danger";
+    if (s === "unpaid") bgClass = "bg-warning text-dark";
 
     return (
       <span className={`badge ${bgClass} rounded-pill px-3 py-2 fw-semibold`}>
@@ -165,31 +213,8 @@ export default function OrdersPage() {
                     <tr key={order.order_id}>
                       <td className="px-4 py-3">
                         <div className="d-flex align-items-center">
-                          {/* 1. Product Image Thumbnail */}
-                          {/* <div className="me-3"> */}
-                          {/* <img
-                              src={
-                                order.product_image ||
-                                "/assets/product/placeholder.jpg"
-                              }
-                              alt={order.product_name}
-                              className="rounded shadow-sm"
-                              style={{
-                                width: "50px",
-                                height: "50px",
-                                objectFit: "cover",
-                              }}
-                              onError={(e) => {
-                                // e.target.src = "https://via.placeholder.com/50";
-                              }}
-                            /> */}
-                          {/* </div> */}
 
-                          {/* 2. Product Details */}
                           <div>
-                            {/* <div className="fw-bold text-dark mb-0">
-                              {order.product_name || "Product Deleted"}
-                            </div> */}
                             <div className="d-flex flex-column">
                               <small
                                 className="badge bg-primary w-fit-content"
@@ -214,15 +239,16 @@ export default function OrdersPage() {
                       </td>
                       <td className="px-4 py-3">
                         <span className="text-dark fw-medium">
-                          {order.items.length}{" "}
+                          {order.items?.length ?? order.items_count}{" "}
                           {/* {order.items_count > 1 ? "Items" : "Item"} */}
                         </span>
                       </td>
+
                       <td className="px-4 py-3">
                         {getStatusBadge(order.order_status)}
                       </td>
                       <td className="px-4 py-3">
-                        {getStatusBadge(order.payment_status)}
+                        {getStatusBadge(order.payment_status ?? "")}
                       </td>
                       <td className="px-4 py-3 text-end fw-bold text-primary">
                         ₹{Number(order.total_amount).toLocaleString("en-IN")}
@@ -236,11 +262,44 @@ export default function OrdersPage() {
                         </Link>
                         <Link
                           href={`/orders/success/${order.order_id}`}
-                          className="btn btn-primary btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary"
+                          className="btn btn-primary btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary me-2"
                           title="Invoice"
                         >
                           <File size={16} />
                         </Link>
+
+                        {order.order_status === "delivered" && (
+                          <span
+                            role="button"
+                            tabIndex={0}
+                            onClick={() => handleReturnRequest(order.id)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                handleReturnRequest(order.id ?? "");
+                              }
+                            }}
+                            className={`btn btn-danger btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-danger ${inFlightReturnRequestOrderIds.has(order.order_id)
+                              ? "disabled"
+                              : ""
+                              }`}
+                            title="Return Order"
+                            style={{
+                              pointerEvents: inFlightReturnRequestOrderIds.has(
+                                order.order_id,
+                              )
+                                ? "none"
+                                : "auto",
+                              opacity: inFlightReturnRequestOrderIds.has(
+                                order.order_id,
+                              )
+                                ? 0.6
+                                : 1,
+                            }}
+                          >
+                            <Undo2Icon size={16} />
+                          </span>
+                        )}
                       </td>
                     </tr>
                   ))}

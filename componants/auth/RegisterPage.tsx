@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import api from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,14 +8,15 @@ import serverCallFuction from "@/lib/constantFunction";
 import { APIResponse } from "@/lib/types/User";
 import TermsAndConditions from "../TermsCompo";
 import PrivacyCompo from "../PrivacyCompo";
+import Cookies from "js-cookie"; // Ensure Cookies is imported
 
 interface FormData {
   phone: string;
   name: string;
-  distributor_code?: number | null;
+  distributor_code?: number | string | null; // Allowed string for state mapping consistency
   email: string;
-  password: string;
-  confirmPassword: string;
+  password?: string;        // Optional because Google accounts don't create manual passwords
+  confirmPassword?: string; // Optional
 }
 
 export default function RegisterPage() {
@@ -23,6 +24,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const refId = searchParams.get("ref");
   const initialReferrerId = refId ? parseInt(refId, 10) : null;
+  const googleButtonRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState<FormData>({
     phone: "",
@@ -32,7 +34,9 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: "",
   });
+
   const [step, setStep] = useState(1);
+  const [isGoogleUser, setIsGoogleUser] = useState(false); // Flag tracking Google sign-up mode
 
   // Step indicator
   const steps = ["Phone", "Basic Details", "Account Details", "Success"];
@@ -43,6 +47,72 @@ export default function RegisterPage() {
   const [isTermsChecked, setIsTermsChecked] = useState(false);
   const [modalContent, setModalContent] = useState<string | null>(null);
 
+  // --- GOOGLE SIGN IN INITIALIZATION ---
+  useEffect(() => {
+    // Dynamic script injection for Google script safely inside Next.js client component
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+    script.onload = () => {
+      if (typeof window !== "undefined" && window.google) {
+        window.google.accounts.id.initialize({
+          client_id: "102621798557-slottudnqi91ro3amqckq1lpt78cpioh.apps.googleusercontent.com",
+          callback: handleGoogleCallback,
+        });
+
+        if (googleButtonRef.current) {
+          window.google.accounts.id.renderButton(googleButtonRef.current, {
+            theme: "outline",
+            size: "large",
+            text: "signup_with",
+            width: 300
+          });
+        }
+      }
+    };
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, [step]); // Re-render button condition check if returning to step 1
+
+  const handleGoogleCallback = async (response: any) => {
+    setLoading(true);
+    setError("");
+    const idToken = response.credential;
+
+    try {
+      // 1. Send token to backend to determine if user exists or is new
+      const res = await serverCallFuction("POST", "api/ecom/auth/google-check", { token: idToken });
+
+      if (res.status && res.isExistingUser && res.token) {
+        // SCENARIO A: Already registered -> Instantly log them in
+        Cookies.set("token", res.token, { expires: 1 });
+        window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+      } else if (res.status && !res.isExistingUser) {
+        // SCENARIO B: New user -> Pre-populate fields from Google info payload
+        setFormData((prev) => ({
+          ...prev,
+          name: res.googleData.name || "",
+          email: res.googleData.email || "",
+        }));
+        setIsGoogleUser(true);
+        // Direct the social user straight to missing step parameters (Phone and Distributor Code validation)
+        setStep(1);
+      } else {
+        setError(res.message || "Google verification failed");
+      }
+    } catch (err) {
+      console.error("Google verify error:", err);
+      setError("Failed to link via Google account");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const validateStep = () => {
     switch (step) {
       case 1:
@@ -52,12 +122,11 @@ export default function RegisterPage() {
       case 2:
         return formData.name.trim().length > 0;
       case 3:
-
+        if (isGoogleUser) return true; // Bypass traditional password checks for secure OAuth handles
         const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/;
-
         return (
           formData.email.includes("@") &&
-          strongPasswordRegex.test(formData.password) && // New Validation
+          formData.password && strongPasswordRegex.test(formData.password) &&
           formData.password === formData.confirmPassword
         );
       default:
@@ -65,19 +134,18 @@ export default function RegisterPage() {
     }
   };
 
-
   const fetchDistributor = async (referral: string) => {
-    setLoading(true); // Start loading during API check
+    setLoading(true);
     setError("");
     try {
       const res = await serverCallFuction("GET", `api/users/profile-by-referral?referral_code=${referral}`);
       if (res.status) {
         setLoading(false);
-        return true; // Valid code
+        return true;
       } else {
         setError(res.error || "Invalid Distributor Code");
         setLoading(false);
-        return false; // Invalid code
+        return false;
       }
     } catch (error) {
       setError("Error verifying distributor code");
@@ -87,34 +155,28 @@ export default function RegisterPage() {
   };
 
   const nextStep = async () => {
-
     if (!validateStep()) {
       setError("Please fill valid details for this step");
       return;
     }
 
-    // Logic for Step 2: Distributor Code Check
     if (step === 2) {
       const code = formData.distributor_code;
-
-      // If the field is NOT empty, we must validate it
       if (code !== null && code !== undefined && String(code).trim() !== "") {
         const isValid = await fetchDistributor(String(code));
-        if (!isValid) return; // Stop here if the code is invalid
+        if (!isValid) return;
+      }
+
+      // If user came via Google, they already have an email and don't need a manual password setup.
+      // We can skip step 3 forms entirely and trigger submission parameters.
+      if (isGoogleUser) {
+        handleGoogleRegistrationFinalize();
+        return;
       }
     }
 
-    // If we pass all checks, move to next step
     setStep(step + 1);
     setError("");
-
-
-    // if (validateStep()) {
-    //   setStep(step + 1);
-    //   setError("");
-    // } else {
-    //   setError("Please fill valid details for this step");
-    // }
   };
 
   const prevStep = () => {
@@ -122,13 +184,12 @@ export default function RegisterPage() {
     setError("");
   };
 
+  // Submission Flow for Traditional Email/Password User
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-
-    // Final Security Check
     const strongPasswordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{6,})/;
-    if (!strongPasswordRegex.test(formData.password)) {
+    if (!formData.password || !strongPasswordRegex.test(formData.password)) {
       setError("Password must have at least 6 characters, 1 number, and 1 special character.");
       return;
     }
@@ -164,8 +225,7 @@ export default function RegisterPage() {
         setError(res?.message);
       }
     } catch (err: unknown) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Registration Failed";
+      const errorMessage = err instanceof Error ? err.message : "Registration Failed";
       const apiError = err as any;
       setError(apiError?.response?.data?.message || errorMessage);
     } finally {
@@ -173,101 +233,103 @@ export default function RegisterPage() {
     }
   };
 
+  // Finalize Flow for New Google Authentication Profile
+  const handleGoogleRegistrationFinalize = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const submitData = {
+        phone: formData.phone,
+        name: formData.name,
+        email: formData.email,
+        distributor_code: formData.distributor_code || undefined,
+        isGoogleAuth: true // Tell backend to create profile without manual password criteria
+      };
+
+      const res = await serverCallFuction("POST", "api/ecom/auth/register", submitData);
+
+      if (res.status) {
+        setStep(4);
+        setSuccess(true);
+        if (res.token) {
+          // Store token and drop them into the app directly upon successful social alignment setup
+          Cookies.set("token", res.token, { expires: 1 });
+          setTimeout(() => {
+            window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}`;
+          }, 2000);
+        } else {
+          setTimeout(() => { router.push("/login"); }, 3000);
+        }
+      } else {
+        setError(res.message || "Registration Failed");
+      }
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Google Account Linkage Failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
-      {/* Hide Navbar/Footer effect via reduced padding for cleaner full-screen look */}
-      <div
-        className="bg-light min-vh-100 d-flex align-items-center py-5"
-        style={{ paddingTop: "20px", paddingBottom: "20px" }}
-      >
+      <div className="bg-light min-vh-100 d-flex align-items-center py-5" style={{ paddingTop: "20px", paddingBottom: "20px" }}>
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6 col-md-8">
               <div className="card shadow-lg border-0">
                 <div className="card-body p-md-5 p-3" style={{ backgroundColor: "#ffbede" }}>
                   <div className="text-center mb-5">
-                    <Image
-                      src="/assets/images/logo.png"
-                      alt="Feel Safe PVt. Ltd.."
-                      width={80}
-                      height={80}
-                      className="mb-3"
-                      priority
-                    />
-                    <h1 className="fw-bold mb-1" style={{ color: "#1C1C1C" }}>
-                      Join Feel Safe
-                    </h1>
+                    <Image src="/assets/images/logo.png" alt="Feel Safe PVt. Ltd.." width={80} height={80} className="mb-3" priority />
+                    <h1 className="fw-bold mb-1" style={{ color: "#1C1C1C" }}>Join Feel Safe</h1>
                     <p className="text-muted">
                       Step {step} of 3 - {steps[step - 1]}
                     </p>
-                    {/* Progress bar */}
                     <div className="progress mb-4" style={{ height: "8px" }}>
-                      <div
-                        className="progress-bar"
-                        style={{ width: `${progress}%` }}
-                      ></div>
+                      <div className="progress-bar" style={{ width: `${progress}%` }}></div>
                     </div>
                     {initialReferrerId && (
-                      <div className="alert alert-info">
-                        Prefilled Distributor Code: {initialReferrerId}
+                      <div className="alert alert-info">Prefilled Distributor Code: {initialReferrerId}</div>
+                    )}
+
+                    {/* --- GOOGLE SIGN IN BUTTON VIEW CONTAINER --- */}
+                    {step === 1 && !isGoogleUser && (
+                      <div className="d-flex flex-column align-items-center justify-content-center my-3 border-bottom pb-4">
+                        <div ref={googleButtonRef}></div>
+                        <div className="text-muted small mt-2">- OR REGISTER MANUALLY BELOW -</div>
                       </div>
                     )}
                   </div>
 
                   {success && (
-                    <div
-                      className="alert alert-success alert-dismissible fade show"
-                      role="alert"
-                    >
-                      Registration successful! Redirecting to login...
-                      <button
-                        type="button"
-                        className="btn-close"
-                        onClick={() => setSuccess(false)}
-                      ></button>
+                    <div className="alert alert-success alert-dismissible fade show" role="alert">
+                      Registration successful! Processing entry profile...
+                      <button type="button" className="btn-close" onClick={() => setSuccess(false)}></button>
                     </div>
                   )}
 
                   {error && (
-                    <div
-                      className="alert alert-danger alert-dismissible fade show"
-                      role="alert"
-                    >
+                    <div className="alert alert-danger alert-dismissible fade show" role="alert">
                       {error}
-                      <button
-                        type="button"
-                        className="btn-close"
-                        onClick={() => setError("")}
-                      ></button>
+                      <button type="button" className="btn-close" onClick={() => setError("")}></button>
                     </div>
                   )}
 
                   <form onSubmit={step === 3 ? handleSubmit : undefined}>
                     {step === 1 && (
                       <div className="mb-4">
-                        <label
-                          htmlFor="phone"
-                          className="form-label fw-semibold"
-                        >
-                          Phone Number
-                        </label>
+                        <label htmlFor="phone" className="form-label fw-semibold">Phone Number</label>
                         <input
                           type="tel"
                           className="form-control form-control-lg bg-light border-0 py-3"
                           id="phone"
                           value={formData.phone || ""}
                           onChange={(e) => {
-                            // 1. Remove all non-numeric characters immediately
                             const val = e.target.value.replace(/\D/g, "");
-
-                            // 2. Validate: Must start with 6-9 AND not exceed 10 digits
-                            // (val === "" allows the user to backspace/clear the input)
                             if (val === "" || (/^[6-9]/.test(val) && val.length <= 10)) {
                               setFormData({ ...formData, phone: val });
                             }
                           }}
                           placeholder="Enter 10-digit phone (e.g. 9876543210)"
-                          // maxLength is a good backup, but the logic above handles it too
                           maxLength={10}
                         />
                       </div>
@@ -275,162 +337,77 @@ export default function RegisterPage() {
                     {step === 2 && (
                       <>
                         <div className="mb-4">
-                          <label
-                            htmlFor="name"
-                            className="form-label fw-semibold"
-                          >
-                            Full Name
-                          </label>
+                          <label htmlFor="name" className="form-label fw-semibold">Full Name</label>
                           <input
                             type="text"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="name"
                             value={formData.name}
-                            onChange={(e) =>
-                              setFormData({ ...formData, name: e.target.value })
-                            }
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             placeholder="Enter your full name"
+                            disabled={isGoogleUser} // Locked if synchronized from Google Account profile
                           />
                         </div>
                         <div className="mb-4">
-                          <label
-                            htmlFor="distributor_code"
-                            className="form-label fw-semibold"
-                          >
-                            Distributor Code (Optional)
-                          </label>
-
+                          <label htmlFor="distributor_code" className="form-label fw-semibold">Distributor Code (Optional)</label>
                           <input
                             type="text"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="distributor_code"
                             value={formData.distributor_code || ""}
-                            onChange={(e) => {
-                              const val = e.target.value;
-                              setFormData({
-                                ...formData,
-                                // Keep as string for validation, or parseInt if your state requires number
-                                distributor_code: val,
-                              });
-                            }}
+                            onChange={(e) => setFormData({ ...formData, distributor_code: e.target.value })}
                             placeholder="Enter distributor code if you have one"
                           />
                           {loading && step === 2 && (
                             <small className="text-primary">Verifying code...</small>
                           )}
-                          {/* <input
-                            type="text"
-                            className="form-control form-control-lg bg-light border-0 py-3"
-                            id="distributor_code"
-                            value={formData.distributor_code || ""}
-                            onChange={(e) => {
-
-
-
-                              setFormData({
-                                ...formData,
-                                distributor_code:
-                                  parseInt(e.target.value) || null,
-                              })
-                            }}
-                            placeholder="Enter distributor code if you have one"
-                          /> */}
                         </div>
                       </>
                     )}
-                    {step === 3 && (
+                    {step === 3 && !isGoogleUser && (
                       <>
                         <div className="mb-4">
-                          <label
-                            htmlFor="email"
-                            className="form-label fw-semibold"
-                          >
-                            Email Address
-                          </label>
+                          <label htmlFor="email" className="form-label fw-semibold">Email Address</label>
                           <input
                             type="email"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="email"
                             value={formData.email}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                email: e.target.value,
-                              })
-                            }
+                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             placeholder="Enter your email"
                           />
                         </div>
                         <div className="mb-4">
-                          <label
-                            htmlFor="password"
-                            className="form-label fw-semibold"
-                          >
-                            Password
-                          </label>
-                          {/* <input
+                          <label htmlFor="password" className="form-label fw-semibold">Password</label>
+                          <input
                             type="password"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="password"
                             value={formData.password}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                password: e.target.value,
-                              })
-                            }
-                            placeholder="At least 6 characters"
-                          /> */}
-
-                          <input
-                            type="text"
-                            className="form-control form-control-lg bg-light border-0 py-3"
-                            id="password"
-                            value={formData.password}
-                            onChange={(e) =>
-                              setFormData({ ...formData, password: e.target.value })
-                            }
+                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                             placeholder="Password"
                           />
                           <div className="form-text mt-2">
-                            <small className={formData.password.length >= 6 ? "text-success" : "text-muted"}>
-                              ✓ Min 6 characters
-                            </small>
-                            <br />
-                            <small className={/[0-9]/.test(formData.password) ? "text-success" : "text-muted"}>
-                              ✓ At least 1 number
-                            </small>
-                            <br />
-                            <small className={/[!@#$%^&*]/.test(formData.password) ? "text-success" : "text-muted"}>
-                              ✓ At least 1 special character (@, #, $, etc.)
-                            </small>
+                            <small className={formData.password && formData.password.length >= 6 ? "text-success" : "text-muted"}>✓ Min 6 characters</small><br />
+                            <small className={formData.password && /[0-9]/.test(formData.password) ? "text-success" : "text-muted"}>✓ At least 1 number</small><br />
+                            <small className={formData.password && /[!@#$%^&*]/.test(formData.password) ? "text-success" : "text-muted"}>✓ At least 1 special character</small>
                           </div>
                         </div>
                         <div className="mb-4">
-                          <label
-                            htmlFor="confirmPassword"
-                            className="form-label fw-semibold"
-                          >
-                            Confirm Password
-                          </label>
+                          <label htmlFor="confirmPassword" className="form-label fw-semibold">Confirm Password</label>
                           <input
-                            type="text"
+                            type="password"
                             className="form-control form-control-lg bg-light border-0 py-3"
                             id="confirmPassword"
                             value={formData.confirmPassword}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                confirmPassword: e.target.value,
-                              })
-                            }
+                            onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                             placeholder="Confirm your password"
                           />
                         </div>
                       </>
                     )}
 
-                    {step === 3 && (
+                    {((step === 3 && !isGoogleUser) || (step === 2 && isGoogleUser)) && (
                       <div className="mb-3 form-check">
                         <input
                           type="checkbox"
@@ -442,59 +419,34 @@ export default function RegisterPage() {
                         />
                         <label className="form-check-label" htmlFor="terms">
                           I agree to the{" "}
-                          <span
-                            className="text-primary cursor-pointer text-decoration-underline"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setModalContent("Terms & Conditions")}
-                          >
-                            Terms
-                          </span>{" "}
-
-                          and{" "}
-                          <span
-                            className="text-primary cursor-pointer text-decoration-underline"
-                            style={{ cursor: 'pointer' }}
-                            onClick={() => setModalContent("Privacy Policy")}
-                          >
-                            Privacy Policy
-                          </span>{" "}
+                          <span className="text-primary text-decoration-underline" style={{ cursor: 'pointer' }} onClick={() => setModalContent("Terms & Conditions")}>Terms</span>
+                          {" "}and{" "}
+                          <span className="text-primary text-decoration-underline" style={{ cursor: 'pointer' }} onClick={() => setModalContent("Privacy Policy")}>Privacy Policy</span>
                         </label>
                       </div>
                     )}
                     <div className="d-flex gap-2 mt-4">
                       {step > 1 && (
-                        <button
-                          type="button"
-                          className="btn btn-outline-secondary flex-fill py-3"
-                          onClick={prevStep}
-                        >
-                          Previous
-                        </button>
+                        <button type="button" className="btn btn-outline-secondary flex-fill py-3" onClick={prevStep}>Previous</button>
                       )}
                       <button
-                        type={step === 3 ? "submit" : "button"}
+                        type={(step === 3 && !isGoogleUser) ? "submit" : "button"}
                         className="btn text-white fw-bold py-3 shadow flex-fill"
-                        style={{
-                          backgroundColor: "#00A9E0",
-                          border: "none",
-                          transition: "0.3s",
-                        }}
-                        onClick={step !== 3 ? nextStep : undefined}
+                        style={{ backgroundColor: "#00A9E0", border: "none", transition: "0.3s" }}
+                        onClick={((step === 3 && !isGoogleUser) || (step === 2 && isGoogleUser)) ? (isGoogleUser ? nextStep : undefined) : nextStep}
                         disabled={
                           loading ||
                           (step !== 3 && !validateStep()) ||
-                          (step === 3 && !isTermsChecked)
+                          (step === 3 && !isGoogleUser && !isTermsChecked) ||
+                          (step === 2 && isGoogleUser && !isTermsChecked)
                         }
                       >
                         {loading ? (
                           <>
-                            <span
-                              className="spinner-border spinner-border-sm me-2"
-                              role="status"
-                            ></span>
-                            Creating Account...
+                            <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                            Processing...
                           </>
-                        ) : step === 3 ? (
+                        ) : (step === 3 && !isGoogleUser) || (step === 2 && isGoogleUser) ? (
                           "Register Now"
                         ) : (
                           "Next"
@@ -505,51 +457,31 @@ export default function RegisterPage() {
 
                   <div className="text-center mt-4">
                     <p className="text-muted mb-0">Already have an account?</p>
-                    <Link
-                      href="/login"
-                      className="btn btn-primary px-4 py-2 fw-semibold"
-                    >
-                      Login Here
-                    </Link>
+                    <Link href="/login" className="btn btn-primary px-4 py-2 fw-semibold">Login Here</Link>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Simple Popup Modal */}
+            {/* Terms Modal rendering remains exactly the same */}
             {modalContent && (
               <div className="modal fade show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }} tabIndex={-1}>
                 <div className="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                   <div className="modal-content border-0 shadow">
                     <div className="modal-header bg-light">
                       <h5 className="modal-title fw-bold">{modalContent}</h5>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        onClick={() => setModalContent(null)}
-                      ></button>
+                      <button type="button" className="btn-close" onClick={() => setModalContent(null)}></button>
                     </div>
                     <div className="modal-body p-4">
-
-                      {modalContent === "Terms & Conditions" ?
-                        <TermsAndConditions /> : <PrivacyCompo />}
-
+                      {modalContent === "Terms & Conditions" ? <TermsAndConditions /> : <PrivacyCompo />}
                     </div>
                     <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        onClick={() => setModalContent(null)}
-                      >
-                        I Understand
-                      </button>
+                      <button type="button" className="btn-primary btn" onClick={() => setModalContent(null)}>I Understand</button>
                     </div>
                   </div>
                 </div>
               </div>
             )}
-
-
           </div>
         </div>
       </div>

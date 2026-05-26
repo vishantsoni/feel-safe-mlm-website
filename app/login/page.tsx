@@ -178,7 +178,7 @@ export default function LoginPage() {
                   <hr className="my-4" />
                   <div className="text-center">
                     <p className="text-muted mb-3">Or continue with</p>
-                    <GoogleSignIn />
+                    <GoogleSignIn setError={setError} />
                     {/* <button className="btn btn-outline-dark w-100 py-2 mb-2">
                       <i className="fab fa-google me-2"></i>Google
                     </button> */}
