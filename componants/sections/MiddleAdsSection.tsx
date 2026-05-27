@@ -6,11 +6,11 @@ const MiddleAdsSection = () => {
     <section className="py-5 section21" >
       <div className="container-fluid py-5">
         <div className="row">
-          <div className="col-md-6">
+          <div className="col-md-6 mr-auto">
             <div className="row">
-              <div className="col-md-12" data-aos="slide-up">
+              <div className="col-md-12 text-right" data-aos="slide-up">
                 <div
-                  className="banner-ad bg-pink mb-3"
+                  className="banner-ad bg-pink mb-3 me-auto"
                   style={{
                     // backgroundImage: "url('./assets/images/ad-image-3.png')",
                     backgroundRepeat: "no-repeat",
