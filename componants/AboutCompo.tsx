@@ -191,56 +191,58 @@ const AboutCompo = () => {
                         <p className="lead opacity-75 text-dark"><strong>Our Core Objective:</strong> At Feel Safe Pvt Ltd, our vision extends beyond business. Under the leadership of our founders, Smt. Sharbati & Shri Ram Niwas, we are committed to building a nation where every woman is healthy, safe, and financially independent. Our goal is to create a robust network of 100,000 Sakhis by 2030, transforming the landscape of menstrual hygiene in India.</p>
                     </div>
 
-                    <div className="row g-4 text-center" data-aos="zoom-in-right">
-                        {
-                            [
-                                {
-                                    step: "1",
-                                    title: "Economic Empowerment",
-                                    desc: "To provide a sustainable and scalable income platform for women with Zero Registration Fees, fostering true financial autonomy."
-                                },
-                                {
-                                    step: "2",
-                                    title: "Menstrual Health Revolution",
-                                    desc: "To ensure that every household has access to premium, BIS and ISO-certified hygiene products featuring advanced 7-layer protection."
-                                },
-                                {
-                                    step: "3",
-                                    title: "Skill & Leadership Development",
-                                    desc: "To equip our Sakhis with professional training in sales, digital marketing, and health advocacy, turning them into community leaders."
-                                },
-                                {
-                                    step: "4",
-                                    title: "Eradicating Social Stigma",
-                                    desc: "To dismantle the age-old taboos surrounding menstruation through continuous education and grassroots awareness campaigns."
-                                },
-                                {
-                                    step: "5",
-                                    title: "Quality & Trust",
-                                    desc: "To maintain uncompromising manufacturing standards as a GMP-certified entity, ensuring the highest medical-grade safety for our users."
-                                },
-                                {
-                                    step: "6",
-                                    title: "Atmanirbhar Bharat Initiative",
-                                    desc: "To contribute to the national mission of self-reliance by promoting local entrepreneurship and a women-led direct-selling model."
-                                },
-                                {
-                                    step: "7",
-                                    title: "Legal & Ethical Excellence",
-                                    desc: "To operate with 100% transparency as a registered Private Limited organization, upholding the interests of our partners and customers (CIN: U13996DL2026PTC465812)."
-                                },
-                                {
-                                    step: "8",
-                                    title: "Community Wellness & Health",
-                                    desc: "Bringing health awareness to every home and empowering women as pillars of wellness for their entire family."
-                                }
-                            ].map((item, i) => (
-                                <div className="col-md-3" key={i}>
+                    <div className="row g-4 text-center justify-content-center" data-aos="zoom-in-right">
+                        {[
+                            {
+                                step: "1",
+                                title: "Economic Empowerment",
+                                desc: "To provide a sustainable and scalable income platform for women with Zero Registration Fees, fostering true financial autonomy."
+                            },
+                            {
+                                step: "2",
+                                title: "Menstrual Health Revolution",
+                                desc: "To ensure that every household has access to premium, BIS and ISO-certified hygiene products featuring advanced 7-layer protection."
+                            },
+                            {
+                                step: "3",
+                                title: "Skill & Leadership Development",
+                                desc: "To equip our Sakhis with professional training in sales, digital marketing, and health advocacy, turning them into community leaders."
+                            },
+                            {
+                                step: "4",
+                                title: "Eradicating Social Stigma",
+                                desc: "To dismantle the age-old taboos surrounding menstruation through continuous education and grassroots awareness campaigns."
+                            },
+                            {
+                                step: "5",
+                                title: "Quality & Trust",
+                                desc: "To maintain uncompromising manufacturing standards as a GMP-certified entity, ensuring the highest medical-grade safety for our users."
+                            },
+                            {
+                                step: "6",
+                                title: "Atmanirbhar Bharat Initiative",
+                                desc: "To contribute to the national mission of self-reliance by promoting local entrepreneurship and a women-led direct-selling model."
+                            },
+                            {
+                                step: "7",
+                                title: "Legal & Ethical Excellence",
+                                desc: "To operate with 100% transparency as a registered Private Limited organization, upholding the interests of our partners and customers (CIN: U13996DL2026PTC465812)."
+                            },
+                            {
+                                step: "8",
+                                title: "Community Wellness & Health",
+                                desc: "Bringing health awareness to every home and empowering women as pillars of wellness for their entire family."
+                            }
+                        ].map((item, i) => (
+                            <div className="col-md-3 mb-3" key={i}>
+                                {/* The styling is moved to this inner wrapper div to allow proper spacing */}
+                                <div className="border rounded-4 p-3 h-100 d-flex flex-column align-items-center">
                                     <div className="h1 fw-bold text-dark mb-0" style={{ fontSize: '4rem' }}>{item.step}</div>
                                     <h5 className="fw-bold" style={{ color: "#E6519B" }}>{item.title}</h5>
-                                    <p className="small opacity-75 text-dark">{item.desc}</p>
+                                    <p className="small opacity-75 text-dark mb-0">{item.desc}</p>
                                 </div>
-                            ))}
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>

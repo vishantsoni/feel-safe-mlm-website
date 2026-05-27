@@ -106,7 +106,7 @@ const ContactCompo = () => {
 
     return (
         <>
-            <section className="py-5 text-center section-contactus row " >
+            <section className="w-100 py-5 text-center section-contactus  " >
                 <div className="col-8 mx-auto py-4" style={{ zIndex: 1 }}>
                     <h1 className="display-4 fw-bold" style={{ color: "#1C1C1C" }} data-aos="zoom-in-up">
                         Contact <span style={{ color: "#00A9E0" }}>Us</span>

@@ -506,11 +506,12 @@ const CheckoutPage = () => {
 
       if (res.success) {
         if (paymentMethod === "razorpay") {
-          handlepayment(res);
+          await handlepayment(res);
+        } else {
+          await refreshCart();
+          const orderId = res.data?.order_id || res.order_id;
+          router.push(`/orders/success/${orderId}`);
         }
-        await refreshCart();
-        const orderId = res.data?.order_id || res.order_id;
-        router.push(`/orders/success/${orderId}`);
       } else {
         setError(res?.message || "Order failed");
       }
@@ -936,11 +937,25 @@ const CheckoutPage = () => {
 
                     <div className="mb-3">
                       <label className="form-label small fw-bold text-muted text-uppercase">Full Name *</label>
-                      <input
+                      {/* <input
                         type="text"
                         className="form-control"
                         value={addressFormData.full_name}
                         onChange={(e) => setAddressFormData({ ...addressFormData, full_name: e.target.value })}
+                        placeholder="Full Name"
+                        required
+                      /> */}
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={addressFormData.full_name}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Allows only letters (both uppercase and lowercase) and spaces
+                          if (value === "" || /^[a-zA-Z\s]+$/.test(value)) {
+                            setAddressFormData({ ...addressFormData, full_name: value });
+                          }
+                        }}
                         placeholder="Full Name"
                         required
                       />

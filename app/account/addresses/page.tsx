@@ -331,14 +331,32 @@ export default function AddressesPage() {
                   <form onSubmit={(e) => handleSubmit(e, !!editingId)}>
                     <div className="mb-3">
                       <label className="form-label small fw-bold text-muted text-uppercase">Full Name</label>
-                      <input
+                      {/* <input
                         type="text"
                         placeholder="e.g. John Doe"
                         value={formData.full_name}
                         onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                         className="form-control form-control-lg rounded-3 border-light-subtle bg-light"
                         required
+                      /> */}
+
+
+                      <input
+                        type="text"
+                        className="form-control"
+                        value={formData.full_name}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Allows only letters (both uppercase and lowercase) and spaces
+                          if (value === "" || /^[a-zA-Z\s]+$/.test(value)) {
+                            setFormData({ ...formData, full_name: value });
+                          }
+                        }}
+                        placeholder="Full Name"
+                        required
                       />
+
+
                     </div>
 
                     <div className="mb-3">

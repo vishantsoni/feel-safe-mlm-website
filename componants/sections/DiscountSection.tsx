@@ -192,6 +192,16 @@ const DiscountSection = () => {
     }
   };
 
+
+  const getMaxDateFor21Years = () => {
+    const today = new Date();
+    const year = today.getFullYear() - 21; // Subtract 21 years
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const day = String(today.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`; // Returns format: YYYY-MM-DD
+  };
+
   return (
     <>
       <section className="py-5">
@@ -281,7 +291,7 @@ const DiscountSection = () => {
                             <div className="row g-3">
                               <div className="col-md-6">
                                 <label htmlFor="sample_name" className="form-label">Name*</label>
-                                <input
+                                {/* <input
                                   id="sample_name"
                                   name="name"
                                   type="text"
@@ -289,6 +299,20 @@ const DiscountSection = () => {
                                   placeholder="Name"
                                   value={form.name}
                                   onChange={onChange}
+                                /> */}
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  value={form.name}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allows only letters (both uppercase and lowercase) and spaces
+                                    if (value === "" || /^[a-zA-Z\s]+$/.test(value)) {
+                                      setForm({ ...form, name: value });
+                                    }
+                                  }}
+                                  placeholder="Full Name"
+                                  required
                                 />
                               </div>
 
@@ -350,6 +374,7 @@ const DiscountSection = () => {
                                   className="form-control form-control-lg"
                                   value={form.dob}
                                   onChange={onChange}
+                                  max={getMaxDateFor21Years()}
                                 />
                               </div>
 
@@ -416,8 +441,15 @@ const DiscountSection = () => {
                                   type="text"
                                   className="form-control form-control-lg"
                                   placeholder="Pincode"
+                                  maxLength={6} // Prevents typing more than 6 characters
                                   value={form.pincode}
-                                  onChange={onChange}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    // Allows only numbers and restricts length to 6 digits
+                                    if (value === "" || /^[0-9]{0,6}$/.test(value)) {
+                                      onChange(e); // Calls your existing global onChange handler
+                                    }
+                                  }}
                                 />
                               </div>
                             </div>

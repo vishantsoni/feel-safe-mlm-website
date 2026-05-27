@@ -889,6 +889,11 @@ footer {
   .text-sm {
     font-size: 12px !important;
   }
+
+  .chatbot-fab {
+    bottom: 85px !important;
+    right: 20px !important;
+  }
 }
 
 .text-sm {
