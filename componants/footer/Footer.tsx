@@ -128,7 +128,7 @@ const Footer = () => {
                 <h5 className="widget-title">Customer Service</h5>
                 <ul className="menu-list list-unstyled">
                   <li className="menu-item">
-                    <Link href="/#faq" className="nav-link">
+                    <Link href="/faq" className="nav-link">
                       FAQ
                     </Link>
                   </li>
