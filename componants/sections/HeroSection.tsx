@@ -116,7 +116,7 @@ const HeroSection = () => {
                             <div className="categories mb-3 pb-3">
                               100% natural
                             </div>
-                            <h3 className="banner-title">
+                            <h3 className="display-4">
                               Gentle Care for Your Most Sensitive Days.
                             </h3>
                             <p>
@@ -148,7 +148,7 @@ const HeroSection = () => {
                             <div className="categories mb-3 pb-3">
                               100% peaceful
                             </div>
-                            <h3 className="banner-title">
+                            <h3 className="display-4">
                               Worry-Free Days and Peaceful Nights.
                             </h3>
                             <p>

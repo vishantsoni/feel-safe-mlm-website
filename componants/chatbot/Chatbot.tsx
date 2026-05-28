@@ -124,7 +124,7 @@ const Chatbot = () => {
         if (kycLocked) {
             return "KYC is required to continue. Please complete KYC.";
         }
-        return "Try: Track order ORD-2024-1001, My address, or Wallet balance.";
+        return "Try: Track order ORD-2024-1001, My address, etc.";
     };
 
     return (
@@ -308,8 +308,7 @@ const Chatbot = () => {
                         {messages.length === 0 ? (
                             <div className="chatbot-msg assistant">
                                 <div className="chatbot-bubble">
-                                    Hi! I can help with order tracking, addresses, wishlist, wallet balance,
-                                    downline count, and latest commissions.
+                                    Hi! I can help with order tracking, addresses, etc.
                                 </div>
                             </div>
                         ) : (

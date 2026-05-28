@@ -229,10 +229,13 @@ const Footer = () => {
       <div id="footer-bottom">
         <div className="container-fluid">
           <div className="row">
-            <div className="col-md-6 copyright mx-auto text-center">
-              <p className="py-2 m-0">
-                © {new Date().getFullYear()} GTS - Ganesh Tech Solution. All rights reserved.
+            <div className="col-md-6 copyright mx-auto text-center d-flex align-items-center justify-content-center">
+              <p className="py-md-2 m-0 me-1  ">
+                © {new Date().getFullYear()} Feel Safe Pvt. Ltd. All rights reserved
+                <br className="d-md-none" />| Developed By : <Link href={"https://gtsol.in"} target="_blank" className="text-light">GTS - Ganesh Tech Solution</Link>
               </p>
+
+
             </div>
             {/* <div className="col-md-6 credit-link text-start text-md-end">
               <p>

@@ -53,7 +53,7 @@ const AboutCompo = () => {
                                 CIN: U13996DL2026PTC465812
                             </span>
 
-                            <div className="mb-4" data-aos="zoom-in-right">
+                            <div className="mb-4" data-aos="zoom-in-down">
                                 <LogoCompo notCenter={true} />
                                 <h2 className="fw-bold mt-3" style={{ color: "#1C1C1C" }}>
                                     India’s Trusted Women Hygiene & Empowerment Brand
@@ -62,13 +62,13 @@ const AboutCompo = () => {
 
                             {/* Introduction Text */}
                             <div className="col-lg-12 ps-0 mb-5">
-                                <p className="lead text-dark fw-bold mb-3" data-aos="zoom-in-right">
+                                <p className="lead text-dark fw-bold mb-3" data-aos="zoom-in-down">
                                     Welcome to Feel Safe Pvt. Ltd. — a women-focused health and hygiene company dedicated to providing affordable sanitary pads, hygiene products, and women empowerment opportunities across India.
                                 </p>
-                                <p className="text-muted mb-3" data-aos="zoom-in-right">
+                                <p className="text-muted mb-3" data-aos="zoom-in-down">
                                     Since 2026, Feel Safe has been working to spread menstrual hygiene awareness and help women become financially independent through our “Feel Safe Sakhi Yojna” direct selling network. Our mission is to improve women’s health, confidence, and self-reliance while promoting eco-friendly and safe hygiene solutions.
                                 </p>
-                                <p className="text-muted" data-aos="zoom-in-right">
+                                <p className="text-muted" data-aos="zoom-in-down">
                                     We believe every woman deserves access to quality sanitary napkins, hygiene education, and income opportunities. That’s why our products are designed for comfort, safety, and affordability — trusted by families, distributors, and customers nationwide.
                                 </p>
                             </div>

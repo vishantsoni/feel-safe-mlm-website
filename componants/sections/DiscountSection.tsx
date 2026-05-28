@@ -46,7 +46,7 @@ const DiscountSection = () => {
   const fetchStates = async () => {
     try {
       setStatesLoading(true);
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/static/states`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/static/states`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -71,7 +71,7 @@ const DiscountSection = () => {
   const fetchCities = async (stateId: number | string) => {
     try {
       setCitiesLoading(true);
-      const url = `${process.env.APP_URL || "http://localhost:5000"}/api/static/cities/${stateId}`;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/api/static/cities/${stateId}`;
       const res = await fetch(url, {
         method: "GET",
         headers: {

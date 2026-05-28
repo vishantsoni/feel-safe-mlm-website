@@ -12,14 +12,14 @@ const Navbar = () => {
   const { cart, removeItem } = useCart();
 
 
-  const [category, setCategory] = React.useState([]);
+  const [category, setCategory] = React.useState<Array<{ id: number | string; name: string }>>([]);
 
   const fetchCategories = async () => {
     try {
 
       const res = await serverCallFuction('GET', 'api/products/categories')
       if (res.status) {
-        setCategory(res.data);
+        setCategory(res.data as any);
       }
 
     } catch (error) {
@@ -182,10 +182,49 @@ const Navbar = () => {
               <strong>₹{cart?.total}</strong>
             </li>
           </ul>
-          <Link href="/cart" className="btn btn-secondary w-100 mb-2">
+          <Link
+            href="/cart"
+            className="btn btn-secondary w-100 mb-2"
+            onClick={() => {
+              const el = document.getElementById("offcanvasCart");
+              if (!el) return;
+
+              // Try Bootstrap offcanvas hide (if available)
+              const bootstrapOffcanvas = (window as unknown as {
+                bootstrap?: {
+                  Offcanvas?: { getInstance?: (el: Element) => { hide?: () => void } | null };
+                };
+              }).bootstrap?.Offcanvas;
+
+              bootstrapOffcanvas?.getInstance?.(el)?.hide?.();
+
+              // Fallback visual cleanup
+              el.classList.remove("show");
+              document.body.classList.remove("offcanvas-backdrop");
+              document.querySelector(".offcanvas-backdrop")?.remove();
+            }}
+          >
             View Cart
           </Link>
-          <Link href="/checkout" className="btn btn-primary w-100">
+          <Link
+            href="/checkout"
+            className="btn btn-primary w-100"
+            onClick={() => {
+              const el = document.getElementById("offcanvasCart");
+              if (!el) return;
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              const bootstrapObj: any = (window as any).bootstrap;
+              if (bootstrapObj?.Offcanvas) {
+                const instance = bootstrapObj.Offcanvas.getInstance(el) ?? new bootstrapObj.Offcanvas(el);
+                instance?.hide?.();
+              } else {
+                el.classList.remove("show");
+                document.body.classList.remove("offcanvas-backdrop");
+                const backdrop = document.querySelector(".offcanvas-backdrop");
+                backdrop?.remove();
+              }
+            }}
+          >
             Continue to checkout
           </Link>
         </div>

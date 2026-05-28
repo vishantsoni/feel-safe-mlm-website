@@ -17,8 +17,8 @@ export default function Home() {
       {/* <CategorySection /> */}
       {/* <NewlyArrivedSection /> */}
       <MissionSection />
-      <div className="w-100 mt-5 section21 d-lg-none" style={{ minHeight: "50vh", backgroundPosition: "right" }}>
-      </div>
+      {/* <div className="w-100 mt-5 section21 d-lg-none" style={{ minHeight: "50vh", backgroundPosition: "right" }}>
+      </div> */}
 
       <MiddleAdsSection />
       <TrendingProSection />
