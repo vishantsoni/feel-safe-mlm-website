@@ -6,6 +6,7 @@ import { useAuth } from '@/lib/contexts/AuthContext';
 import { ContactData } from '@/lib/types/Setting';
 import LogoCompo from './logo/LogoCompo';
 import TrustQuality from './TrustQuality';
+import Link from 'next/link';
 const AboutCompo = () => {
 
     const { setting, getSettingByKey } = useAuth();
@@ -234,7 +235,7 @@ const AboutCompo = () => {
                                 desc: "Bringing health awareness to every home and empowering women as pillars of wellness for their entire family."
                             }
                         ].map((item, i) => (
-                            <div className="col-md-3 mb-3" key={i}>
+                            <div className="col-lg-3 col-md-6  mb-3" key={i}>
                                 {/* The styling is moved to this inner wrapper div to allow proper spacing */}
                                 <div className="border rounded-4 p-3 h-100 d-flex flex-column align-items-center">
                                     <div className="h1 fw-bold text-dark mb-0" style={{ fontSize: '4rem' }}>{item.step}</div>
@@ -258,14 +259,14 @@ const AboutCompo = () => {
                                     <PhoneCall className="me-3" color="#00A9E0" />
                                     <div>
                                         <p className="mb-0 fw-bold">24x7 Support</p>
-                                        <p className="text-muted">+91 {contactData?.phone}</p>
+                                        <Link href={`tel:+91${contactData?.phone}`}><p className="text-muted">+91 {contactData?.phone}</p></Link>
                                     </div>
                                 </div>
                                 <div className="d-flex mb-4">
                                     <Mail className="me-3" color="#E6519B" />
                                     <div>
                                         <p className="mb-0 fw-bold">Email Us</p>
-                                        <p className="text-muted">{contactData?.email_1}</p>
+                                        <Link href={`mailto:${contactData?.email_1}`}><p className="text-muted">+91 {contactData?.email_1}</p></Link>
                                     </div>
                                 </div>
                                 <div className="d-flex">
@@ -325,7 +326,7 @@ const AboutCompo = () => {
             <section className="py-4 border-top" data-aos="zoom-in-right">
                 <div className="container text-center">
                     <p className="text-muted small mb-0">
-                        For legal concerns, contact our <strong>Grievance Cell</strong>: grievance@feelsafeco.in | +91 8796262996
+                        For legal concerns, contact our <strong>Grievance Cell</strong>: <Link href="mailto:grievance@feelsafeco.in">grievance@feelsafeco.in</Link> | <Link href={"+918796262996"}>+91 8796262996</Link>
                     </p>
                 </div>
             </section>

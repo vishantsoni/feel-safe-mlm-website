@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     template: "%s | Feel Safe Private Limited",
   },
   description:
-    "India's trusted manufacturer of Feel™ brand Sanitary Napkins, Baby Diapers, and Adult Care. BIS certified, rash-free hygiene solutions for women empowerment. Contact: +91 9013499385 · support@feelsafeco.in",
+    "Feel Safe Pvt Ltd lata hai BIS aur ISO certified, rash-free sanitary pads. 'Feel Safe Sakhi Yojana' se judkar mahilaein 'Atmanirbhar Bharat' ka hissa banein. Hamara prayas, aapki suraksha.",
   keywords: [
     "Feel Safe Private Limited",
     "Sanitary Napkin India",

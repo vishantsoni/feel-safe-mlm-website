@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from '@/lib/contexts/AuthContext'; // Adjusted to your context path
 import LogoCompo from './logo/LogoCompo';
+import Link from 'next/link';
 
 const RefundCompo = () => {
     const { getSettingByKey } = useAuth();
@@ -124,7 +125,9 @@ const RefundCompo = () => {
                                         </div>
                                         <div>
                                             <p className="small fw-bold mb-0">Helpline</p>
-                                            <p className="small text-muted mb-0">+91 {contact_data?.phone || "9013499385"}</p>
+                                            <Link href={`tel:${contact_data?.phone || "N/A"}`}>
+                                                <p className="small text-muted mb-0">+91 {contact_data?.phone || ""}</p>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -136,7 +139,9 @@ const RefundCompo = () => {
                                         </div>
                                         <div>
                                             <p className="small fw-bold mb-0">Email Support</p>
-                                            <p className="small text-muted mb-0">{contact_data?.email_1 || "support@feelsafeco.in"}</p>
+                                            <Link href={`mailto:${contact_data?.email_1 || "N/A"}`}>
+                                                <p className="small text-muted mb-0">{contact_data?.email_1 || "support@feelsafeco.in"}</p>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

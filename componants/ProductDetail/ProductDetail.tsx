@@ -165,7 +165,12 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
         setMessage(`Added ${quantity} item(s) to cart!`);
       } else {
         setMessageType("error");
-        setMessage(res.message || "Failed to add to cart. Please try again.");
+        console.log("error - ", res);
+
+        if (res.message === "No token, authorization denied") {
+          setMessage("Please sign in to your account to add items to your cart.");
+        }
+
       }
     } catch (error) {
       console.error("Add to cart failed:", error);

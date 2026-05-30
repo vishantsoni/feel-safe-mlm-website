@@ -108,13 +108,13 @@ const ContactCompo = () => {
         <>
             <section className="w-100 py-5 text-center section-contactus  " >
                 <div className="col-8 mx-auto py-4" style={{ zIndex: 1 }}>
-                    <h1 className="display-4 fw-bold" style={{ color: "#1C1C1C" }} data-aos="zoom-in-up">
+                    <h1 className="display-4 fw-bold" style={{ color: "#fff" }} data-aos="zoom-in-up">
                         Contact <span style={{ color: "#00A9E0" }}>Us</span>
                     </h1>
 
 
-                    <LogoCompo />
-                    <p className="lead text-muted mx-auto mb-0" style={{ maxWidth: "700px" }} data-aos="zoom-in-right">
+                    {/* <LogoCompo /> */}
+                    <p className="lead text-light mx-auto mb-0" style={{ maxWidth: "700px" }} data-aos="zoom-in-right">
                         We’re here to help you! If you have any questions about our products,
                         services, or Feel Safe Sakhi Yojna, feel free to reach out.
                     </p>
@@ -305,11 +305,11 @@ const ContactCompo = () => {
                                 <div className="row g-3">
                                     <div className="col-sm-6">
                                         <p className="small mb-0 fw-bold">Email</p>
-                                        <p className="small text-muted">Grievance@feelsafeco.in</p>
+                                        <p className="small text-muted"><Link href="mailto:grievance@feelsafeco.in">grievance@feelsafeco.in</Link></p>
                                     </div>
                                     <div className="col-sm-6">
                                         <p className="small mb-0 fw-bold">Mobile</p>
-                                        <p className="small text-muted">+91 8796262996</p>
+                                        <p className="small text-muted"><Link href="tel:+918796262996">+91 8796262996</Link></p>
                                     </div>
                                     <div className="col-12 border-top pt-2 mt-2">
                                         <p className="small text-muted mb-0">

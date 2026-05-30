@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { useAuth } from '@/lib/contexts/AuthContext';
 import LogoCompo from './logo/LogoCompo';
+import Link from 'next/link';
 
 const ReturnBuybackCompo = () => {
     const { getSettingByKey } = useAuth();
@@ -143,14 +144,18 @@ const ReturnBuybackCompo = () => {
                                             style={{ backgroundColor: "#e0f2fe", width: "40px", height: "40px" }}>
                                             <PhoneCall size={16} color="#00A9E0" />
                                         </div>
-                                        <p className="small text-muted mb-0">+91 {contact_data?.phone || "9013499385"}</p>
+                                        <Link href={`tel:${contact_data?.phone || "N/A"}`}>
+                                            <p className="small text-muted mb-0">+91 {contact_data?.phone || "9013499385"}</p>
+                                        </Link>
                                     </div>
                                     <div className="d-flex align-items-center">
                                         <div className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0 shadow-sm"
                                             style={{ backgroundColor: "#fdf2f8", width: "40px", height: "40px" }}>
                                             <Mail size={16} color="#E6519B" />
                                         </div>
-                                        <p className="small text-muted mb-0">{contact_data?.email_1 || "support@feelsafeco.in"}</p>
+                                        <Link href={`mailto:${contact_data?.email_1 || "N/A"}`}>
+                                            <p className="small text-muted mb-0">{contact_data?.email_1 || "support@feelsafeco.in"}</p>
+                                        </Link>
                                     </div>
                                 </div>
 

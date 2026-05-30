@@ -338,7 +338,18 @@ footer {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;
+  position: relative;
   /* background-attachment: fixed; */
+}
+
+.section21::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.589);
 }
 
 .section-contactus {
@@ -358,7 +369,7 @@ footer {
   width: 100%;
   height: 100%;
   z-index: 0;
-  background-color: rgb(255 255 255 / 55%);
+  background: rgba(0, 0, 0, 0.589);
 }
 /* page header */
 .page-header {
@@ -482,9 +493,26 @@ footer {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
+  border: 1px solid;
+  border-color: #e6f3fb;
 }
+
+.glass-card {
+  /* Semi-transparent white background using RGBA */
+  background-color: rgba(216, 216, 216, 0.075) !important;
+
+  /* The blur effect */
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px); /* Safari support */
+
+  /* Optional: Clean subtle border to enhance the glass look */
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 15px; /* Smooth corners */
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+}
+
 .banner-ad.blue {
-  background: #e6f3fb;
+  border-color: #e6f3fb;
 }
 .banner-ad .swiper-pagination {
   bottom: 40px;

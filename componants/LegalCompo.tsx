@@ -4,6 +4,7 @@ import React from "react";
 import { AlertTriangle, TrendingDown, Activity, Gavel, ShieldAlert, Globe, UserCheck, Lock, CloudOff, Mail, PhoneCall, MapPin } from "lucide-react";
 import { useAuth } from "@/lib/contexts/AuthContext";
 import LogoCompo from "./logo/LogoCompo";
+import Link from "next/link";
 
 
 const LegalDisclaimer = () => {
@@ -114,7 +115,9 @@ const LegalDisclaimer = () => {
                                         </div>
                                         <div>
                                             <p className="small fw-bold mb-0">Phone</p>
-                                            <p className="small text-muted mb-0">{contact_setting?.phone || "N/A"}</p>
+                                            <Link href={`tel:${contact_setting?.phone || "N/A"}`}>
+                                                <p className="small text-muted mb-0">{contact_setting?.phone || "N/A"}</p>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -126,7 +129,9 @@ const LegalDisclaimer = () => {
                                         </div>
                                         <div>
                                             <p className="small fw-bold mb-0">Email</p>
-                                            <p className="small text-muted mb-0">{contact_setting?.email_1 || "N/A"}</p>
+                                            <Link href={`mailto:${contact_setting?.email_1 || "N/A"}`}>
+                                                <p className="small text-muted mb-0">{contact_setting?.email_1 || "N/A"}</p>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>

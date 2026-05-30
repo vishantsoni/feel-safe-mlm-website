@@ -1,71 +1,92 @@
 "use client";
 
-import React from "react";
-import Script from "next/script";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 
+// Declare global Swiper for TypeScript safely
+declare global {
+  interface Window {
+    Swiper: any;
+    swiper: any;
+  }
+}
+
 const HeroSection = () => {
+  const swiperRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const initSwiper = () => {
+      const SwiperCtor = window.Swiper || window.swiper;
+      if (!SwiperCtor) return;
+
+      const el = document.querySelector(".main-swiper");
+      if (!el) return;
+
+      // Initialize Swiper and keep instance in ref
+      swiperRef.current = new SwiperCtor(".main-swiper", {
+        speed: 500,
+        loop: true,
+        autoplay: {
+          delay: 1500, // Slightly increased delay for improved mobile readability
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true, // Native desktop pause handling
+        },
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+      });
+
+      const root = containerRef.current;
+      if (!root) return;
+
+      // Mobile Touch Handling for Pause/Resume
+      const handleTouchStart = () => {
+        if (swiperRef.current?.autoplay) {
+          swiperRef.current.autoplay.stop();
+        }
+      };
+
+      const handleTouchEnd = () => {
+        if (swiperRef.current?.autoplay) {
+          swiperRef.current.autoplay.start();
+        }
+      };
+
+      // Attach mobile specific touch fallbacks
+      root.addEventListener("touchstart", handleTouchStart, { passive: true });
+      root.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+      // Return cleanup functions to prevent memory leaks on unmount
+      return () => {
+        root.removeEventListener("touchstart", handleTouchStart);
+        root.removeEventListener("touchend", handleTouchEnd);
+        if (swiperRef.current && typeof swiperRef.current.destroy === "function") {
+          swiperRef.current.destroy();
+        }
+      };
+    };
+
+    // Initialize checking window status
+    let cleanup: (() => void) | undefined;
+    if (document.readyState === "loading") {
+      const onLoad = () => { cleanup = initSwiper(); };
+      document.addEventListener("DOMContentLoaded", onLoad);
+      return () => {
+        document.removeEventListener("DOMContentLoaded", onLoad);
+        if (cleanup) cleanup();
+      };
+    } else {
+      cleanup = initSwiper();
+      return () => {
+        if (cleanup) cleanup();
+      };
+    }
+  }, []);
+
   return (
     <>
-      <Script id="hero-swiper-init" strategy="afterInteractive">
-        {`
-          (function () {
-            const init = () => {
-              const SwiperCtor = window.Swiper || window.swiper;
-              if (typeof SwiperCtor === 'undefined') {
-                console.log("swiper is not defined GTS");
-                return;
-              }
-              try {
-                if (window.__heroSwiperInitialized) return;
-
-                const el = document.querySelector('.main-swiper');
-                if (!el) return;
-
-                const swiper = new window.Swiper('.main-swiper', {
-                  speed: 500,
-                  loop: true,
-                  autoplay: {
-                    delay: 1000,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                  },
-                  pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                  },
-                  on: {
-                    init() {
-                      const root = document.querySelector('.main-swiper');
-                      if (!root) return;
-                      root.addEventListener('mouseenter', () => {
-                        try {
-                          swiper.autoplay.stop();
-                        } catch (e) {}
-                      });
-                      root.addEventListener('mouseleave', () => {
-                        try {
-                          swiper.autoplay.start();
-                        } catch (e) {}
-                      });
-                    },
-                  },
-                });
-
-                window.__heroSwiperInitialized = true;
-              } catch (e) {
-                // no-op
-              }
-            };
-
-            if (document.readyState === 'loading') {
-              document.addEventListener('DOMContentLoaded', init);
-            } else {
-              init();
-            }
-          })();
-        `}
-      </Script>
       <section
         className="py-3"
         style={{
@@ -79,7 +100,8 @@ const HeroSection = () => {
             <div className="col-md-12">
               <div className="banner-blocks">
                 <div className="banner-ad large bg-info block-1" data-aos="zoom-in-up">
-                  <div className="swiper main-swiper">
+                  {/* Attached wrapper ref here to securely control touch capture zone */}
+                  <div className="swiper main-swiper" ref={containerRef}>
                     <div className="swiper-wrapper">
                       <div className="swiper-slide">
                         <div className="row banner-content p-xl-5 p-4">
@@ -106,7 +128,6 @@ const HeroSection = () => {
                               alt="Feel Safe sanitary pads"
                             />
                           </div>
-
                         </div>
                       </div>
 
@@ -138,7 +159,6 @@ const HeroSection = () => {
                               alt="Feel Safe sanitary pads"
                             />
                           </div>
-
                         </div>
                       </div>
 
@@ -170,7 +190,6 @@ const HeroSection = () => {
                               alt="Feel Safe night pads"
                             />
                           </div>
-
                         </div>
                       </div>
                     </div>
