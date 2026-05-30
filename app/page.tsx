@@ -17,9 +17,9 @@ export default function Home() {
       <MissionSection />
       <MiddleAdsSection />
       <TrendingProSection />
-      {/* <div className="w-100 mt-5" data-aos="zoom-in-up">
+      <div className="w-100 mt-5" data-aos="fade-in">
         <img src={"/assets/banner/eco.png"} className="img-fluid w-100" />
-      </div> */}
+      </div>
       <BreadkingBarier />
       <TeamMemberSection />
       <FeelSafeFeatures />
