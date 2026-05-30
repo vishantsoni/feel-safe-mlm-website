@@ -4,20 +4,21 @@ import React from "react";
 const DownloadApkSection = () => {
   return (
     <>
-      <section className="py-md-5 py-3 my-md-5 my-3 d-flex align-items-end" style={{
+      <section className="py-md-5 py-3 my-md-5 my-3 d-flex align-items-end bg-overay playStoreSection" style={{
         backgroundImage: "url('/assets/banners-ai/mobile-banner-feel-safe.png')",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        minHeight: "100vh"
+        minHeight: "100vh",
+        position: 'relative'
       }}>
         <div className="container-fluid">
           <div
             className="row "
           >
-            <div className="col-md-6 mx-auto bg-warning py-4 px-5 rounded-5" data-aos="fade-in-up" >
-              <h2 className="mb-2" data-aos="zoom-in" data-aos-duration="1000">Shop & Earn with the Feel Safe App</h2>
-              <p data-aos="zoom-in-up">
+            <div className="col-md-6 mx-auto  py-4 px-5 rounded-5 " data-aos="fade-in-up" style={{ border: "1px solid white;" }}>
+              <h2 className="mb-2 text-light" data-aos="zoom-in" data-aos-duration="1000">Shop & Earn with the Feel Safe App</h2>
+              <p data-aos="zoom-in-up" className="text-light">
                 Carry your business in your pocket. Use the Feel Safe App to
                 order your monthly essentials in seconds and track your
                 10-level matrix earnings in real-time. Whether you’re a busy

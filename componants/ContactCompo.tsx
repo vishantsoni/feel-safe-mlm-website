@@ -114,7 +114,7 @@ const ContactCompo = () => {
 
 
                     {/* <LogoCompo /> */}
-                    <p className="lead text-light mx-auto mb-0" style={{ maxWidth: "700px" }} data-aos="zoom-in-right">
+                    <p className="lead text-light mx-auto mb-0" style={{ maxWidth: "700px" }} data-aos="zoom-in-up">
                         We’re here to help you! If you have any questions about our products,
                         services, or Feel Safe Sakhi Yojna, feel free to reach out.
                     </p>
@@ -128,7 +128,7 @@ const ContactCompo = () => {
                 <section className="container py-5">
                     <div className="row g-5">
                         {/* Left Column: Contact Details & Support */}
-                        <div className="col-lg-5" data-aos="zoom-in-right">
+                        <div className="col-lg-5" data-aos="zoom-in-up">
                             <div className="mb-5">
                                 <h3 className="fw-bold mb-4">Get in Touch</h3>
 
@@ -203,7 +203,7 @@ const ContactCompo = () => {
                         </div>
 
                         {/* Right Column: Form & Grievance */}
-                        <div className="col-lg-7" data-aos="zoom-in-left">
+                        <div className="col-lg-7" data-aos="zoom-in-down">
                             <div className="card border-0 shadow-lg p-4 p-md-5 rounded-4 mb-4">
                                 <h3 className="fw-bold mb-4">Send us a Message</h3>
                                 <form onSubmit={handleSubmit}>

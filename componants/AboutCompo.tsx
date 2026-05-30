@@ -42,7 +42,7 @@ const AboutCompo = () => {
 
 
     return (
-        <div className="container-fluid p-0 bg-white" style={{ fontFamily: "'Inter', sans-serif" }}>
+        <div className="container-fluid p-0 bg-white overflow-hidden" style={{ fontFamily: "'Inter', sans-serif" }}>
 
             {/* Hero Section */}
             <section className="py-5" style={{ background: "linear-gradient(135deg, #fdf2f8 0%, #e0f2fe 100%)" }}>
@@ -50,7 +50,7 @@ const AboutCompo = () => {
                     <div className="row align-items-center">
                         <div className="col-lg-12 mx-auto">
                             {/* Branding Badge */}
-                            <span className="badge px-3 py-2 mb-3 rounded-pill" style={{ backgroundColor: "#8DC63F", color: "#fff" }} data-aos="zoom-in-right">
+                            <span className="badge px-3 py-2 mb-3 rounded-pill" style={{ backgroundColor: "#8DC63F", color: "#fff" }} data-aos="zoom-in-up">
                                 CIN: U13996DL2026PTC465812
                             </span>
 
@@ -97,12 +97,12 @@ const AboutCompo = () => {
                             </div>
 
                             {/* Footer Tagline */}
-                            <p className="fw-bold mb-4" style={{ color: "#1C1C1C" }} data-aos="zoom-in-right">
+                            <p className="fw-bold mb-4" style={{ color: "#1C1C1C" }} data-aos="zoom-in-up">
                                 Feel Safe Pvt. Ltd. — Your Health, Your Confidence, Our Responsibility.
                             </p>
 
                             {/* Action Buttons */}
-                            <div className="d-flex gap-3 flex-column flex-md-row" data-aos="zoom-in-right">
+                            <div className="d-flex gap-3 flex-column flex-md-row" data-aos="zoom-in-up">
                                 <button className="btn btn-lg shadow-sm px-4 text-white border-0"
                                     style={{ backgroundColor: "#00A9E0" }}
                                     onClick={() => navigation.navigate("/become-distributor")}
@@ -150,7 +150,7 @@ const AboutCompo = () => {
             <section className="py-5 bg-light rounded">
                 <div className="container">
                     <div className="row align-items-center g-5">
-                        <div className="col-lg-6" data-aos="zoom-in-right">
+                        <div className="col-lg-6" data-aos="zoom-in-up">
                             <h6 className="text-uppercase fw-bold" style={{ color: "#8DC63F" }}>Flagship Brand</h6>
                             <h2 className="display-5 fw-bold mb-4">FEEL <span style={{ color: "#E6519B" }}>Sanitary Pads</span></h2>
                             <ul className="list-unstyled">
@@ -170,7 +170,7 @@ const AboutCompo = () => {
                                 We strictly adhere to <strong>Bureau of Indian Standards (BIS)</strong> guidelines.
                             </div>
                         </div>
-                        <div className="col-lg-6 text-center" data-aos="zoom-in-left">
+                        <div className="col-lg-6 text-center" data-aos="zoom-in-down">
                             <div className="p-5 d-inline-block shadow-lg bg-white overflow-hidden">
                                 {/* <Icon icon="solar:shield-user-bold" style={{ fontSize: "180px", color: "#00A9E0" }} /> */}
                                 <img src="/assets/images/certificate_logs.jpg" alt="Feel Sanitary Pad" className='img-fluid' />
@@ -183,16 +183,17 @@ const AboutCompo = () => {
             {/* Sakhi Yojna Section */}
             <section className="py-5 bg-gray mt-4 rounded" style={{ backgroundColor: "#ffb9dc" }}>
                 <div className="container py-4">
-                    <div className="text-center mb-2" data-aos="zoom-in-up">
-                        <h2 className="display-6 fw-bold">Vision 2030: <span style={{ color: "#E6519B" }}>1 Lakh Sakhi Mission</span></h2>
-                        <p className="lead opacity-75 text-dark">Empowering women as Entrepreneurs, Leaders, and Health Ambassadors.</p>
-                    </div>
+                    <div className="row">
+                        <div className=" col-12 text-center mb-2" data-aos="zoom-in-up">
+                            <h2 className="display-6 fw-bold">Vision 2030: <span style={{ color: "#E6519B" }}>1 Lakh Sakhi Mission</span></h2>
+                            <p className="lead opacity-75 text-dark">Empowering women as Entrepreneurs, Leaders, and Health Ambassadors.</p>
+                        </div>
 
-                    <div className="text-center mb-5" data-aos="zoom-in">
-                        <p className="lead opacity-75 text-dark"><strong>Our Core Objective:</strong> At Feel Safe Pvt Ltd, our vision extends beyond business. Under the leadership of our founders, Smt. Sharbati & Shri Ram Niwas, we are committed to building a nation where every woman is healthy, safe, and financially independent. Our goal is to create a robust network of 100,000 Sakhis by 2030, transforming the landscape of menstrual hygiene in India.</p>
+                        <div className=" col-12 text-center mb-5" data-aos="zoom-in">
+                            <p className="lead opacity-75 text-dark"><strong>Our Core Objective:</strong> At Feel Safe Pvt Ltd, our vision extends beyond business. Under the leadership of our founders, Smt. Sharbati & Shri Ram Niwas, we are committed to building a nation where every woman is healthy, safe, and financially independent. Our goal is to create a robust network of 100,000 Sakhis by 2030, transforming the landscape of menstrual hygiene in India.</p>
+                        </div>
                     </div>
-
-                    <div className="row g-4 text-center justify-content-center" data-aos="zoom-in-right">
+                    <div className="row g-4 text-center justify-content-center" data-aos="zoom-in">
                         {[
                             {
                                 step: "1",
@@ -235,9 +236,9 @@ const AboutCompo = () => {
                                 desc: "Bringing health awareness to every home and empowering women as pillars of wellness for their entire family."
                             }
                         ].map((item, i) => (
-                            <div className="col-lg-3 col-md-6  mb-3" key={i}>
+                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" key={i}>
                                 {/* The styling is moved to this inner wrapper div to allow proper spacing */}
-                                <div className="border rounded-4 p-3 h-100 d-flex flex-column align-items-center">
+                                <div className="border rounded-4 p-3 h-100  align-items-center">
                                     <div className="h1 fw-bold text-dark mb-0" style={{ fontSize: '4rem' }}>{item.step}</div>
                                     <h5 className="fw-bold" style={{ color: "#E6519B" }}>{item.title}</h5>
                                     <p className="small opacity-75 text-dark mb-0">{item.desc}</p>
@@ -252,7 +253,7 @@ const AboutCompo = () => {
             <section className="py-5"   >
                 <div className="container">
                     <div className="row g-5">
-                        <div className="col-lg-4" data-aos="zoom-in-right">
+                        <div className="col-lg-4" data-aos="zoom-in-up">
                             <div className="card border-0 shadow-sm p-4 h-100">
                                 <h4 className="fw-bold mb-4">Contact Info</h4>
                                 <div className="d-flex mb-4">
@@ -279,7 +280,7 @@ const AboutCompo = () => {
                             </div>
                         </div>
 
-                        <div className="col-lg-8" data-aos="zoom-in-left">
+                        <div className="col-lg-8" data-aos="zoom-in-down">
                             <div className="card border-0 shadow-sm p-4 h-100 bg-light">
                                 <h4 className="fw-bold mb-3 text-center">Legal Compliance & Ethical Standards</h4>
                                 <p className="text-center text-muted px-lg-5 mb-4">
@@ -323,7 +324,7 @@ const AboutCompo = () => {
 
 
             {/* Grievance Footer Section */}
-            <section className="py-4 border-top" data-aos="zoom-in-right">
+            <section className="py-4 border-top" data-aos="zoom-in-up">
                 <div className="container text-center">
                     <p className="text-muted small mb-0">
                         For legal concerns, contact our <strong>Grievance Cell</strong>: <Link href="mailto:grievance@feelsafeco.in">grievance@feelsafeco.in</Link> | <Link href={"+918796262996"}>+91 8796262996</Link>

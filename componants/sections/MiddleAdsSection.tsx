@@ -9,20 +9,19 @@ const MiddleAdsSection = () => {
           <div className="col-md-6 mr-auto">
             <div className="row">
               <div className="col-md-12 text-right" data-aos="slide-up">
+                {/* Added custom-hover-banner class */}
                 <div
-                  className="banner-ad mb-3 me-auto blue text-light"
+                  className="banner-ad mb-3 me-auto blue e-banner custom-hover-banner"
                   style={{
-                    // backgroundImage: "url('./assets/images/ad-image-3.png')",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "right bottom",
                   }}
-
                 >
                   <div className="banner-content p-md-5 p-4">
-                    <div className="categories fs-3 fw-bold text-light">
+                    <div className="categories fs-5 fw-bold">
                       Earn Passive Income
                     </div>
-                    <h3 className="banner-title text-light">Build Your 10-Level Empire</h3>
+                    <h3 className="banner-title">Build Your 10-Level Empire</h3>
                     <p>Start with just 2 partners. Our 1X2 forced matrix allows you to earn deep into 10 levels. Small steps, massive rewards.</p>
                     <Link href="/become-distributor" className="btn btn-dark text-uppercase">
                       Start Earning
@@ -31,19 +30,19 @@ const MiddleAdsSection = () => {
                 </div>
               </div>
               <div className="col-md-12" data-aos="slide-up">
+                {/* Added custom-hover-banner class and removed explicit text-light/text-primary overrides */}
                 <div
-                  className="banner-ad blue text-light"
+                  className="banner-ad blue e-banner custom-hover-banner"
                   style={{
-                    // backgroundImage: "url('./assets/images/ad-image-4.png')",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "right bottom",
                   }}
                 >
                   <div className="banner-content p-md-5 p-4">
-                    <div className="categories text-primary fs-3 fw-bold text-light">
+                    <div className="categories fs-5 fw-bold">
                       Daily Essentials, Daily Profits
                     </div>
-                    <h3 className="banner-title text-light">Feel Safe, Live Free</h3>
+                    <h3 className="banner-title">Feel Safe, Live Free</h3>
                     <p>Share premium hygiene products everyone needs. Turn every diaper and pad purchase in your network into monthly commissions.</p>
                     <Link href="https://panel.feelsafeco.in/signup" target="_blank" className="btn btn-dark text-uppercase">
                       Join Now
@@ -52,13 +51,9 @@ const MiddleAdsSection = () => {
                 </div>
               </div>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 };

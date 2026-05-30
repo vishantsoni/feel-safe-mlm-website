@@ -331,15 +331,80 @@ footer {
   background-repeat: no-repeat;
   background-position: center;
   background-attachment: fixed;
+  position: relative;
 }
 
+.empower-section::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.589);
+}
+
+.bg-overay::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: rgba(0, 0, 0, 0.589);
+}
+
+/* .section21 {
+  background-image: url("/assets/banners-ai/new/1000138284.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top center;
+  position: relative;
+  background-attachment: fixed;
+} */
 .section21 {
   background-image: url("/assets/banners-ai/new/1000138284.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: top center;
   position: relative;
-  /* background-attachment: fixed; */
+  background-attachment: fixed;
+}
+
+@media (max-width: 767px) {
+  .section21 {
+    background-image: url("/assets/banners-ai/1000138284.webp");
+    height: auto; /* Let content determine height cleanly */
+    min-height: 60vh;
+    /* background-size: contain; */
+    /* background-attachment: scroll; */
+    background-position: center center;
+  }
+
+  .playStoreSection {
+    background-position: center left !important;
+  }
+
+  /* .mobile-card-slider {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  
+  .mobile-card-slider .slider-card {
+    flex: 0 0 85% !important; 
+    max-width: 85% !important;
+    scroll-snap-align: start;
+    margin-right: 15px;
+    margin-bottom: 0 !important; 
+  }
+
+  
+  .mobile-card-slider::-webkit-scrollbar {
+    display: none;
+  } */
 }
 
 .section21::before {
@@ -922,6 +987,38 @@ footer {
     bottom: 85px !important;
     right: 20px !important;
   }
+
+  .e-banner h3 {
+    font-size: 24px !important;
+  }
+
+  .hover-text-dark:hover {
+    color: #212529 !important; /* Bootstrap $dark color variable */
+  }
+}
+
+/* 1. Default State (White Content) */
+.custom-hover-banner {
+  /* background-color: #ffbede;  */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-hover-banner .categories,
+.custom-hover-banner .banner-title,
+.custom-hover-banner p {
+  color: #ffffff !important;
+  transition: color 0.3s ease;
+}
+
+/* 2. Hover State (Pink Background & Black Content) */
+.custom-hover-banner:hover {
+  background-color: #ffbede !important; /* Changes background to Pink */
+}
+
+.custom-hover-banner:hover .categories,
+.custom-hover-banner:hover .banner-title,
+.custom-hover-banner:hover p {
+  color: #000000 !important; /* Turns all text black on hover */
 }
 
 .text-sm {
