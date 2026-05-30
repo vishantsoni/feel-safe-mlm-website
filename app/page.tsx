@@ -14,17 +14,12 @@ export default function Home() {
   return (
     <>
       <HeroSection />
-      {/* <CategorySection /> */}
-      {/* <NewlyArrivedSection /> */}
       <MissionSection />
-      {/* <div className="w-100 mt-5 section21 d-lg-none" style={{ minHeight: "50vh", backgroundPosition: "right" }}>
-      </div> */}
-
       <MiddleAdsSection />
       <TrendingProSection />
-      <div className="w-100 mt-5" data-aos="zoom-in-up">
+      {/* <div className="w-100 mt-5" data-aos="zoom-in-up">
         <img src={"/assets/banner/eco.png"} className="img-fluid w-100" />
-      </div>
+      </div> */}
       <BreadkingBarier />
       <TeamMemberSection />
       <FeelSafeFeatures />

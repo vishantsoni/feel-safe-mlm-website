@@ -134,6 +134,13 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+        {/* Avoid initial layout/viewport white gap on some mobile browsers */}
+        <style>{`
+          html { width: 100%; }
+          body { margin: 0; padding: 0; }
+        `}</style>
+
         <link
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
           rel="stylesheet"

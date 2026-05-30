@@ -58,7 +58,7 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
                         }
 
                         return (
-                          <div className="col" key={index} data-aos="zoom-in-up">
+                          <div className="col" key={index}>
                             <div className="product-item">
                               <span className="badge bg-success position-absolute m-3" style={{ zIndex: 2 }}>
                                 {item.discount}

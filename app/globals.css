@@ -27,6 +27,19 @@ body {
 a {
   text-decoration: none !important;
 }
+
+/* Prevent mobile initial white gap due to body/main height/scroll quirks */
+html,
+body {
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 .about-section .rounded-circle {
   width: 50px;
   height: 50px;
