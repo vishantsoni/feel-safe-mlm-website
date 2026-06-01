@@ -179,20 +179,55 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
     }
   };
 
-  const handleBuyNow = () => {
+  const handleBuyNow = async () => {
     if (isOutOfStock) {
-      alert("This variant is out of stock!");
+      setMessageType("error");
+      setMessage("This variant is out of stock!");
       return;
     }
-    const variantId = (currentVariant?.id || "").toString();
-    const params = new URLSearchParams({
-      productId: product.id.toString(),
-      variantId,
-      slug: product.slug,
-      qty: quantity.toString(),
-    });
-    router.push(`/checkout?${params.toString()}`);
-  };
+
+    try {
+      const res = await addItemTyped(
+        product.id,
+        currentVariant ? currentVariant.id.toString() : null,
+        quantity,
+        taxablePrice,
+        dId
+      );
+      if (res.status) {
+        router.push(`/checkout`);
+        // setMessageType("success");
+        // setMessage(`Added ${quantity} item(s) to cart!`);
+      } else {
+        setMessageType("error");
+        console.log("error - ", res);
+
+        if (res.message === "No token, authorization denied") {
+          setMessage("Please sign in to your account to add items to your cart.");
+        }
+
+      }
+    } catch (error) {
+      console.error("Add to cart failed:", error);
+      setMessageType("error");
+      setMessage("Failed to add to cart. Please try again.");
+    }
+  }
+
+  // const handleBuyNow = () => {
+  //   if (isOutOfStock) {
+  //     alert("This variant is out of stock!");
+  //     return;
+  //   }
+  //   const variantId = (currentVariant?.id || "").toString();
+  //   const params = new URLSearchParams({
+  //     productId: product.id.toString(),
+  //     variantId,
+  //     slug: product.slug,
+  //     qty: quantity.toString(),
+  //   });
+  //   router.push(`/checkout?${params.toString()}`);
+  // };
 
   // console.log("selected image ", selectedImage);
 

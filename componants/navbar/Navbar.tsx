@@ -294,7 +294,10 @@ const Navbar = () => {
                         <li><button onClick={logout} className="dropdown-item">Logout</button></li>
                       </>
                     ) : (
-                      <li><Link href="/login" className="dropdown-item">Login</Link></li>
+                      <>
+                        <li><Link href="/login" className="dropdown-item">User Login</Link></li>
+                        <li><Link href="https://panel.feelsafeco.in/signin" target="_blank" className="dropdown-item">Distributo Login</Link></li>
+                      </>
                     )}
                   </ul>
                 </li>

@@ -123,7 +123,9 @@ const CheckoutPage = () => {
   const tax_amount = isCartMode
     ? Number(cart!.total_tax)
     : singleItem
-      ? singleItem.price * singleItem.quantity
+      ? singleItem.tax_data
+        ? (singleItem.price * parseFloat(singleItem.tax_data.percentage)) / 100
+        : 0
       : 0;
 
   const { setting, getSettingByKey } = useAuth();
@@ -154,7 +156,8 @@ const CheckoutPage = () => {
         try {
           const res = await serverCallFuction(
             "GET",
-            `api/products/product-detail/${slug}`,
+            `api/products/product-detail/${slug}${dId ? `?distributor_id=${dId}` : ""}`,
+
           );
           const data = res as any;
           if (data?.success && data.data) {
@@ -186,7 +189,7 @@ const CheckoutPage = () => {
       };
       fetchItem();
     }
-  }, [isCartMode, productId, variantId, qty, slug]);
+  }, [isCartMode, productId, variantId, qty, slug, dId]);
 
   // Fetch addresses
   useEffect(() => {

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import React, { useState } from 'react'
 import GoogleSignIn from './GoogleSignIn';
 import Image from 'next/image';
+import { Eye, EyeClosed } from 'lucide-react';
 
 const LoginStep = () => {
     const [email, setEmail] = useState("");
@@ -39,6 +40,7 @@ const LoginStep = () => {
             setLoading(false);
         }
     };
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <>
             {/* Hide Navbar/Footer effect via reduced padding for cleaner full-screen look */}
@@ -104,7 +106,7 @@ const LoginStep = () => {
                                             >
                                                 Password
                                             </label>
-                                            <input
+                                            {/* <input
                                                 type="password"
                                                 className="form-control form-control-lg bg-light border-0 py-3"
                                                 id="password"
@@ -112,7 +114,33 @@ const LoginStep = () => {
                                                 onChange={(e) => setPassword(e.target.value)}
                                                 placeholder="Enter your password"
                                                 required
-                                            />
+                                            /> */}
+                                            <div className="position-relative w-100">
+                                                <input
+                                                    type={showPassword ? "text" : "password"}
+                                                    className="form-control form-control-lg bg-light border-0 py-3 pe-5" // pe-5 added taaki text icon ke peeche na chupe
+                                                    id="password"
+                                                    value={password}
+                                                    onChange={(e) => setPassword(e.target.value)}
+                                                    placeholder="Enter your password"
+                                                    required
+                                                />
+                                                <button
+                                                    type="button"
+                                                    className="btn position-absolute top-50 end-0 translate-middle-y border-0 bg-transparent text-secondary me-2"
+                                                    onClick={() => setShowPassword(!showPassword)}
+                                                    style={{ zIndex: 10, cursor: 'pointer' }}
+                                                >
+                                                    {showPassword ? (
+                                                        /* Eye Slash Icon (Hide) */
+                                                        <Eye />
+
+                                                    ) : (
+                                                        /* Eye Icon (Show) */
+                                                        <EyeClosed />
+                                                    )}
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className="d-flex justify-content-between align-items-center mb-4">
                                             <div className="form-check d-flex align-items-center gap-2 justify-content-center">

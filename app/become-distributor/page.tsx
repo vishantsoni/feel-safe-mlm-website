@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 
 const externalSignupUrl = "https://panel.feelsafeco.in/signup";
+const externalLoginUrl = "https://panel.feelsafeco.in/signin";
 
 const faqs = [
     {
@@ -151,15 +152,24 @@ export default function BecomeDistributorPage() {
                                         ))}
                                     </ul>
 
-                                    <div className="mt-4">
-                                        <a
+                                    <div className="mt-4 d-flex gap-3">
+                                        <Link
                                             href={externalSignupUrl}
                                             target="_blank"
                                             rel="noreferrer"
                                             className="btn btn-primary w-100"
                                         >
                                             Continue to Signup
-                                        </a>
+                                        </Link>
+
+                                        <Link
+                                            href={externalLoginUrl}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="btn btn-secondary w-100"
+                                        >
+                                            Distributo Login
+                                        </Link>
                                     </div>
 
                                     {/* <div className="mt-2 text-center">
@@ -319,14 +329,23 @@ export default function BecomeDistributorPage() {
                     </div>
 
                     <div className="mt-5 d-flex gap-3 flex-wrap justify-content-center justify-content-lg-start">
-                        <a
+                        <Link
                             href={externalSignupUrl}
                             target="_blank"
                             rel="noreferrer"
                             className="btn btn-primary"
                         >
                             Apply as Distributor
-                        </a>
+                        </Link>
+                        <Link
+                            href={externalLoginUrl}
+                            target="_blank"
+                            title="If already registered? Please login"
+                            rel="noreferrer"
+                            className="btn btn-secondary"
+                        >
+                            Distributor Login
+                        </Link>
                         <Link href="/contact-us" className="btn btn-outline-primary">
                             Ask for Help
                         </Link>
@@ -414,14 +433,14 @@ export default function BecomeDistributorPage() {
                             </p>
                         </div>
                         <div className="col-lg-4 text-lg-end">
-                            <a
+                            <Link
                                 href={externalSignupUrl}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="btn btn-primary btn-lg"
                             >
                                 Apply via Signup Panel
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

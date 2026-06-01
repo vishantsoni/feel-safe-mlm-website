@@ -17,12 +17,14 @@ import {
 interface Order {
   order_id: string;
   created_at: string;
+  updated_at?: string;
   order_status: string;
   items_count: number;
   total_amount: number;
   payment_status?: string;
   items?: unknown[];
 }
+
 
 
 interface OrdersResponse {
@@ -109,7 +111,23 @@ export default function OrdersPage() {
     }
   };
 
+  const isWithinReturnWindow = (updatedAt?: string, createdAt?: string) => {
+    const ts = updatedAt || createdAt;
+    if (!ts) return false;
+
+    const updatedDate = new Date(ts);
+    const now = new Date();
+
+    if (Number.isNaN(updatedDate.getTime())) return false;
+
+    const diffMs = now.getTime() - updatedDate.getTime();
+    const diffDays = diffMs / (1000 * 60 * 60 * 24);
+
+    return diffDays <= 3;
+  };
+
   const getStatusBadge = (status: string) => {
+
     const s = status?.toLowerCase();
     let bgClass = "bg-secondary";
     if (s === "delivered") bgClass = "bg-success";
@@ -261,45 +279,66 @@ export default function OrdersPage() {
                           <Eye size={16} />
                         </Link>
                         <Link
-                          href={`/orders/success/${order.order_id}`}
+                          href={`#`}
+                          onClick={async () => {
+                            try {
+                              const res = await serverCallFuction(
+                                "POST",
+                                `api/invoice/invoice-generate`,
+                                { orderId: order.order_id },
+                              );
+                              const resAny = res as { success?: boolean; url?: string; message?: string };
+                              if (resAny?.success && resAny.url) {
+                                window.open(resAny.url, "_blank");
+                              } else {
+                                window.alert(resAny?.message || "Failed to fetch invoice.");
+                              }
+                            } catch (e) {
+                              console.error(e);
+                              window.alert("Failed to fetch invoice.");
+                            }
+                          }}
                           className="btn btn-primary btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary me-2"
                           title="Invoice"
                         >
                           <File size={16} />
                         </Link>
 
-                        {order.order_status === "delivered" && (
-                          <span
-                            role="button"
-                            tabIndex={0}
-                            onClick={() => handleReturnRequest(order.id)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault();
-                                handleReturnRequest(order.id ?? "");
-                              }
-                            }}
-                            className={`btn btn-danger btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-danger ${inFlightReturnRequestOrderIds.has(order.order_id)
-                              ? "disabled"
-                              : ""
-                              }`}
-                            title="Return Order"
-                            style={{
-                              pointerEvents: inFlightReturnRequestOrderIds.has(
-                                order.order_id,
-                              )
-                                ? "none"
-                                : "auto",
-                              opacity: inFlightReturnRequestOrderIds.has(
-                                order.order_id,
-                              )
-                                ? 0.6
-                                : 1,
-                            }}
-                          >
-                            <Undo2Icon size={16} />
-                          </span>
-                        )}
+                        {order.order_status === "delivered" &&
+                          isWithinReturnWindow(order.updated_at, order.created_at) && (
+
+                            <span
+                              role="button"
+                              tabIndex={0}
+                              onClick={() => handleReturnRequest(order.order_id)}
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  handleReturnRequest(order.order_id ?? "");
+                                }
+                              }}
+
+                              className={`btn btn-danger btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-danger ${inFlightReturnRequestOrderIds.has(order.order_id)
+                                ? "disabled"
+                                : ""
+                                }`}
+                              title="Return Order"
+                              style={{
+                                pointerEvents: inFlightReturnRequestOrderIds.has(
+                                  order.order_id,
+                                )
+                                  ? "none"
+                                  : "auto",
+                                opacity: inFlightReturnRequestOrderIds.has(
+                                  order.order_id,
+                                )
+                                  ? 0.6
+                                  : 1,
+                              }}
+                            >
+                              <Undo2Icon size={16} />
+                            </span>
+                          )}
                       </td>
                     </tr>
                   ))}

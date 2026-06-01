@@ -18,11 +18,13 @@ const Footer = () => {
           <div className="row">
             <div className="col-lg-3 col-md-6 col-sm-6">
               <div className="footer-menu  text-center">
-                <img
-                  src="/assets/images/logo-footer.png"
-                  alt="logo"
-                  className="w-50 mx-auto"
-                />
+                <Link href={"/"} className="navbar-brand d-flex align-items-center justify-content-center mb-3">
+                  <img
+                    src="/assets/images/logo-footer.png"
+                    alt="logo"
+                    className="w-50 mx-auto"
+                  />
+                </Link>
                 <p className="p-0 m-0 card-text">
                   Since 2026, Feel Safe Pvt. Ltd.
                   has been empowering women through affordable hygiene products, menstrual health awareness, and women-led direct selling opportunities. Our mission is to promote health, self-reliance, and eco-friendly living across India.
@@ -100,16 +102,27 @@ const Footer = () => {
                 <h5 className="widget-title">Useful Links</h5>
                 <ul className="menu-list list-unstyled">
                   <li className="menu-item">
+                    <Link href={"/"} className="nav-link">
+                      Home
+                    </Link>
+                  </li>
+                  <li className="menu-item">
                     <Link href={"/about-us"} className="nav-link">
                       About us
                     </Link>
                   </li>
 
                   <li className="menu-item">
-                    <Link href="https://panel.feelsafeco.in/signup" target="_blank" className="nav-link">
+                    <Link href="https://panel.feelsafeco.in/signup" target="_blank" title="Distributor Signup" className="nav-link">
                       Become a Distributor
                     </Link>
                   </li>
+                  <li className="menu-item">
+                    <Link href="https://panel.feelsafeco.in" target="_blank" title="Distributor Login" className="nav-link">
+                      Distributor Login
+                    </Link>
+                  </li>
+
                   <li className="menu-item">
                     <Link href="careers" className="nav-link">
                       Careers

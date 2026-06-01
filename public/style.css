@@ -371,14 +371,40 @@ footer {
   background-attachment: fixed;
 }
 
+.playStoreSection {
+  background-image: url(/assets/banners-ai/mobile-banner-feel-safe.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+.downloadCardApk {
+  cursor: pointer;
+}
+
+.downloadCardApk:hover {
+  background-color: #fff6e21f !important;
+  backdrop-filter: blur(10px);
+}
+
 @media (max-width: 767px) {
   .section21 {
     background-image: url("/assets/banners-ai/1000138284.webp");
     height: auto; /* Let content determine height cleanly */
     min-height: 60vh;
-    /* background-size: contain; */
+    background-size: contain;
     /* background-attachment: scroll; */
     background-position: center center;
+  }
+  .empower-section,
+  .playStoreSection {
+    background-size: contain;
+  }
+
+  .playStoreSection {
+    background-attachment: fixed;
   }
 
   .playStoreSection {
@@ -405,6 +431,28 @@ footer {
   .mobile-card-slider::-webkit-scrollbar {
     display: none;
   } */
+}
+
+/* Medium devices (tablets, 768px to 991px) */
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+  .section21 {
+    background-image: url("/assets/banners-ai/1000138284.webp");
+    height: auto; /* Let content determine height cleanly */
+    min-height: auto;
+    background-size: contain;
+    /* background-attachment: scroll; */
+    background-position: center center;
+  }
+
+  .empower-section,
+  .playStoreSection {
+    background-size: contain;
+  }
+
+  .page-header {
+    background-size: contain !important;
+    height: 35vh !important;
+  }
 }
 
 .section21::before {
