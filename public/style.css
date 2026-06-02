@@ -448,6 +448,9 @@ footer {
   .playStoreSection {
     background-size: contain;
   }
+  .playStoreSection {
+    background-attachment: fixed !important;
+  }
 
   .page-header {
     background-size: contain !important;
