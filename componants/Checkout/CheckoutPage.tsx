@@ -554,6 +554,7 @@ const CheckoutPage = () => {
         amount: 100,
         currency: "",
         receipt: `receipt_${orderId}_${Date.now()}`,
+        order_id: orderId
       });
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_Sfdk41BOifNjN9",
@@ -600,6 +601,7 @@ const CheckoutPage = () => {
         amount: Math.round(amt),
         currency: "INR",
         receipt: cartItems.receipt,
+        order_id: cartItems.order_id
       });
 
       if (!res.status) throw new Error(res.message || "Order creation failed");
