@@ -6,6 +6,7 @@ import React, { useState } from 'react'
 import GoogleSignIn from './GoogleSignIn';
 import Image from 'next/image';
 import { Eye, EyeClosed } from 'lucide-react';
+import Cookies from "js-cookie"; // Ensure Cookies is importe
 
 const LoginStep = () => {
     const [email, setEmail] = useState("");

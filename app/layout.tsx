@@ -133,7 +133,8 @@ export default function RootLayout({
         {/* Next.js manages viewport automatically via Metadata, but manual tags here are fine for clarity */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+        {/* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" /> */}
+        <link rel="stylesheet" href="/assets/css/swiper-bundle.css" />
 
         {/* Avoid initial layout/viewport white gap on some mobile browsers */}
         <style>{`
@@ -141,11 +142,13 @@ export default function RootLayout({
           body { margin: 0; padding: 0; }
         `}</style>
 
+        {/* https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css */}
         <link
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+          // href="/assets/css/bootstrap.min.css"
+          href="/assets/css/bootstrap.css"
           rel="stylesheet"
-          integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-          crossOrigin="anonymous"
+        // integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+        // crossOrigin="anonymous"
         />
         <link rel="stylesheet" type="text/css" href="/assets/css/vendor.css" />
         <link rel="stylesheet" type="text/css" href="/style.css" />
@@ -184,10 +187,11 @@ export default function RootLayout({
         <Script src="./assets/js/jquery-1.11.0.min.js" strategy="lazyOnload" />
         <Script src="./assets/js/swiper.js" strategy="beforeInteractive" />
         {/* <Script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js" strategy="lazyOnload" /> */}
+        {/* https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js */}
         <Script
-          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-          crossOrigin="anonymous"
+          src="/assets/js/bootstrap.bundle.js"
+          // integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+          // crossOrigin="anonymous"
           strategy="lazyOnload"
         />
         <Script src="./assets/js/plugins.js" strategy="lazyOnload" />
