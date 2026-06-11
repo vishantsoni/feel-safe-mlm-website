@@ -130,10 +130,24 @@ const CheckoutPage = () => {
 
   const { setting, getSettingByKey } = useAuth();
 
-  const shipping = useMemo(() => {
-    const res = getSettingByKey("shipping_charge");
-    return res?.charge || 0;
+  // FIX: shipping must be a number, not a Promise (no async useMemo)
+  const [shippingChargeFromSetting, setShippingChargeFromSetting] = useState<number>(0);
+
+  useEffect(() => {
+    const loadShipping = async () => {
+      try {
+        const res = await getSettingByKey("shipping_charge");
+        const charge = parseFloat(res?.charge);
+        setShippingChargeFromSetting(Number.isFinite(charge) ? charge : 0);
+      } catch (e) {
+        console.error("Failed to load shipping_charge setting:", e);
+        setShippingChargeFromSetting(0);
+      }
+    };
+
+    loadShipping();
   }, [setting, getSettingByKey]);
+
 
   useEffect(() => {
     const loadCart = async () => {
@@ -528,11 +542,18 @@ const CheckoutPage = () => {
     }
   };
 
+  console.log("sub total - ", subTotal, totalAmount, shippingChargeFromSetting);
+
+  const computedShipping = subTotal <= 260 ? shippingChargeFromSetting : 0;
+
   const finalTotal = useMemo(() => {
-    const base = totalAmount + shipping;
+    console.log("total = shipping = ", totalAmount, computedShipping);
+
+    const base = totalAmount + computedShipping;
     const discounted = base - couponDiscountAmount;
     return discounted > 0 ? discounted : 0;
-  }, [totalAmount, shipping, couponDiscountAmount]);
+  }, [totalAmount, computedShipping, couponDiscountAmount]);
+
 
   const handlepayment = async (orderRes) => {
     const orderId = orderRes.data?.order_id || orderRes.order_id;
@@ -662,8 +683,9 @@ const CheckoutPage = () => {
             <div className="text-end">
               <span className="fw-bold text-primary h6 mb-0">
                 <IndianRupee size={14} className="inline-block" />
-                {formattedAmountCommas((totalAmount + shipping).toFixed(2))}
+                {formattedAmountCommas(totalAmount + computedShipping)}
               </span>
+
             </div>
           </div>
 
@@ -710,13 +732,13 @@ const CheckoutPage = () => {
                           <tbody>
                             {displayItems.map((item, idx) => {
                               const price = parseFloat(item.price || 0);
-                              const u_price = parseFloat(item.unit_price || 0);
+                              const u_price = parseFloat((item as any).unit_price || 0);
                               const unit_price = price < u_price ? price : u_price;
-                              let total_price = parseFloat(item.price || 0);
+                              let total_price = parseFloat((item as any).price || 0);
                               let taxable_amount = 0;
 
-                              if (item.tax_data != null) {
-                                taxable_amount = (unit_price * parseFloat(item.tax_data.percentage)) / 100;
+                              if ((item as any).tax_data != null) {
+                                taxable_amount = (unit_price * parseFloat((item as any).tax_data.percentage)) / 100;
                               }
 
                               return (
@@ -724,7 +746,7 @@ const CheckoutPage = () => {
                                   <td>
                                     <div className="d-flex align-items-center">
                                       <Image
-                                        src={("f_image" in item ? item.f_image : "/assets/product/sanitory_pad.png") || "/assets/product/sanitory_pad.png"}
+                                        src={((item as any).f_image ? (item as any).f_image : "/assets/product/sanitory_pad.png") || "/assets/product/sanitory_pad.png"}
                                         alt={item.product_name || "Product"}
                                         width={60}
                                         height={60}
@@ -732,8 +754,8 @@ const CheckoutPage = () => {
                                       />
                                       <div>
                                         <div className="fw-bold">{item.product_name}</div>
-                                        {item.variant_details
-                                          ? item.variant_details.attributes.map((attr: any, i: number) => (
+                                        {(item as any).variant_details
+                                          ? (item as any).variant_details.attributes.map((attr: any, i: number) => (
                                             <small key={i} className="badge bg-primary text-white d-block mt-1">
                                               {attr.attribute_name}: {attr.attribute_val}
                                             </small>
@@ -749,10 +771,10 @@ const CheckoutPage = () => {
                                       <li><b>Amt. : <IndianRupee size={15} />{total_price}</b></li>
                                     </ul>
                                   </td>
-                                  <td>{item.quantity || item.qty || 1}</td>
+                                  <td>{(item as any).quantity || (item as any).qty || 1}</td>
                                   <td>
                                     <IndianRupee size={15} />
-                                    {Number(total_price * (item.quantity || item.qty || 1)).toFixed(2)}
+                                    {Number(total_price * ((item as any).quantity || (item as any).qty || 1)).toFixed(2)}
                                   </td>
                                 </tr>
                               );
@@ -762,20 +784,19 @@ const CheckoutPage = () => {
                       </div>
                     </div>
 
-
                     <div className="bg-white px-3 py-2 border-top max-vh-50  d-lg-none">
                       {/* Simplified Mobile Card List Element view */}
                       <div className="mb-3">
                         <p className="fw-bold small text-muted mb-2 text-uppercase">Items</p>
                         {displayItems.map((item, idx) => {
-                          const price = parseFloat(item.price || 0);
-                          const u_price = parseFloat(item.unit_price || 0);
+                          const price = parseFloat((item as any).price || 0);
+                          const u_price = parseFloat((item as any).unit_price || 0);
                           const unit_price = price < u_price ? price : u_price;
                           return (
                             <div key={idx} className="d-flex align-items-center justify-content-between py-2 border-bottom last-border-0">
                               <div className="d-flex align-items-center flex-grow-1 me-2">
                                 <Image
-                                  src={("f_image" in item ? item.f_image : "/assets/product/sanitory_pad.png") || "/assets/product/sanitory_pad.png"}
+                                  src={((item as any).f_image ? (item as any).f_image : "/assets/product/sanitory_pad.png") || "/assets/product/sanitory_pad.png"}
                                   alt={item.product_name || "Product"}
                                   width={45}
                                   height={45}
@@ -783,12 +804,12 @@ const CheckoutPage = () => {
                                 />
                                 <div style={{ maxWidth: "calc(100% - 55px)" }}>
                                   <span className="d-block text-truncate small fw-bold text-dark">{item.product_name}</span>
-                                  <span className="text-muted small">Qty: {item.quantity || item.qty || 1} × ₹{unit_price}</span>
+                                  <span className="text-muted small">Qty: {(item as any).quantity || (item as any).qty || 1} × ₹{unit_price}</span>
                                 </div>
                               </div>
                               <div className="text-end flex-shrink-0">
                                 <span className="small fw-medium">
-                                  ₹{Number(parseFloat(item.price || 0) * (item.quantity || item.qty || 1)).toFixed(2)}
+                                  ₹{Number(parseFloat((item as any).price || 0) * ((item as any).quantity || (item as any).qty || 1)).toFixed(2)}
                                 </span>
                               </div>
                             </div>
@@ -808,7 +829,8 @@ const CheckoutPage = () => {
                         </div>
                         <div className="d-flex justify-content-between mb-2">
                           <span className="text-muted">Shipping Charge:</span>
-                          <span>₹{shipping.toFixed(2)}</span>
+                          <span>₹{computedShipping}</span>
+
                         </div>
                       </div>
                     </div>
@@ -844,7 +866,15 @@ const CheckoutPage = () => {
                           <div className="row g-3">
                             {addresses.map((addr) => (
                               <div key={addr.id} className="col-md-6">
-                                <div className={`card h-100 transition-all ${selectedAddressId === addr.id ? 'border-primary bg-light-subtle' : 'border-light-size'}`} style={{ border: selectedAddressId === addr.id ? "1.5px solid var(--bs-primary)" : "1px solid #dee2e6" }}>
+                                <div
+                                  className={`card h-100 transition-all ${selectedAddressId === addr.id ? 'border-primary bg-light-subtle' : 'border-light-size'}`}
+                                  style={{
+                                    border:
+                                      selectedAddressId === addr.id
+                                        ? "1.5px solid var(--bs-primary)"
+                                        : "1px solid #dee2e6",
+                                  }}
+                                >
                                   <div className="card-body p-3 d-flex flex-column">
                                     <div className="form-check flex-grow-1 align-items-start d-flex mb-0">
                                       <input
@@ -891,7 +921,7 @@ const CheckoutPage = () => {
                                         <span className="text-muted">|</span>
                                         <button
                                           type="button"
-                                          className="btn btn-outline-danger btn-sm border-0 bg-transparent p-0 text-danger small fw-medium"
+                                          className="btn btn-outline-primary btn-sm border-0 bg-transparent p-0 text-primary small fw-medium"
                                           onClick={(e) => { e.stopPropagation(); handleDeleteAddress(addr.id); }}
                                           disabled={addressLoading}
                                         >
@@ -916,38 +946,29 @@ const CheckoutPage = () => {
                         <h5 className="fw-bold mb-3 d-none d-lg-block">Order Summary</h5>
                         <div className="d-flex justify-content-between mb-2 small text-secondary">
                           <span>Subtotal ({displayItems.length} items):</span>
-                          <span className="text-dark fw-medium">
-                            ₹{formattedAmountCommas(subTotal)}
-                          </span>
+                          <span className="text-dark fw-medium">₹{formattedAmountCommas(subTotal)}</span>
                         </div>
                         <div className="d-flex justify-content-between mb-2 small text-secondary">
                           <span>Tax:</span>
-                          <span className="text-dark fw-medium">
-                            ₹{formattedAmountCommas(tax_amount)}
-                          </span>
+                          <span className="text-dark fw-medium">₹{formattedAmountCommas(tax_amount)}</span>
                         </div>
                         <div className="d-flex justify-content-between mb-3 small text-secondary">
                           <span>Shipping Charge:</span>
-                          <span className="text-dark fw-medium">
-                            ₹{shipping.toFixed(2)}
-                          </span>
+                          <span className="text-dark fw-medium">₹{computedShipping}</span>
+
                         </div>
                         <hr className="my-2 text-muted" />
 
                         {couponDiscountAmount > 0 && !couponError && (
                           <div className="d-flex justify-content-between mb-2 small text-secondary">
                             <span>Discount:</span>
-                            <span className="text-success fw-bold">
-                              −₹{formattedAmountCommas(couponDiscountAmount.toFixed(2))}
-                            </span>
+                            <span className="text-success fw-bold">−₹{formattedAmountCommas(couponDiscountAmount.toFixed(2))}</span>
                           </div>
                         )}
 
                         <div className="d-flex justify-content-between align-items-center mb-4">
                           <span className="fw-bold h5 mb-0 text-dark">Total:</span>
-                          <span className="fw-bold h4 mb-0 text-primary">
-                            ₹{formattedAmountCommas(finalTotal.toFixed(2))}
-                          </span>
+                          <span className="fw-bold h4 mb-0 text-primary">₹{formattedAmountCommas(finalTotal.toFixed(2))}</span>
                         </div>
 
                         <div className="mb-4">
@@ -965,7 +986,6 @@ const CheckoutPage = () => {
                               className="btn btn-primary px-3"
                               type="button"
                               onClick={async () => {
-                                // lazy inline wrapper to avoid changing UI structure
                                 const trimmed = (couponCode || "").trim();
                                 if (!trimmed) {
                                   setCouponError("Enter a coupon code");
@@ -982,24 +1002,21 @@ const CheckoutPage = () => {
                                     .map((it: any) => it.product_id)
                                     .filter(Boolean);
 
-                                  const total_amount = totalAmount + shipping;
+                                  const total_amount = totalAmount + computedShipping;
+
 
                                   const payload: any = {
                                     code: trimmed,
                                     total_amount,
                                     user_id: (user as any)?.id,
                                     username: (user as any)?.username,
-                                    phone:
-                                      selectedAddress?.phone || (user as any)?.phone,
+                                    phone: selectedAddress?.phone || (user as any)?.phone,
                                     ip_address: undefined,
                                     user_agent:
-                                      typeof window !== "undefined"
-                                        ? window.navigator.userAgent
-                                        : undefined,
+                                      typeof window !== "undefined" ? window.navigator.userAgent : undefined,
                                     products,
                                   };
 
-                                  // remove undefined keys to keep request clean
                                   Object.keys(payload).forEach(
                                     (k) => payload[k] === undefined && delete payload[k],
                                   );
@@ -1015,28 +1032,18 @@ const CheckoutPage = () => {
                                   const json = await res.json();
 
                                   if (!res.ok || !json?.success) {
-                                    throw new Error(
-                                      json?.message || "Coupon validation failed",
-                                    );
+                                    throw new Error(json?.message || "Coupon validation failed");
                                   }
 
-                                  const discountAmount = Number(
-                                    json?.data?.discount_amount || 0,
-                                  );
+                                  const discountAmount = Number(json?.data?.discount_amount || 0);
 
                                   setCouponAppliedCode(json?.data?.code || trimmed);
-                                  setCouponDiscountAmount(
-                                    Number.isFinite(discountAmount)
-                                      ? discountAmount
-                                      : 0,
-                                  );
+                                  setCouponDiscountAmount(Number.isFinite(discountAmount) ? discountAmount : 0);
                                   setCouponError("");
                                 } catch (err: any) {
                                   setCouponDiscountAmount(0);
                                   setCouponAppliedCode("");
-                                  setCouponError(
-                                    err?.message || "Coupon validation failed",
-                                  );
+                                  setCouponError(err?.message || "Coupon validation failed");
                                 } finally {
                                   setCouponApplying(false);
                                 }
@@ -1069,9 +1076,7 @@ const CheckoutPage = () => {
                           )}
 
                           {couponError && (
-                            <div className="alert alert-warning mt-3 mb-0 small rounded-3" role="alert">
-                              {couponError}
-                            </div>
+                            <div className="alert alert-warning mt-3 mb-0 small rounded-3" role="alert">{couponError}</div>
                           )}
                         </div>
 
@@ -1096,7 +1101,10 @@ const CheckoutPage = () => {
 
                         <div className="row g-2 mt-2">
                           <div className="col-6">
-                            <Link href="/cart" className="btn btn-outline-secondary w-100 py-2 fw-medium text-uppercase btn-sm d-flex align-items-center justify-content-center">
+                            <Link
+                              href="/cart"
+                              className="btn btn-outline-secondary w-100 py-2 fw-medium text-uppercase btn-sm d-flex align-items-center justify-content-center"
+                            >
                               ← Cart
                             </Link>
                           </div>
@@ -1124,7 +1132,6 @@ const CheckoutPage = () => {
         </section>
       </ProtectedRoute>
 
-      {/* Dynamic State & City Dropdown Modal Form Wrapper */}
       {(showAddModal || showEditModal) && (
         <>
           <div className="modal-backdrop fade show" style={{ zIndex: 1040, backgroundColor: "rgba(0,0,0,0.5)" }}></div>
@@ -1132,9 +1139,7 @@ const CheckoutPage = () => {
             <div className="modal-dialog modal-dialog-centered px-3">
               <div className="modal-content border-0 rounded-4 shadow-lg">
                 <div className="modal-header border-bottom-0 pb-0">
-                  <h5 className="modal-title fw-bold text-dark">
-                    {editingAddress ? "Edit Address" : "Add New Address"}
-                  </h5>
+                  <h5 className="modal-title fw-bold text-dark">{editingAddress ? "Edit Address" : "Add New Address"}</h5>
                   <button type="button" className="btn-close shadow-none" onClick={closeModal}></button>
                 </div>
                 <form onSubmit={handleAddressSubmit}>
@@ -1299,3 +1304,4 @@ const CheckoutPage = () => {
 };
 
 export default CheckoutPage;
+

@@ -1,8 +1,6 @@
-- [ ] Add 5-minute (300s) resend OTP cooldown timer to `app/forgot-password/page.tsx`
-- [ ] Start countdown after successful OTP send / when moving to step 2
-- [ ] Add “Resend OTP” button in step 2 UI; disable during cooldown
-- [x] Implement resend handler calling existing `forgot-password-otp` endpoint
+# TODO
 
-- [x] Ensure interval cleanup (useEffect cleanup) and correct formatting MM:SS
-
-- [ ] Manually test send OTP -> countdown -> resend enablement
+- [ ] Update CheckoutPage shipping logic: if subTotal <= 260 then apply shipping_charge from settings, else shipping = 0.
+- [ ] Ensure UI and finalTotal/payment logic use computed shipping.
+- [ ] Update coupon validation payload to use computed shipping (not totalAmount + old shipping).
+- [ ] Run lint/build to verify TypeScript/React correctness.
