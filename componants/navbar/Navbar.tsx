@@ -118,6 +118,16 @@ const Navbar = () => {
             >
               {isAuthenticated ? "Logout" : "Login"}
             </button>
+
+            <button
+              className="btn btn-primary w-100 mt-3"
+              data-bs-dismiss="offcanvas"
+              onClick={async () => {
+                window.open('https://panel.feelsafeco.in', '_blank', 'noopener,noreferrer');
+              }}
+            >
+              Distributo Login
+            </button>
           </nav>
         </div>
       </div>
