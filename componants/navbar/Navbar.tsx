@@ -5,9 +5,18 @@ import { useCart } from "@/lib/contexts/CartContext";
 import { Trash, Search, User, ShoppingCart, Menu } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import NotificationsBell from "@/componants/notifications/NotificationsBell";
+import { useNotifications } from "@/lib/notifications/useNotifications";
+
+
+
+
+
 
 const Navbar = () => {
   const { isAuthenticated, user, logout, getSettingByKey } = useAuth();
+  const { barNotifications } = useNotifications();
+
   const contact_setting = getSettingByKey("contact_us");
   const { cart, removeItem } = useCart();
 
@@ -312,12 +321,16 @@ const Navbar = () => {
                   </ul>
                 </li>
                 <li>
+                  <NotificationsBell items={barNotifications} />
+                </li>
+                <li>
                   <button
                     className="border-0 bg-transparent d-flex flex-column gap-1 lh-1"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#offcanvasCart"
                     aria-label="Open cart"
                   >
+
                     <span className="fs-6 text-muted">Your Cart</span>
                     <span className="cart-total fs-5 fw-bold">
                       ₹{cart?.total || 0}

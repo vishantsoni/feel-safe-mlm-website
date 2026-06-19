@@ -118,6 +118,8 @@ export default function ProfilePage() {
     }
   };
 
+  console.log("user?.distributor_code = ", user?.distributor_code);
+
   return (
     <div className="container-fluid p-0">
       <div className="d-flex align-items-center gap-3 mb-4">
@@ -207,13 +209,28 @@ export default function ProfilePage() {
                       className="form-control form-control-lg rounded-3 border-light-subtle"
                       style={{ backgroundColor: "#f9fafb" }}
                       value={formData.distributor_code}
-                      disabled={formData.distributor_code !== ""}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          distributor_code: e.target.value || "",
-                        })
-                      }
+                      // disabled={formData.distributor_code !== ""}
+                      disabled={user?.distributor_info?.full_name !== null}
+                      // onChange={(e) =>
+                      //   setFormData({
+                      //     ...formData,
+                      //     distributor_code: e.target.value || "",
+                      //   })
+                      // }
+                      placeholder="e.g. - FS0000"
+                      onChange={(e) => {
+                        const value = e.target.value.toUpperCase();
+
+                        // 1. Allow empty input (so they can backspace everything)
+                        // 2. Allow typing 'F' as the first character
+                        // 3. Allow 'FS' followed by up to 4 digits
+                        if (value === "" || value === "F" || /^FS\d{0,10}$/.test(value)) {
+                          setFormData({
+                            ...formData,
+                            distributor_code: value,
+                          });
+                        }
+                      }}
                     />
                   </div>
                   <div className="col-12 mt-4">

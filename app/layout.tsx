@@ -13,6 +13,7 @@ import React from "react";
 import ClientRouteLoadingBoundary from "@/componants/loaders/ClientRouteLoadingBoundary";
 import AOSInit from "@/componants/animations/AOSInit";
 import Chatbot from "@/componants/chatbot/Chatbot";
+import NotificationsPopup from "@/componants/notifications/NotificationsPopup";
 
 
 
@@ -176,8 +177,10 @@ export default function RootLayout({
 
               </main>
               <Footer />
+              <NotificationsPopup />
               <Chatbot />
               <WhatsappButton />
+
             </ToastProvider>
           </CartProvider>
         </AuthProvider>
