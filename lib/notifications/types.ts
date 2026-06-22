@@ -6,7 +6,8 @@ export type NotificationType = {
   title: string;
   message?: string;
   url?: string;
-  createdAt?: string;
+  created_at?: string;
+  image_url?: string;
 };
 
 export type NotificationsResponse = {

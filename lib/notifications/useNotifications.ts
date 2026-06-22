@@ -61,7 +61,7 @@ export function useNotifications() {
             display_type?: unknown;
             category?: unknown;
             message?: unknown;
-            url?: unknown;
+            image_url?: unknown;
             created_at?: unknown;
             createdAt?: unknown;
             target_role?: unknown;
@@ -112,7 +112,7 @@ export function useNotifications() {
                 if (!category) return [];
 
                 const message = n.message ? String(n.message) : undefined;
-                const url = n.url ? String(n.url) : undefined;
+                const url = n.image_url ? String(n.image_url) : undefined;
 
                 return [
                   {
@@ -123,8 +123,8 @@ export function useNotifications() {
                     category,
                     title: String(n.title || ""),
                     message,
-                    url,
-                    createdAt: n.created_at
+                    image_url: url,
+                    created_at: n.created_at
                       ? String(n.created_at)
                       : n.createdAt
                       ? String(n.createdAt)
