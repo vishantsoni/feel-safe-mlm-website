@@ -23,10 +23,13 @@ export default function ReplyForm({ caseId, onReply }: ReplyFormProps) {
         try {
             const data: ReplyData = { message: message.trim() };
             const result = await replyToTicket(caseId, data);
+
             if (result.success) {
                 setMessage('');
                 setExpanded(false); // Optional: collapse after sending
                 onReply();
+            } else {
+                alert(result.message)
             }
         } catch (err) {
             console.error('Reply failed', err);

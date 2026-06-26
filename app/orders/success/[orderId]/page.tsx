@@ -67,7 +67,7 @@ async function OrderSuccessPage({ params }: Props) {
                             )}
                           </span>
                           <span className="badge bg-light text-dark border">
-                            × {item.qty}
+                            {item.price} × {item.qty}
                           </span>
                         </li>
                       ))}
@@ -124,13 +124,13 @@ async function OrderSuccessPage({ params }: Props) {
                     </strong>
                     <p className="mb-1">
                       Method:{" "}
-                      <span className="badge border text-dark">
+                      <span className="badge border  bg-primary">
                         {order.payment_method?.toUpperCase()}
                       </span>
                     </p>
                     <p className="mb-0">
                       Status:{" "}
-                      <span className="badge bg-success">Completed</span>
+                      <span className="badge bg-success">{order?.order_status?.toUpperCase()}</span>
                     </p>
                   </div>
                 </div>

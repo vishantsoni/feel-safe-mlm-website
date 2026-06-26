@@ -98,8 +98,8 @@ export default function ProfilePage() {
         "PUT",
         "api/ecom/auth/change-password",
         {
-          current_password: currentPassword,
-          new_password: newPassword,
+          currentPassword: currentPassword,
+          newPassword: newPassword,
         },
       )) as any;
 

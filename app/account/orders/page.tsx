@@ -273,7 +273,7 @@ export default function OrdersPage() {
                       </td>
                       <td className="px-4 py-3 text-center gap-2">
                         <Link
-                          href={`/orders/success/${order.order_id}`}
+                          href={`/account/orders/${order.order_id}`}
                           className="btn btn-secondary btn-sm rounded-3 d-inline-flex align-items-center gap-2 border hover-primary me-2"
                         >
                           <Eye size={16} />
