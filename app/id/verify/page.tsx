@@ -1,10 +1,11 @@
 import VerifyCompo from '@/componants/VerifyCompo'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const page = () => {
     return (
-        <><VerifyCompo />
-        </>
+        <Suspense fallback={null}>
+            <VerifyCompo />
+        </Suspense>
     )
 }
 
