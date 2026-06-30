@@ -156,6 +156,12 @@ export default async function ProductPage({ params }: Props) {
     tax_data: apiProduct.tax_data,
     admin_stock: apiProduct.product.admin_stock || 0,
     distributor_stock: apiProduct.product.distributor_stock || 0,
+    hsn_code: apiProduct.product.hsn_code || 'N/A',
+    weight: apiProduct.product.weight || 'N/A',
+    dimension_height: apiProduct.product.dimension_height || 'N/A',
+    dimension_length: apiProduct.product.dimension_length || 'N/A',
+    dimension_unit: apiProduct.product.dimension_unit || 'N/A',
+    dimension_width: apiProduct.product.dimension_width || 'N/A'
   };
 
   const attributes = apiProduct.product_attributes || [];

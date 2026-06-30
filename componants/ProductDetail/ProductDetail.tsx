@@ -271,7 +271,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
 
               {currentPrice < basePrice && (
                 <div className="position-absolute top-0 end-0 badge bg-success fs-6 m-2" style={{ zIndex: 2 }}>
-                  -
+                  - {" "}
                   {
                     (((basePrice - currentPrice) / basePrice) * 100).toFixed(2)
                   }
@@ -307,6 +307,7 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
               {product.category?.name}
             </span>
             <p className="lead mb-2">{product?.short_desc}</p>
+            <div>HSN Code - {product.hsn_code ?? 'N/A'}</div>
 
             <div className="">
               <span className="fs-1 fw-bold text-success">
@@ -420,8 +421,9 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
             </div>
             {/* Inventory info (optional) */}
             {(product?.distributor_stock === 0 && product?.admin_stock === 0) && <span className="badge bg-secondary">Out Of Stock</span>}
-            <div>admin - {product.admin_stock}</div>
-            <div>Distributor - {product.distributor_stock}</div>
+            <div>Stock - {product.admin_stock + product.distributor_stock}</div>
+            {/* <div>admin - {product.admin_stock}</div>
+            <div>Distributor - {product.distributor_stock}</div> */}
           </div>
         </div>
 
@@ -443,6 +445,16 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
                 <button
                   className="nav-link"
                   data-bs-toggle="tab"
+                  data-bs-target="#spec"
+                >
+                  Specification
+                </button>
+              </li>
+
+              <li className="nav-item">
+                <button
+                  className="nav-link"
+                  data-bs-toggle="tab"
                   data-bs-target="#reviews"
                 >
                   Reviews
@@ -453,6 +465,27 @@ const ProductDetail: React.FC<Props> = ({ product, attributes, variants, dId }) 
             <div className="tab-content border border-top-0 p-4">
               <div className="tab-pane fade show active" id="description">
                 {product.description}
+              </div>
+
+              <div className="tab-pane fade" id="spec">
+                <table>
+                  <tr>
+                    <th>Weight : </th>
+                    <td>{product.weight}</td>
+                  </tr>
+                  <tr>
+                    <th>Dimension Length : </th>
+                    <td>{product.dimension_length} {product.dimension_unit}</td>
+                  </tr>
+                  <tr>
+                    <th>Dimension Width : </th>
+                    <td>{product.dimension_width} {product.dimension_unit}</td>
+                  </tr>
+                  <tr>
+                    <th>Dimension Height : </th>
+                    <td>{product.dimension_height} {product.dimension_unit}</td>
+                  </tr>
+                </table>
               </div>
 
               <div className="tab-pane fade" id="reviews">

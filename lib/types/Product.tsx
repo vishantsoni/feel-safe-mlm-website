@@ -12,6 +12,12 @@ interface Product {
   specs: Record<string, string>;
   category: Category;
   qty: number;
+  hsn_code: string;
+  weight: string;
+  dimension_length: string;
+  dimension_width: string;
+  dimension_height: string;
+  dimension_unit: string;
   tax_data: {
     name: string;
     percentage: number;

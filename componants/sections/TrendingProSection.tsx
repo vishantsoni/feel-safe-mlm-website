@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import serverCallFuction, { formattedAmount } from "@/lib/constantFunction";
-import { IndianRupee, Minus, Plus } from "lucide-react";
+import { IndianRupee, Minus, Plus, Star, StarIcon } from "lucide-react";
 import { Product } from "@/lib/types/Product";
 import { Icon } from "@iconify/react";
 
@@ -28,6 +28,9 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
     void loadProducts();
   }, []);
 
+  // console.log("products - ", products);
+
+
   return (
     <>
       <section className="py-5">
@@ -51,18 +54,39 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
                     <div className="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
                       {/* Product Item Start */}
                       {products.map((item, index) => {
-                        const total_price = item.taxable_price;
+
+                        let base_price = item.base_price;
+
+
+
+
+                        const discounted_price = item.discounted_price;
+
+                        let final_price = 0
+                        let percentage = 0;
+
+                        if (base_price > discounted_price) {
+                          final_price = discounted_price
+                          percentage = ((base_price - final_price) * 100) / base_price
+                        }
+
                         let tax_amount = 0;
                         if (item.tax_data) {
-                          tax_amount = (total_price * item.tax_data.percentage) / 100;
+                          tax_amount = (base_price * item.tax_data.percentage) / 100;
+                          base_price = tax_amount + parseFloat(base_price)
+
+                          // base_price += Number(tax_amount)
                         }
+
+
+
 
                         return (
                           <div className="col" key={index}>
                             <div className="product-item">
-                              <span className="badge bg-success position-absolute m-3" style={{ zIndex: 2 }}>
-                                {item.discount}
-                              </span>
+                              {percentage > 0 && <span className="badge bg-success position-absolute m-3" style={{ zIndex: 2 }}>
+                                {percentage.toFixed(2)}
+                              </span>}
 
                               {/* FIXED: Added 'overflow-hidden' wrapper to contain the zoom effect */}
                               <figure className="overflow-hidden position-relative rounded">
@@ -81,10 +105,23 @@ const TrendingProSection = ({ titleShow = true, title = "Trending Products" }) =
 
                               <h3>{item.name}</h3>
                               <span className="qty">{item.qty}</span>
-                              <span className="price d-flex align-items-center">
-                                <IndianRupee size={16} className="me-1" />
-                                {formattedAmount(total_price)}
-                              </span>
+
+                              <div className="d-flex align-items-center">
+                                <span className="price d-flex align-items-center">
+                                  <IndianRupee size={16} className="me-1" />
+                                  {formattedAmount(item.taxable_price)}
+                                </span>
+                                {percentage > 0 &&
+                                  <span className="d-flex align-items-center text-decoration-line-through">
+                                    <IndianRupee size={16} className="me-1" />
+                                    {formattedAmount(base_price)}
+                                  </span>
+                                }
+                              </div>
+                              <div className="d-flex align-items-center gap-2">
+                                <span className=" d-flex align-items-center badge  gap-2" style={{ background: 'darkgreen' }}>{item.average_rating} <StarIcon size={14} fill="white" /> </span>
+                                <span>{item.total_reviews} reviews</span>
+                              </div>
                             </div>
                           </div>
                         );

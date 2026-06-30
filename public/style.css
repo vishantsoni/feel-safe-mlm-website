@@ -805,6 +805,7 @@ footer {
 } */
 .product-item {
   position: relative;
+  height: stretch;
   padding: 16px;
   background: #ffffff;
   border: 1px solid #fbfbfb;
@@ -873,7 +874,7 @@ footer {
 }
 .product-item .price {
   display: block;
-  width: 100%;
+  /* width: 100%; */
   font-weight: 600;
   font-size: 22px;
   line-height: 30px;
